@@ -51,7 +51,7 @@ public final class LakeHouseTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private LakeHouseTableDatasetTypeProperties innerTypeProperties() {
+    LakeHouseTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

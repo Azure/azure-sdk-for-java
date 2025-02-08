@@ -11,19 +11,19 @@ public final class AzurePostgreSqlSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePostgreSqlSink model = BinaryData.fromString(
-            "{\"type\":\"AzurePostgreSqlSink\",\"preCopyScript\":\"dataxtkmknacnfzcy\",\"writeBatchSize\":\"datahdjpagwszm\",\"writeBatchTimeout\":\"datagzfeyexbg\",\"sinkRetryCount\":\"datayo\",\"sinkRetryWait\":\"datawigvqgc\",\"maxConcurrentConnections\":\"datacqjg\",\"disableMetricsCollection\":\"dataxpbpj\",\"\":{\"ohehhtl\":\"datanvdabaodiytxq\"}}")
+            "{\"type\":\"AzurePostgreSqlSink\",\"preCopyScript\":\"datacydqac\",\"writeBatchSize\":\"datavwxubgulyzjkasx\",\"writeBatchTimeout\":\"dataroh\",\"sinkRetryCount\":\"databd\",\"sinkRetryWait\":\"datahvsoxnpuaptpu\",\"maxConcurrentConnections\":\"datakiq\",\"disableMetricsCollection\":\"datac\",\"\":{\"pivt\":\"datalj\",\"kkcjjnq\":\"dataxvcfch\",\"xjm\":\"datajjoayajdfh\",\"zvokfrhfaf\":\"datapgfbzbxe\"}}")
             .toObject(AzurePostgreSqlSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlSink model = new AzurePostgreSqlSink().withWriteBatchSize("datahdjpagwszm")
-            .withWriteBatchTimeout("datagzfeyexbg")
-            .withSinkRetryCount("datayo")
-            .withSinkRetryWait("datawigvqgc")
-            .withMaxConcurrentConnections("datacqjg")
-            .withDisableMetricsCollection("dataxpbpj")
-            .withPreCopyScript("dataxtkmknacnfzcy");
+        AzurePostgreSqlSink model = new AzurePostgreSqlSink().withWriteBatchSize("datavwxubgulyzjkasx")
+            .withWriteBatchTimeout("dataroh")
+            .withSinkRetryCount("databd")
+            .withSinkRetryWait("datahvsoxnpuaptpu")
+            .withMaxConcurrentConnections("datakiq")
+            .withDisableMetricsCollection("datac")
+            .withPreCopyScript("datacydqac");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlSink.class);
     }
 }

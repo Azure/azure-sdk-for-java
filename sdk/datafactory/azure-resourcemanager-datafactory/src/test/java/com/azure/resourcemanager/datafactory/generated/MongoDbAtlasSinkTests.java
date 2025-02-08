@@ -11,19 +11,19 @@ public final class MongoDbAtlasSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbAtlasSink model = BinaryData.fromString(
-            "{\"type\":\"MongoDbAtlasSink\",\"writeBehavior\":\"datamkfvsolkjowvz\",\"writeBatchSize\":\"datae\",\"writeBatchTimeout\":\"dataj\",\"sinkRetryCount\":\"datayguothnucqktu\",\"sinkRetryWait\":\"datar\",\"maxConcurrentConnections\":\"datatpriicte\",\"disableMetricsCollection\":\"datalbahmivtuph\",\"\":{\"o\":\"datai\"}}")
+            "{\"type\":\"MongoDbAtlasSink\",\"writeBehavior\":\"datadnrgnybpqwjj\",\"writeBatchSize\":\"datakhxunqrvqti\",\"writeBatchTimeout\":\"datas\",\"sinkRetryCount\":\"datapmcl\",\"sinkRetryWait\":\"dataydabhydcqrs\",\"maxConcurrentConnections\":\"datawzndzuxlgmyp\",\"disableMetricsCollection\":\"datayqlzo\",\"\":{\"jvbzablmpnt\":\"dataa\"}}")
             .toObject(MongoDbAtlasSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbAtlasSink model = new MongoDbAtlasSink().withWriteBatchSize("datae")
-            .withWriteBatchTimeout("dataj")
-            .withSinkRetryCount("datayguothnucqktu")
-            .withSinkRetryWait("datar")
-            .withMaxConcurrentConnections("datatpriicte")
-            .withDisableMetricsCollection("datalbahmivtuph")
-            .withWriteBehavior("datamkfvsolkjowvz");
+        MongoDbAtlasSink model = new MongoDbAtlasSink().withWriteBatchSize("datakhxunqrvqti")
+            .withWriteBatchTimeout("datas")
+            .withSinkRetryCount("datapmcl")
+            .withSinkRetryWait("dataydabhydcqrs")
+            .withMaxConcurrentConnections("datawzndzuxlgmyp")
+            .withDisableMetricsCollection("datayqlzo")
+            .withWriteBehavior("datadnrgnybpqwjj");
         model = BinaryData.fromObject(model).toObject(MongoDbAtlasSink.class);
     }
 }

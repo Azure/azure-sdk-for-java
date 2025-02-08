@@ -51,7 +51,7 @@ public final class VerticaTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private VerticaDatasetTypeProperties innerTypeProperties() {
+    VerticaDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

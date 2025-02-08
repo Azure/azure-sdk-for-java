@@ -52,7 +52,7 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private HDInsightOnDemandLinkedServiceTypeProperties innerTypeProperties() {
+    HDInsightOnDemandLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

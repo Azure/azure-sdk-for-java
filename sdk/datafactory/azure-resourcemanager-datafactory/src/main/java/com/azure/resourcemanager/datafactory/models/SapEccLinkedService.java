@@ -51,7 +51,7 @@ public final class SapEccLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapEccLinkedServiceTypeProperties innerTypeProperties() {
+    SapEccLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

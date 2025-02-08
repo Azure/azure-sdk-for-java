@@ -51,7 +51,7 @@ public final class SqlServerLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SqlServerLinkedServiceTypeProperties innerTypeProperties() {
+    SqlServerLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

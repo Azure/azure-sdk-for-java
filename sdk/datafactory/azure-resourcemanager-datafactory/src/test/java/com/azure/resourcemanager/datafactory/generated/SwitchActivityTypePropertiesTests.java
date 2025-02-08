@@ -23,258 +23,199 @@ public final class SwitchActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SwitchActivityTypeProperties model = BinaryData.fromString(
-            "{\"on\":{\"value\":\"niybotuq\"},\"cases\":[{\"value\":\"uqvterbsgwoyk\",\"activities\":[{\"type\":\"Activity\",\"name\":\"qyfixwgqmxm\",\"description\":\"fzr\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"bnvqu\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"kwbsttmvaijn\",\"value\":\"dataqnqwkaevbg\"},{\"name\":\"hmyzsqovmtid\",\"value\":\"dataycyyajl\"},{\"name\":\"otmir\",\"value\":\"dataipnclnbfxme\"}],\"\":{\"njaqzdzkyqq\":\"datadmfrfzg\",\"ahf\":\"dataqbwbwvtwmmv\"}},{\"type\":\"Activity\",\"name\":\"kceyjtdeyoxtlqyt\",\"description\":\"tepzrcqnsjqrgtap\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"mwbtr\",\"dependencyConditions\":[]},{\"activity\":\"kl\",\"dependencyConditions\":[]},{\"activity\":\"ndb\",\"dependencyConditions\":[]},{\"activity\":\"lqtpebaa\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"xpy\",\"value\":\"databjtjvqdwzyvxdg\"},{\"name\":\"enieqlikyc\",\"value\":\"dataunfuk\"}],\"\":{\"prjs\":\"datavktlrcauad\",\"qamxxpfyl\":\"datawnrqfi\",\"e\":\"datapftw\"}},{\"type\":\"Activity\",\"name\":\"uortgwwtaolfdgjr\",\"description\":\"hpvohvcaq\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"na\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"ueqouzjgvqz\",\"value\":\"dataihtn\"},{\"name\":\"adrmt\",\"value\":\"datahfxy\"},{\"name\":\"nn\",\"value\":\"dataazbfrqo\"},{\"name\":\"igxndfrxnvwqy\",\"value\":\"datakl\"}],\"\":{\"iungjbfmrsjgme\":\"datascpj\",\"xkjjhflrg\":\"dataam\",\"adgqpbgzyafazwie\":\"dataskgh\",\"rijcwnthtq\":\"datazzxjjdboxuinrs\"}},{\"type\":\"Activity\",\"name\":\"bcwtcqjsvlzdus\",\"description\":\"b\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"cjuajclrtssbk\",\"dependencyConditions\":[]},{\"activity\":\"dgwpyljn\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"rjah\",\"value\":\"dataq\"},{\"name\":\"byic\",\"value\":\"dataufnumf\"}],\"\":{\"flvazp\":\"datanruqhmuryajpp\"}}]},{\"value\":\"ossqm\",\"activities\":[{\"type\":\"Activity\",\"name\":\"bvfa\",\"description\":\"pobzvxntsfyntkfz\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"vwwhmldsn\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"pjkk\",\"value\":\"dataaenzuuf\"},{\"name\":\"d\",\"value\":\"dataknxep\"},{\"name\":\"wxdwlo\",\"value\":\"dataymeqiqnjcajmxu\"},{\"name\":\"xkvpleooom\",\"value\":\"dataqdjfldzvgo\"}],\"\":{\"ustr\":\"datacgaofobjlqnaxfvs\"}},{\"type\":\"Activity\",\"name\":\"je\",\"description\":\"jbknpzhfhibhgwb\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"cjbxochijwpsk\",\"dependencyConditions\":[]},{\"activity\":\"eprumhikwahbz\",\"dependencyConditions\":[]},{\"activity\":\"gwkimmvatrv\",\"dependencyConditions\":[]},{\"activity\":\"kxcrxqpenkujxdn\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"eterjerhwgiuduw\",\"value\":\"dataqytppjdyikdykxh\"}],\"\":{\"kmmcvftijl\":\"datadtucyutrpdgm\",\"aednczvnwyfzavsa\":\"datahlcrjynef\",\"yxhfejtywluxysm\":\"databahs\",\"m\":\"dataeeodfplwf\"}},{\"type\":\"Activity\",\"name\":\"bwwphjw\",\"description\":\"caofxgwyvjefnlxq\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"jxkxjrttzhna\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"qynwqcov\",\"value\":\"datajvrsurqhhbddxko\"},{\"name\":\"orcmayqas\",\"value\":\"datavepld\"},{\"name\":\"fxmpyvlfujsbcfog\",\"value\":\"dataubqcqnch\"}],\"\":{\"knblb\":\"datajug\"}}]},{\"value\":\"xv\",\"activities\":[{\"type\":\"Activity\",\"name\":\"svprumttrvkhu\",\"description\":\"txxwbjbanlmpm\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"xplrtueg\",\"dependencyConditions\":[]},{\"activity\":\"hqulnjeybgpjy\",\"dependencyConditions\":[]},{\"activity\":\"vjuowkt\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"vhdk\",\"value\":\"datadqcgedipnnzmvt\"},{\"name\":\"ttjmdtfuwx\",\"value\":\"dataee\"},{\"name\":\"omiesgur\",\"value\":\"datac\"}],\"\":{\"p\":\"datatumttmixe\",\"hvqnkwjhjut\":\"datarbazgou\",\"dflgqso\":\"dataxggn\",\"petsxetneher\":\"datauncmuvfukl\"}},{\"type\":\"Activity\",\"name\":\"belms\",\"description\":\"xhkzcdni\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"vgydtdtomknzotm\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"kwpooaskflrqwfmb\",\"value\":\"datakshb\"},{\"name\":\"zvnouthbvvcbwudi\",\"value\":\"datafix\"},{\"name\":\"w\",\"value\":\"datarqivqzqcmrxh\"},{\"name\":\"lozg\",\"value\":\"datafhijcetcystrs\"}],\"\":{\"rlrq\":\"datatxspaafseqoyo\"}},{\"type\":\"Activity\",\"name\":\"q\",\"description\":\"hulgtqveumwbmqp\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"jqkykjzbxmgsxb\",\"dependencyConditions\":[]},{\"activity\":\"ckambdoqfeobkm\",\"dependencyConditions\":[]},{\"activity\":\"ohmrb\",\"dependencyConditions\":[]},{\"activity\":\"h\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"xnwcejczi\",\"value\":\"dataf\"},{\"name\":\"daq\",\"value\":\"datankjyfy\"}],\"\":{\"ofhu\":\"datatiugcaashgr\",\"yjaxkbyo\":\"datauokrkibnonuocmx\",\"zxhtvythpynlmfvq\":\"datawtpmyvasnmzsvdrr\"}},{\"type\":\"Activity\",\"name\":\"yzacjxczjosixter\",\"description\":\"jkhtmmkmezlhmt\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"aynhz\",\"dependencyConditions\":[]},{\"activity\":\"ziwxwwpitwle\",\"dependencyConditions\":[]},{\"activity\":\"uq\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"photb\",\"value\":\"datagkliu\"},{\"name\":\"txfzhvxqotwcfbqz\",\"value\":\"datazchpjh\"},{\"name\":\"hyxxftrfwmxwjc\",\"value\":\"dataxqkm\"},{\"name\":\"nauleofdxzno\",\"value\":\"datakdoffeu\"}],\"\":{\"jf\":\"datagnugiiyc\"}}]}],\"defaultActivities\":[{\"type\":\"Activity\",\"name\":\"tdynbrf\",\"description\":\"rabr\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"lz\",\"dependencyConditions\":[\"Completed\",\"Failed\"],\"\":{\"bgfz\":\"dataub\",\"tuzgceuzhp\":\"dataixyx\",\"vxpfayophpu\":\"datamnpodsqil\",\"hbqvbute\":\"datacca\"}},{\"activity\":\"xufrwiivekrgvzjt\",\"dependencyConditions\":[\"Completed\",\"Completed\"],\"\":{\"tjnktheh\":\"datalweozccdo\",\"v\":\"datamijraei\",\"lbnroxgwqgbv\":\"datahhci\",\"bztwkz\":\"datactcbmnecozvx\"}},{\"activity\":\"puwjvju\",\"dependencyConditions\":[\"Succeeded\",\"Completed\",\"Completed\",\"Skipped\"],\"\":{\"jxjnxznlx\":\"datauxtyvpvegxdzopfk\",\"b\":\"datajkteubntqvlktq\",\"jiktwfjyl\":\"dataurblbtvsxnaothlr\",\"nwegyhzucpixfdbi\":\"datammibaowclb\"}},{\"activity\":\"pchbcbdpyorhq\",\"dependencyConditions\":[\"Skipped\"],\"\":{\"nhszmuvareakcxda\":\"datanhyxcw\",\"npcrsfqwqm\":\"datanmnmqydpieleruoy\",\"vjurjczdelqaz\":\"dataisjqo\"}}],\"userProperties\":[{\"name\":\"xg\",\"value\":\"datarkbhwwpaec\"}],\"\":{\"gdb\":\"dataqacaedvnloqjmo\",\"jksmyeegbertf\":\"databrrqxldkhgngyofe\",\"rd\":\"datancxkazmydsqvjkfz\",\"bw\":\"datacwgcmmv\"}}]}")
+            "{\"on\":{\"value\":\"neherqbelmsx\"},\"cases\":[{\"value\":\"zcdnipjtduvsvg\",\"activities\":[{\"type\":\"Activity\",\"name\":\"dtomknzotmiizk\",\"description\":\"ooaskflrqwfmbkk\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"outhb\",\"dependencyConditions\":[]},{\"activity\":\"vcbwudiyfi\",\"dependencyConditions\":[]},{\"activity\":\"pw\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"ivqzqcmrxhal\",\"value\":\"datazgzf\"},{\"name\":\"ijcetcystrs\",\"value\":\"datayttxspaafs\"}],\"\":{\"tqnxhulgtqve\":\"datayoerlr\",\"kjzbxmgsxbk\":\"datamwbmqpbfjbsoljqk\"}},{\"type\":\"Activity\",\"name\":\"kambdoq\",\"description\":\"o\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"rbjhyld\",\"dependencyConditions\":[]},{\"activity\":\"nwcejcz\",\"dependencyConditions\":[]},{\"activity\":\"kfxdaqwnkjyfyy\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"iugca\",\"value\":\"datashgryof\"},{\"name\":\"uvu\",\"value\":\"datakrkibno\"},{\"name\":\"uocmxtyjaxk\",\"value\":\"datayovwtpm\"}],\"\":{\"mzsvdrryzxhtvyth\":\"datas\"}},{\"type\":\"Activity\",\"name\":\"ynlmfv\",\"description\":\"yzacjxczjosixter\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"m\",\"dependencyConditions\":[]},{\"activity\":\"mezlhmtrq\",\"dependencyConditions\":[]},{\"activity\":\"ncscaynhzmz\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"wwpitwleluqq\",\"value\":\"datapphotbsgkliuct\"},{\"name\":\"fzhvxqotwcfbq\",\"value\":\"dataezchpjhuhyx\"},{\"name\":\"f\",\"value\":\"datarfwmxwjcsxqkm\"},{\"name\":\"nauleofdxzno\",\"value\":\"datakdoffeu\"}],\"\":{\"jf\":\"datagnugiiyc\"}}]},{\"value\":\"n\",\"activities\":[{\"type\":\"Activity\",\"name\":\"nbrfscrabrqdb\",\"description\":\"gilzrruvnlubk\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"yxntuzgceuzhp\",\"dependencyConditions\":[]},{\"activity\":\"mnpodsqil\",\"dependencyConditions\":[]},{\"activity\":\"vxpfayophpu\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"aqhbqvb\",\"value\":\"datatesxufrwiivekr\"}],\"\":{\"z\":\"datajtvjrrkdlwe\"}},{\"type\":\"Activity\",\"name\":\"cdoat\",\"description\":\"kth\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"aeiavdhhcikl\",\"dependencyConditions\":[]},{\"activity\":\"nroxgwqgbvnctcbm\",\"dependencyConditions\":[]},{\"activity\":\"ecozvxdb\",\"dependencyConditions\":[]},{\"activity\":\"twkzfp\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"vjui\",\"value\":\"databtku\"},{\"name\":\"iuxtyvpvegxdzo\",\"value\":\"datafkzj\"}],\"\":{\"qvlktqs\":\"dataxznlxcjkteubn\",\"rblbt\":\"datam\",\"lr\":\"datasxnaot\"}}]}],\"defaultActivities\":[{\"type\":\"Activity\",\"name\":\"ktwfjylhmmiba\",\"description\":\"cl\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"hzucpixfdbicpchb\",\"dependencyConditions\":[\"Skipped\",\"Failed\",\"Skipped\",\"Succeeded\"],\"\":{\"vhnhyxcwsnhszmu\":\"dataqbp\",\"cxdam\":\"dataarea\"}}],\"userProperties\":[{\"name\":\"mqydpieleru\",\"value\":\"datayfnpcrsfq\"},{\"name\":\"qmlisjqonvjur\",\"value\":\"dataczdelqazb\"},{\"name\":\"ixg\",\"value\":\"datarkbhwwpaec\"},{\"name\":\"uvqacae\",\"value\":\"datavn\"}],\"\":{\"rr\":\"datajmojgdbo\"}},{\"type\":\"Activity\",\"name\":\"xldkhgn\",\"description\":\"ofesjksmyee\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"ncxkazmydsqvjkfz\",\"dependencyConditions\":[\"Skipped\"],\"\":{\"tdvgdujkdac\":\"datawgcmmvvbwrilcyep\",\"y\":\"datavyeckbudepulbxgd\"}},{\"activity\":\"ywmezoi\",\"dependencyConditions\":[\"Succeeded\",\"Succeeded\"],\"\":{\"vvnbbeys\":\"dataicfkkcpkvujwfyv\",\"uq\":\"datafsiiadfjxfiv\",\"toqka\":\"dataptzxilwnvfbr\",\"huawiit\":\"datalek\"}}],\"userProperties\":[{\"name\":\"bidknehhkcutxmq\",\"value\":\"databhfbwduuvkrskq\"},{\"name\":\"okhpzvphjkffc\",\"value\":\"datavfur\"},{\"name\":\"dhopzymhrfwchim\",\"value\":\"dataeovji\"}],\"\":{\"qhlbsvyo\":\"datawdexldo\",\"qwfuavofeouucg\":\"dataiexmfeechltxa\",\"ogbmeksegd\":\"datai\",\"nmxbhgsimenjh\":\"dataqnoc\"}},{\"type\":\"Activity\",\"name\":\"wknazcwja\",\"description\":\"vnollpz\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"quiqkuxajl\",\"dependencyConditions\":[\"Succeeded\",\"Completed\",\"Skipped\"],\"\":{\"bnmaiq\":\"datarnowexfykdirc\",\"jrxoi\":\"datajoirxngmm\"}},{\"activity\":\"mnsmdsmzkjlh\",\"dependencyConditions\":[\"Failed\",\"Skipped\",\"Succeeded\"],\"\":{\"medyb\":\"databyfiochf\"}}],\"userProperties\":[{\"name\":\"zoae\",\"value\":\"datadhvszwgmpzbxqf\"}],\"\":{\"lqnrds\":\"datapwglkvspbdjushzf\",\"wewgda\":\"datarvp\",\"dlilkw\":\"datahzdhszk\"}}]}")
             .toObject(SwitchActivityTypeProperties.class);
-        Assertions.assertEquals("niybotuq", model.on().value());
-        Assertions.assertEquals("uqvterbsgwoyk", model.cases().get(0).value());
-        Assertions.assertEquals("qyfixwgqmxm", model.cases().get(0).activities().get(0).name());
-        Assertions.assertEquals("fzr", model.cases().get(0).activities().get(0).description());
-        Assertions.assertEquals(ActivityState.ACTIVE, model.cases().get(0).activities().get(0).state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SUCCEEDED,
+        Assertions.assertEquals("neherqbelmsx", model.on().value());
+        Assertions.assertEquals("zcdnipjtduvsvg", model.cases().get(0).value());
+        Assertions.assertEquals("dtomknzotmiizk", model.cases().get(0).activities().get(0).name());
+        Assertions.assertEquals("ooaskflrqwfmbkk", model.cases().get(0).activities().get(0).description());
+        Assertions.assertEquals(ActivityState.INACTIVE, model.cases().get(0).activities().get(0).state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED,
             model.cases().get(0).activities().get(0).onInactiveMarkAs());
-        Assertions.assertEquals("bnvqu", model.cases().get(0).activities().get(0).dependsOn().get(0).activity());
-        Assertions.assertEquals("kwbsttmvaijn",
+        Assertions.assertEquals("outhb", model.cases().get(0).activities().get(0).dependsOn().get(0).activity());
+        Assertions.assertEquals("ivqzqcmrxhal",
             model.cases().get(0).activities().get(0).userProperties().get(0).name());
-        Assertions.assertEquals("tdynbrf", model.defaultActivities().get(0).name());
-        Assertions.assertEquals("rabr", model.defaultActivities().get(0).description());
-        Assertions.assertEquals(ActivityState.ACTIVE, model.defaultActivities().get(0).state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.defaultActivities().get(0).onInactiveMarkAs());
-        Assertions.assertEquals("lz", model.defaultActivities().get(0).dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.COMPLETED,
+        Assertions.assertEquals("ktwfjylhmmiba", model.defaultActivities().get(0).name());
+        Assertions.assertEquals("cl", model.defaultActivities().get(0).description());
+        Assertions.assertEquals(ActivityState.INACTIVE, model.defaultActivities().get(0).state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.defaultActivities().get(0).onInactiveMarkAs());
+        Assertions.assertEquals("hzucpixfdbicpchb", model.defaultActivities().get(0).dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED,
             model.defaultActivities().get(0).dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("xg", model.defaultActivities().get(0).userProperties().get(0).name());
+        Assertions.assertEquals("mqydpieleru", model.defaultActivities().get(0).userProperties().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwitchActivityTypeProperties model = new SwitchActivityTypeProperties()
-            .withOn(new Expression().withValue("niybotuq"))
-            .withCases(Arrays.asList(
-                new SwitchCase().withValue("uqvterbsgwoyk")
-                    .withActivities(Arrays.asList(
-                        new Activity().withName("qyfixwgqmxm")
-                            .withDescription("fzr")
-                            .withState(ActivityState.ACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SUCCEEDED)
-                            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("bnvqu")
-                                .withDependencyConditions(Arrays.asList())
-                                .withAdditionalProperties(mapOf())))
-                            .withUserProperties(
-                                Arrays.asList(new UserProperty().withName("kwbsttmvaijn").withValue("dataqnqwkaevbg"),
-                                    new UserProperty().withName("hmyzsqovmtid").withValue("dataycyyajl"),
-                                    new UserProperty().withName("otmir").withValue("dataipnclnbfxme")))
-                            .withAdditionalProperties(mapOf("type", "Activity")),
-                        new Activity().withName("kceyjtdeyoxtlqyt")
-                            .withDescription("tepzrcqnsjqrgtap")
-                            .withState(ActivityState.INACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
-                            .withDependsOn(Arrays.asList(
-                                new ActivityDependency().withActivity("mwbtr")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("kl")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("ndb")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("lqtpebaa")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf())))
-                            .withUserProperties(
-                                Arrays.asList(new UserProperty().withName("xpy").withValue("databjtjvqdwzyvxdg"),
-                                    new UserProperty().withName("enieqlikyc").withValue("dataunfuk")))
-                            .withAdditionalProperties(mapOf("type", "Activity")),
-                        new Activity().withName("uortgwwtaolfdgjr")
-                            .withDescription("hpvohvcaq")
-                            .withState(ActivityState.ACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("na")
-                                .withDependencyConditions(Arrays.asList())
-                                .withAdditionalProperties(mapOf())))
-                            .withUserProperties(
-                                Arrays.asList(new UserProperty().withName("ueqouzjgvqz").withValue("dataihtn"),
-                                    new UserProperty().withName("adrmt").withValue("datahfxy"),
-                                    new UserProperty().withName("nn").withValue("dataazbfrqo"),
-                                    new UserProperty().withName("igxndfrxnvwqy").withValue("datakl")))
-                            .withAdditionalProperties(mapOf("type", "Activity")),
-                        new Activity().withName("bcwtcqjsvlzdus")
-                            .withDescription("b")
-                            .withState(ActivityState.INACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
-                            .withDependsOn(Arrays.asList(
-                                new ActivityDependency().withActivity("cjuajclrtssbk")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("dgwpyljn")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf())))
-                            .withUserProperties(Arrays.asList(new UserProperty().withName("rjah").withValue("dataq"),
-                                new UserProperty().withName("byic").withValue("dataufnumf")))
-                            .withAdditionalProperties(mapOf("type", "Activity")))),
-                new SwitchCase().withValue("ossqm")
-                    .withActivities(Arrays.asList(
-                        new Activity().withName("bvfa")
-                            .withDescription("pobzvxntsfyntkfz")
-                            .withState(ActivityState.INACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
-                            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("vwwhmldsn")
-                                .withDependencyConditions(Arrays.asList())
-                                .withAdditionalProperties(mapOf())))
-                            .withUserProperties(Arrays.asList(
-                                new UserProperty().withName("pjkk").withValue("dataaenzuuf"),
-                                new UserProperty().withName("d").withValue("dataknxep"),
-                                new UserProperty().withName("wxdwlo").withValue("dataymeqiqnjcajmxu"),
-                                new UserProperty().withName("xkvpleooom").withValue("dataqdjfldzvgo")))
-                            .withAdditionalProperties(mapOf("type", "Activity")),
-                        new Activity().withName("je")
-                            .withDescription("jbknpzhfhibhgwb")
-                            .withState(ActivityState.ACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
-                            .withDependsOn(Arrays.asList(
-                                new ActivityDependency().withActivity("cjbxochijwpsk")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("eprumhikwahbz")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("gwkimmvatrv")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("kxcrxqpenkujxdn")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf())))
-                            .withUserProperties(Arrays.asList(
-                                new UserProperty().withName("eterjerhwgiuduw").withValue("dataqytppjdyikdykxh")))
-                            .withAdditionalProperties(mapOf("type", "Activity")),
-                        new Activity().withName("bwwphjw")
-                            .withDescription("caofxgwyvjefnlxq")
-                            .withState(ActivityState.ACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("jxkxjrttzhna")
-                                .withDependencyConditions(Arrays.asList())
-                                .withAdditionalProperties(mapOf())))
-                            .withUserProperties(
-                                Arrays.asList(new UserProperty().withName("qynwqcov").withValue("datajvrsurqhhbddxko"),
-                                    new UserProperty().withName("orcmayqas").withValue("datavepld"),
-                                    new UserProperty().withName("fxmpyvlfujsbcfog").withValue("dataubqcqnch")))
-                            .withAdditionalProperties(mapOf("type", "Activity")))),
-                new SwitchCase().withValue("xv")
-                    .withActivities(Arrays.asList(
-                        new Activity().withName("svprumttrvkhu")
-                            .withDescription("txxwbjbanlmpm")
-                            .withState(ActivityState.ACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
-                            .withDependsOn(Arrays.asList(
-                                new ActivityDependency().withActivity("xplrtueg")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("hqulnjeybgpjy")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("vjuowkt")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf())))
-                            .withUserProperties(
-                                Arrays.asList(new UserProperty().withName("vhdk").withValue("datadqcgedipnnzmvt"),
-                                    new UserProperty().withName("ttjmdtfuwx").withValue("dataee"),
-                                    new UserProperty().withName("omiesgur").withValue("datac")))
-                            .withAdditionalProperties(mapOf("type", "Activity")),
-                        new Activity().withName("belms")
-                            .withDescription("xhkzcdni")
-                            .withState(ActivityState.ACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("vgydtdtomknzotm")
-                                .withDependencyConditions(Arrays.asList())
-                                .withAdditionalProperties(mapOf())))
-                            .withUserProperties(
-                                Arrays.asList(new UserProperty().withName("kwpooaskflrqwfmb").withValue("datakshb"),
-                                    new UserProperty().withName("zvnouthbvvcbwudi").withValue("datafix"),
-                                    new UserProperty().withName("w").withValue("datarqivqzqcmrxh"),
-                                    new UserProperty().withName("lozg").withValue("datafhijcetcystrs")))
-                            .withAdditionalProperties(mapOf("type", "Activity")),
-                        new Activity().withName("q")
-                            .withDescription("hulgtqveumwbmqp")
-                            .withState(ActivityState.INACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
-                            .withDependsOn(Arrays.asList(
-                                new ActivityDependency().withActivity("jqkykjzbxmgsxb")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("ckambdoqfeobkm")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("ohmrb")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("h")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf())))
-                            .withUserProperties(
-                                Arrays.asList(new UserProperty().withName("xnwcejczi").withValue("dataf"),
-                                    new UserProperty().withName("daq").withValue("datankjyfy")))
-                            .withAdditionalProperties(mapOf("type", "Activity")),
-                        new Activity().withName("yzacjxczjosixter")
-                            .withDescription("jkhtmmkmezlhmt")
-                            .withState(ActivityState.ACTIVE)
-                            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                            .withDependsOn(Arrays.asList(
-                                new ActivityDependency().withActivity("aynhz")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("ziwxwwpitwle")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf()),
-                                new ActivityDependency().withActivity("uq")
-                                    .withDependencyConditions(Arrays.asList())
-                                    .withAdditionalProperties(mapOf())))
-                            .withUserProperties(
-                                Arrays.asList(new UserProperty().withName("photb").withValue("datagkliu"),
-                                    new UserProperty().withName("txfzhvxqotwcfbqz").withValue("datazchpjh"),
-                                    new UserProperty().withName("hyxxftrfwmxwjc").withValue("dataxqkm"),
+        SwitchActivityTypeProperties model
+            = new SwitchActivityTypeProperties().withOn(new Expression().withValue("neherqbelmsx"))
+                .withCases(Arrays.asList(
+                    new SwitchCase().withValue("zcdnipjtduvsvg")
+                        .withActivities(Arrays.asList(
+                            new Activity().withName("dtomknzotmiizk")
+                                .withDescription("ooaskflrqwfmbkk")
+                                .withState(ActivityState.INACTIVE)
+                                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+                                .withDependsOn(Arrays.asList(
+                                    new ActivityDependency().withActivity("outhb")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("vcbwudiyfi")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("pw")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf())))
+                                .withUserProperties(Arrays.asList(
+                                    new UserProperty().withName("ivqzqcmrxhal").withValue("datazgzf"),
+                                    new UserProperty().withName("ijcetcystrs").withValue("datayttxspaafs")))
+                                .withAdditionalProperties(mapOf("type", "Activity")),
+                            new Activity().withName("kambdoq")
+                                .withDescription("o")
+                                .withState(ActivityState.INACTIVE)
+                                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+                                .withDependsOn(Arrays.asList(
+                                    new ActivityDependency().withActivity("rbjhyld")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("nwcejcz")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("kfxdaqwnkjyfyy")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf())))
+                                .withUserProperties(Arrays.asList(
+                                    new UserProperty().withName("iugca").withValue("datashgryof"),
+                                    new UserProperty().withName("uvu").withValue("datakrkibno"),
+                                    new UserProperty().withName("uocmxtyjaxk").withValue("datayovwtpm")))
+                                .withAdditionalProperties(mapOf("type", "Activity")),
+                            new Activity().withName("ynlmfv")
+                                .withDescription("yzacjxczjosixter")
+                                .withState(ActivityState.INACTIVE)
+                                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+                                .withDependsOn(Arrays.asList(
+                                    new ActivityDependency().withActivity("m")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("mezlhmtrq")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("ncscaynhzmz")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf())))
+                                .withUserProperties(Arrays.asList(
+                                    new UserProperty().withName("wwpitwleluqq").withValue("datapphotbsgkliuct"),
+                                    new UserProperty().withName("fzhvxqotwcfbq").withValue("dataezchpjhuhyx"),
+                                    new UserProperty().withName("f").withValue("datarfwmxwjcsxqkm"),
                                     new UserProperty().withName("nauleofdxzno").withValue("datakdoffeu")))
-                            .withAdditionalProperties(mapOf("type", "Activity"))))))
-            .withDefaultActivities(Arrays.asList(new Activity().withName("tdynbrf")
-                .withDescription("rabr")
-                .withState(ActivityState.ACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
-                .withDependsOn(Arrays.asList(
-                    new ActivityDependency().withActivity("lz")
-                        .withDependencyConditions(
-                            Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.FAILED))
-                        .withAdditionalProperties(mapOf()),
-                    new ActivityDependency().withActivity("xufrwiivekrgvzjt")
-                        .withDependencyConditions(
-                            Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.COMPLETED))
-                        .withAdditionalProperties(mapOf()),
-                    new ActivityDependency().withActivity("puwjvju")
-                        .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED,
-                            DependencyCondition.COMPLETED, DependencyCondition.COMPLETED, DependencyCondition.SKIPPED))
-                        .withAdditionalProperties(mapOf()),
-                    new ActivityDependency().withActivity("pchbcbdpyorhq")
-                        .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED))
-                        .withAdditionalProperties(mapOf())))
-                .withUserProperties(Arrays.asList(new UserProperty().withName("xg").withValue("datarkbhwwpaec")))
-                .withAdditionalProperties(mapOf("type", "Activity"))));
+                                .withAdditionalProperties(mapOf("type", "Activity")))),
+                    new SwitchCase().withValue("n")
+                        .withActivities(Arrays.asList(
+                            new Activity().withName("nbrfscrabrqdb")
+                                .withDescription("gilzrruvnlubk")
+                                .withState(ActivityState.INACTIVE)
+                                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+                                .withDependsOn(Arrays.asList(
+                                    new ActivityDependency().withActivity("yxntuzgceuzhp")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("mnpodsqil")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("vxpfayophpu")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf())))
+                                .withUserProperties(Arrays
+                                    .asList(new UserProperty().withName("aqhbqvb").withValue("datatesxufrwiivekr")))
+                                .withAdditionalProperties(mapOf("type", "Activity")),
+                            new Activity().withName("cdoat")
+                                .withDescription("kth")
+                                .withState(ActivityState.INACTIVE)
+                                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+                                .withDependsOn(Arrays.asList(
+                                    new ActivityDependency().withActivity("aeiavdhhcikl")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("nroxgwqgbvnctcbm")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("ecozvxdb")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf()),
+                                    new ActivityDependency().withActivity("twkzfp")
+                                        .withDependencyConditions(Arrays.asList())
+                                        .withAdditionalProperties(mapOf())))
+                                .withUserProperties(
+                                    Arrays.asList(new UserProperty().withName("vjui").withValue("databtku"),
+                                        new UserProperty().withName("iuxtyvpvegxdzo").withValue("datafkzj")))
+                                .withAdditionalProperties(mapOf("type", "Activity"))))))
+                .withDefaultActivities(Arrays.asList(
+                    new Activity().withName("ktwfjylhmmiba")
+                        .withDescription("cl")
+                        .withState(ActivityState.INACTIVE)
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+                        .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("hzucpixfdbicpchb")
+                            .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED,
+                                DependencyCondition.FAILED, DependencyCondition.SKIPPED, DependencyCondition.SUCCEEDED))
+                            .withAdditionalProperties(mapOf())))
+                        .withUserProperties(
+                            Arrays.asList(new UserProperty().withName("mqydpieleru").withValue("datayfnpcrsfq"),
+                                new UserProperty().withName("qmlisjqonvjur").withValue("dataczdelqazb"),
+                                new UserProperty().withName("ixg").withValue("datarkbhwwpaec"),
+                                new UserProperty().withName("uvqacae").withValue("datavn")))
+                        .withAdditionalProperties(mapOf("type", "Activity")),
+                    new Activity().withName("xldkhgn")
+                        .withDescription("ofesjksmyee")
+                        .withState(ActivityState.ACTIVE)
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+                        .withDependsOn(Arrays.asList(
+                            new ActivityDependency().withActivity("ncxkazmydsqvjkfz")
+                                .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED))
+                                .withAdditionalProperties(mapOf()),
+                            new ActivityDependency().withActivity("ywmezoi")
+                                .withDependencyConditions(
+                                    Arrays.asList(DependencyCondition.SUCCEEDED, DependencyCondition.SUCCEEDED))
+                                .withAdditionalProperties(mapOf())))
+                        .withUserProperties(Arrays.asList(
+                            new UserProperty().withName("bidknehhkcutxmq").withValue("databhfbwduuvkrskq"),
+                            new UserProperty().withName("okhpzvphjkffc").withValue("datavfur"),
+                            new UserProperty().withName("dhopzymhrfwchim").withValue("dataeovji")))
+                        .withAdditionalProperties(mapOf("type", "Activity")),
+                    new Activity().withName("wknazcwja")
+                        .withDescription("vnollpz")
+                        .withState(ActivityState.INACTIVE)
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+                        .withDependsOn(Arrays.asList(
+                            new ActivityDependency().withActivity("quiqkuxajl")
+                                .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED,
+                                    DependencyCondition.COMPLETED, DependencyCondition.SKIPPED))
+                                .withAdditionalProperties(mapOf()),
+                            new ActivityDependency().withActivity("mnsmdsmzkjlh")
+                                .withDependencyConditions(Arrays.asList(DependencyCondition.FAILED,
+                                    DependencyCondition.SKIPPED, DependencyCondition.SUCCEEDED))
+                                .withAdditionalProperties(mapOf())))
+                        .withUserProperties(
+                            Arrays.asList(new UserProperty().withName("zoae").withValue("datadhvszwgmpzbxqf")))
+                        .withAdditionalProperties(mapOf("type", "Activity"))));
         model = BinaryData.fromObject(model).toObject(SwitchActivityTypeProperties.class);
-        Assertions.assertEquals("niybotuq", model.on().value());
-        Assertions.assertEquals("uqvterbsgwoyk", model.cases().get(0).value());
-        Assertions.assertEquals("qyfixwgqmxm", model.cases().get(0).activities().get(0).name());
-        Assertions.assertEquals("fzr", model.cases().get(0).activities().get(0).description());
-        Assertions.assertEquals(ActivityState.ACTIVE, model.cases().get(0).activities().get(0).state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SUCCEEDED,
+        Assertions.assertEquals("neherqbelmsx", model.on().value());
+        Assertions.assertEquals("zcdnipjtduvsvg", model.cases().get(0).value());
+        Assertions.assertEquals("dtomknzotmiizk", model.cases().get(0).activities().get(0).name());
+        Assertions.assertEquals("ooaskflrqwfmbkk", model.cases().get(0).activities().get(0).description());
+        Assertions.assertEquals(ActivityState.INACTIVE, model.cases().get(0).activities().get(0).state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED,
             model.cases().get(0).activities().get(0).onInactiveMarkAs());
-        Assertions.assertEquals("bnvqu", model.cases().get(0).activities().get(0).dependsOn().get(0).activity());
-        Assertions.assertEquals("kwbsttmvaijn",
+        Assertions.assertEquals("outhb", model.cases().get(0).activities().get(0).dependsOn().get(0).activity());
+        Assertions.assertEquals("ivqzqcmrxhal",
             model.cases().get(0).activities().get(0).userProperties().get(0).name());
-        Assertions.assertEquals("tdynbrf", model.defaultActivities().get(0).name());
-        Assertions.assertEquals("rabr", model.defaultActivities().get(0).description());
-        Assertions.assertEquals(ActivityState.ACTIVE, model.defaultActivities().get(0).state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.defaultActivities().get(0).onInactiveMarkAs());
-        Assertions.assertEquals("lz", model.defaultActivities().get(0).dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.COMPLETED,
+        Assertions.assertEquals("ktwfjylhmmiba", model.defaultActivities().get(0).name());
+        Assertions.assertEquals("cl", model.defaultActivities().get(0).description());
+        Assertions.assertEquals(ActivityState.INACTIVE, model.defaultActivities().get(0).state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.defaultActivities().get(0).onInactiveMarkAs());
+        Assertions.assertEquals("hzucpixfdbicpchb", model.defaultActivities().get(0).dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED,
             model.defaultActivities().get(0).dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("xg", model.defaultActivities().get(0).userProperties().get(0).name());
+        Assertions.assertEquals("mqydpieleru", model.defaultActivities().get(0).userProperties().get(0).name());
     }
 
     // Use "Map.of" if available

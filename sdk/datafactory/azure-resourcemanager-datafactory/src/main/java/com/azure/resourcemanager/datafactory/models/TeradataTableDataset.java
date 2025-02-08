@@ -51,7 +51,7 @@ public final class TeradataTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private TeradataTableDatasetTypeProperties innerTypeProperties() {
+    TeradataTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

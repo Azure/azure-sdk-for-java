@@ -52,7 +52,7 @@ public final class DocumentDbCollectionDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private DocumentDbCollectionDatasetTypeProperties innerTypeProperties() {
+    DocumentDbCollectionDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

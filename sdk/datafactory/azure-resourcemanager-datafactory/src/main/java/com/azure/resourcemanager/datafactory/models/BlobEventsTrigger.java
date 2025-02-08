@@ -51,7 +51,7 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the innerTypeProperties value.
      */
-    private BlobEventsTriggerTypeProperties innerTypeProperties() {
+    BlobEventsTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

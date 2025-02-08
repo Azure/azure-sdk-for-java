@@ -52,7 +52,7 @@ public final class SapCloudForCustomerResourceDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapCloudForCustomerResourceDatasetTypeProperties innerTypeProperties() {
+    SapCloudForCustomerResourceDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

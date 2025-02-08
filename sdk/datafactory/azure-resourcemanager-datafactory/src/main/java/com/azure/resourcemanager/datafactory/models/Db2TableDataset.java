@@ -51,7 +51,7 @@ public final class Db2TableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private Db2TableDatasetTypeProperties innerTypeProperties() {
+    Db2TableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

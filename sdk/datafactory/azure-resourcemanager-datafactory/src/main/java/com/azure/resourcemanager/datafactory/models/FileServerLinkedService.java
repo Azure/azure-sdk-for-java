@@ -51,7 +51,7 @@ public final class FileServerLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private FileServerLinkedServiceTypeProperties innerTypeProperties() {
+    FileServerLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

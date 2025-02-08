@@ -51,7 +51,7 @@ public final class CassandraTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private CassandraTableDatasetTypeProperties innerTypeProperties() {
+    CassandraTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

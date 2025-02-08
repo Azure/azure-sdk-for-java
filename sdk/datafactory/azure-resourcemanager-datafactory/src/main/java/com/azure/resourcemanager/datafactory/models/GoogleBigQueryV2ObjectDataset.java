@@ -51,7 +51,7 @@ public final class GoogleBigQueryV2ObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private GoogleBigQueryV2DatasetTypeProperties innerTypeProperties() {
+    GoogleBigQueryV2DatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -51,7 +51,7 @@ public final class ZendeskLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ZendeskLinkedServiceTypeProperties innerTypeProperties() {
+    ZendeskLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

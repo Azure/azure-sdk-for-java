@@ -51,7 +51,7 @@ public final class AvroDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AvroDatasetTypeProperties innerTypeProperties() {
+    AvroDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -51,7 +51,7 @@ public final class MongoDbAtlasLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private MongoDbAtlasLinkedServiceTypeProperties innerTypeProperties() {
+    MongoDbAtlasLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

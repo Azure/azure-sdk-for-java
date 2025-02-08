@@ -51,7 +51,7 @@ public final class AmazonRdsForSqlServerTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonRdsForSqlServerTableDatasetTypeProperties innerTypeProperties() {
+    AmazonRdsForSqlServerTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

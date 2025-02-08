@@ -11,19 +11,19 @@ public final class OracleSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleSink model = BinaryData.fromString(
-            "{\"type\":\"OracleSink\",\"preCopyScript\":\"datagal\",\"writeBatchSize\":\"dataflzuztd\",\"writeBatchTimeout\":\"dataroambzprhpwwarzj\",\"sinkRetryCount\":\"databwtag\",\"sinkRetryWait\":\"datariruvjizukyx\",\"maxConcurrentConnections\":\"datalyjdbsx\",\"disableMetricsCollection\":\"dataleqsk\",\"\":{\"brsmy\":\"datalagbellpkp\"}}")
+            "{\"type\":\"OracleSink\",\"preCopyScript\":\"datayewbfoxwvxe\",\"writeBatchSize\":\"datasn\",\"writeBatchTimeout\":\"dataahxy\",\"sinkRetryCount\":\"datadpbtks\",\"sinkRetryWait\":\"datajh\",\"maxConcurrentConnections\":\"datarmptj\",\"disableMetricsCollection\":\"dataxa\",\"\":{\"dz\":\"datajracyxnzadflvbkh\",\"ejrdxhlovmxhztdc\":\"datacqdvapohemine\",\"mvqgqmi\":\"datad\",\"uhmtc\":\"datarpagmhhwcyasz\"}}")
             .toObject(OracleSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleSink model = new OracleSink().withWriteBatchSize("dataflzuztd")
-            .withWriteBatchTimeout("dataroambzprhpwwarzj")
-            .withSinkRetryCount("databwtag")
-            .withSinkRetryWait("datariruvjizukyx")
-            .withMaxConcurrentConnections("datalyjdbsx")
-            .withDisableMetricsCollection("dataleqsk")
-            .withPreCopyScript("datagal");
+        OracleSink model = new OracleSink().withWriteBatchSize("datasn")
+            .withWriteBatchTimeout("dataahxy")
+            .withSinkRetryCount("datadpbtks")
+            .withSinkRetryWait("datajh")
+            .withMaxConcurrentConnections("datarmptj")
+            .withDisableMetricsCollection("dataxa")
+            .withPreCopyScript("datayewbfoxwvxe");
         model = BinaryData.fromObject(model).toObject(OracleSink.class);
     }
 }

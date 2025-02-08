@@ -51,7 +51,7 @@ public final class ScriptActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private ScriptActivityTypeProperties innerTypeProperties() {
+    ScriptActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

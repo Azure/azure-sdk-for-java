@@ -48,7 +48,7 @@ public final class Flowlet extends DataFlow {
      * 
      * @return the innerTypeProperties value.
      */
-    private FlowletTypeProperties innerTypeProperties() {
+    FlowletTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

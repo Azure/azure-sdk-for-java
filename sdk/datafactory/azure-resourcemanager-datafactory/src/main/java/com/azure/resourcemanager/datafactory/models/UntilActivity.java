@@ -52,7 +52,7 @@ public final class UntilActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private UntilActivityTypeProperties innerTypeProperties() {
+    UntilActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

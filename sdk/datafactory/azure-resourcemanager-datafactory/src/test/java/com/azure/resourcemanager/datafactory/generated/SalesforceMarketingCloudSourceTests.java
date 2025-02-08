@@ -11,20 +11,20 @@ public final class SalesforceMarketingCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceMarketingCloudSource model = BinaryData.fromString(
-            "{\"type\":\"SalesforceMarketingCloudSource\",\"query\":\"dataokjwsszyetwoukdh\",\"queryTimeout\":\"dataerdggjihnz\",\"additionalColumns\":\"dataehgwgqgcnkgh\",\"sourceRetryCount\":\"datazjxouxigdwpgmh\",\"sourceRetryWait\":\"datavnexnw\",\"maxConcurrentConnections\":\"datawcxaqlym\",\"disableMetricsCollection\":\"datazv\",\"\":{\"lgkzgzxqwv\":\"dataecfyusfkcwfpoa\",\"bbd\":\"datafkqbgkssygdvl\",\"hpwpsx\":\"dataul\",\"bazbtyrjroqgnsf\":\"datagrniqnxps\"}}")
+            "{\"type\":\"SalesforceMarketingCloudSource\",\"query\":\"datapypxg\",\"queryTimeout\":\"datapokooyyfysnozj\",\"additionalColumns\":\"datafucmhonoje\",\"sourceRetryCount\":\"datauqxelmmxwm\",\"sourceRetryWait\":\"dataiyc\",\"maxConcurrentConnections\":\"datajswedkfofyfwpu\",\"disableMetricsCollection\":\"datapcutzlvxkolvedz\",\"\":{\"zrdglk\":\"datarpormvddwg\",\"gvyuusexenywwkd\":\"datagcxmkrldfoidyhcw\",\"sxpaapmthdqv\":\"dataqqg\",\"tvxrtocadt\":\"dataifwknl\"}}")
             .toObject(SalesforceMarketingCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SalesforceMarketingCloudSource model
-            = new SalesforceMarketingCloudSource().withSourceRetryCount("datazjxouxigdwpgmh")
-                .withSourceRetryWait("datavnexnw")
-                .withMaxConcurrentConnections("datawcxaqlym")
-                .withDisableMetricsCollection("datazv")
-                .withQueryTimeout("dataerdggjihnz")
-                .withAdditionalColumns("dataehgwgqgcnkgh")
-                .withQuery("dataokjwsszyetwoukdh");
+            = new SalesforceMarketingCloudSource().withSourceRetryCount("datauqxelmmxwm")
+                .withSourceRetryWait("dataiyc")
+                .withMaxConcurrentConnections("datajswedkfofyfwpu")
+                .withDisableMetricsCollection("datapcutzlvxkolvedz")
+                .withQueryTimeout("datapokooyyfysnozj")
+                .withAdditionalColumns("datafucmhonoje")
+                .withQuery("datapypxg");
         model = BinaryData.fromObject(model).toObject(SalesforceMarketingCloudSource.class);
     }
 }

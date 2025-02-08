@@ -51,7 +51,7 @@ public final class SftpServerLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SftpServerLinkedServiceTypeProperties innerTypeProperties() {
+    SftpServerLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class TriggerReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerReference model = BinaryData.fromString("{\"type\":\"TriggerReference\",\"referenceName\":\"behrholj\"}")
+        TriggerReference model = BinaryData.fromString("{\"type\":\"TriggerReference\",\"referenceName\":\"meyn\"}")
             .toObject(TriggerReference.class);
         Assertions.assertEquals(TriggerReferenceType.TRIGGER_REFERENCE, model.type());
-        Assertions.assertEquals("behrholj", model.referenceName());
+        Assertions.assertEquals("meyn", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TriggerReference model
-            = new TriggerReference().withType(TriggerReferenceType.TRIGGER_REFERENCE).withReferenceName("behrholj");
+            = new TriggerReference().withType(TriggerReferenceType.TRIGGER_REFERENCE).withReferenceName("meyn");
         model = BinaryData.fromObject(model).toObject(TriggerReference.class);
         Assertions.assertEquals(TriggerReferenceType.TRIGGER_REFERENCE, model.type());
-        Assertions.assertEquals("behrholj", model.referenceName());
+        Assertions.assertEquals("meyn", model.referenceName());
     }
 }

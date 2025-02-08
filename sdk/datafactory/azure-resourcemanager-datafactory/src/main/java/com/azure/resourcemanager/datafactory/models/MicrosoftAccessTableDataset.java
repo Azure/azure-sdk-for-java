@@ -51,7 +51,7 @@ public final class MicrosoftAccessTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private MicrosoftAccessTableDatasetTypeProperties innerTypeProperties() {
+    MicrosoftAccessTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

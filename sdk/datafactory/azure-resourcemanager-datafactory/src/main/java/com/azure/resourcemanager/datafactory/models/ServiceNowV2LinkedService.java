@@ -51,7 +51,7 @@ public final class ServiceNowV2LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ServiceNowV2LinkedServiceTypeProperties innerTypeProperties() {
+    ServiceNowV2LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -51,7 +51,7 @@ public final class ODataLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ODataLinkedServiceTypeProperties innerTypeProperties() {
+    ODataLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

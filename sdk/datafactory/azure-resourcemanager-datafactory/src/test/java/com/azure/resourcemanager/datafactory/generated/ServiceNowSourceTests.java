@@ -11,19 +11,19 @@ public final class ServiceNowSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowSource model = BinaryData.fromString(
-            "{\"type\":\"ServiceNowSource\",\"query\":\"databetzydtgpvnczf\",\"queryTimeout\":\"dataybjku\",\"additionalColumns\":\"dataajkyrhucbfkaqlp\",\"sourceRetryCount\":\"dataptero\",\"sourceRetryWait\":\"dataqaktao\",\"maxConcurrentConnections\":\"datagefobcqvzmyw\",\"disableMetricsCollection\":\"datayns\",\"\":{\"kklzabauvncln\":\"dataosqvojgol\",\"ikireetvjfizafd\":\"dataaoidjhoykgtyvrn\",\"csipfwlye\":\"datajhnuvndgrolgxa\",\"rzfppopwxxdgzhn\":\"dataajdpjmqteirrjjm\"}}")
+            "{\"type\":\"ServiceNowSource\",\"query\":\"datacq\",\"queryTimeout\":\"datazrflo\",\"additionalColumns\":\"datamvemliyddfqfn\",\"sourceRetryCount\":\"datarrhhgw\",\"sourceRetryWait\":\"dataizhanvcfxd\",\"maxConcurrentConnections\":\"datad\",\"disableMetricsCollection\":\"datagctxu\",\"\":{\"dyya\":\"datahqqvd\"}}")
             .toObject(ServiceNowSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("dataptero")
-            .withSourceRetryWait("dataqaktao")
-            .withMaxConcurrentConnections("datagefobcqvzmyw")
-            .withDisableMetricsCollection("datayns")
-            .withQueryTimeout("dataybjku")
-            .withAdditionalColumns("dataajkyrhucbfkaqlp")
-            .withQuery("databetzydtgpvnczf");
+        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datarrhhgw")
+            .withSourceRetryWait("dataizhanvcfxd")
+            .withMaxConcurrentConnections("datad")
+            .withDisableMetricsCollection("datagctxu")
+            .withQueryTimeout("datazrflo")
+            .withAdditionalColumns("datamvemliyddfqfn")
+            .withQuery("datacq");
         model = BinaryData.fromObject(model).toObject(ServiceNowSource.class);
     }
 }

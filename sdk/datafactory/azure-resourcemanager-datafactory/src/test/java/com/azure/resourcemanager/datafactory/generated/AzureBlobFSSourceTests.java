@@ -11,19 +11,19 @@ public final class AzureBlobFSSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSSource model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobFSSource\",\"treatEmptyAsNull\":\"databtuujcuavctxyrm\",\"skipHeaderLineCount\":\"datahrzmy\",\"recursive\":\"datan\",\"sourceRetryCount\":\"dataajxv\",\"sourceRetryWait\":\"dataidlwmewrgu\",\"maxConcurrentConnections\":\"dataugpkunvygupgnnvm\",\"disableMetricsCollection\":\"datazqmxwwmekms\",\"\":{\"x\":\"datajbefszfrxfywjy\",\"mykgrtwh\":\"dataqmdeecdhyjsizyhp\",\"hismw\":\"dataa\"}}")
+            "{\"type\":\"AzureBlobFSSource\",\"treatEmptyAsNull\":\"datajypxcqmdeecdh\",\"skipHeaderLineCount\":\"datasiz\",\"recursive\":\"datappmykgr\",\"sourceRetryCount\":\"datahm\",\"sourceRetryWait\":\"datahismw\",\"maxConcurrentConnections\":\"dataqtfyuyg\",\"disableMetricsCollection\":\"datashchxueaitzgew\",\"\":{\"usqupkrrp\":\"dataibtkrhcgbzrlfse\",\"cfvzslttkpirku\":\"datamwozwjinxyrt\"}}")
             .toObject(AzureBlobFSSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSSource model = new AzureBlobFSSource().withSourceRetryCount("dataajxv")
-            .withSourceRetryWait("dataidlwmewrgu")
-            .withMaxConcurrentConnections("dataugpkunvygupgnnvm")
-            .withDisableMetricsCollection("datazqmxwwmekms")
-            .withTreatEmptyAsNull("databtuujcuavctxyrm")
-            .withSkipHeaderLineCount("datahrzmy")
-            .withRecursive("datan");
+        AzureBlobFSSource model = new AzureBlobFSSource().withSourceRetryCount("datahm")
+            .withSourceRetryWait("datahismw")
+            .withMaxConcurrentConnections("dataqtfyuyg")
+            .withDisableMetricsCollection("datashchxueaitzgew")
+            .withTreatEmptyAsNull("datajypxcqmdeecdh")
+            .withSkipHeaderLineCount("datasiz")
+            .withRecursive("datappmykgr");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSSource.class);
     }
 }

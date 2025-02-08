@@ -51,7 +51,7 @@ public final class OrcDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private OrcDatasetTypeProperties innerTypeProperties() {
+    OrcDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

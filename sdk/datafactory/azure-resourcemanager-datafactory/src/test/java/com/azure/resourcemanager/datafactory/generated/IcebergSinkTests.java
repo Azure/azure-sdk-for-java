@@ -17,22 +17,25 @@ public final class IcebergSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IcebergSink model = BinaryData.fromString(
-            "{\"type\":\"IcebergSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"databznjngerwo\",\"disableMetricsCollection\":\"dataps\",\"copyBehavior\":\"dataoslqmftkqzafjy\",\"metadata\":[{\"name\":\"databzbaboeeg\",\"value\":\"dataecqyzdyzilo\"}],\"\":{\"hyvnqbhclbbk\":\"databtnhiaqegj\",\"xmjmhclhcqcjn\":\"dataoqzzyrovvna\",\"lrjggvydtjebbacs\":\"datawmbwqgsidaso\",\"apxxbkxwh\":\"datairzt\"}},\"formatSettings\":{\"type\":\"IcebergWriteSettings\",\"\":{\"kbslyqmlgsghcnyb\":\"datacpstf\",\"zogs\":\"datavzltbgwjaepjmkr\",\"sirotj\":\"datazoqjbnfaxcdcmqej\",\"kgqyuvhlpmjpzgjn\":\"dataltugobscpt\"}},\"writeBatchSize\":\"datafozn\",\"writeBatchTimeout\":\"databoumpksxkdjpfsm\",\"sinkRetryCount\":\"datar\",\"sinkRetryWait\":\"datalwlehhqxyjlbk\",\"maxConcurrentConnections\":\"datarrptblsatakz\",\"disableMetricsCollection\":\"datay\",\"\":{\"eyv\":\"datawq\",\"uimvz\":\"datadnjmjies\",\"nxcimalvzxu\":\"datayic\",\"ifbi\":\"datanpaesraire\"}}")
+            "{\"type\":\"IcebergSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datamvzi\",\"disableMetricsCollection\":\"datacxnxci\",\"copyBehavior\":\"datalvzxucnpa\",\"metadata\":[{\"name\":\"datairefifb\",\"value\":\"dataljhgqqjmfrm\"},{\"name\":\"datav\",\"value\":\"databrmmweeuy\"},{\"name\":\"datajhpxjlg\",\"value\":\"datarmlirnadqeqf\"},{\"name\":\"datacxvpogrtkdit\",\"value\":\"dataokefdeeppycws\"}],\"\":{\"fnsy\":\"datafo\",\"jhmgvmeemjazql\":\"dataeytrwy\",\"holkoyxmspud\":\"dataigkxtgshad\",\"upjxsrnq\":\"dataqwvzunrq\"}},\"formatSettings\":{\"type\":\"IcebergWriteSettings\",\"\":{\"zifrmoftilhoyemh\":\"datawof\",\"rcdtkv\":\"dataaepgdd\",\"ubmhsxtry\":\"datarifcqmfv\"}},\"writeBatchSize\":\"datavwm\",\"writeBatchTimeout\":\"dataovturdhnnm\",\"sinkRetryCount\":\"dataizwmptsygqzt\",\"sinkRetryWait\":\"datavuei\",\"maxConcurrentConnections\":\"dataapgqx\",\"disableMetricsCollection\":\"databvwxyumqoqw\",\"\":{\"xmxlnhqxzewlww\":\"datayiyeigngrzve\"}}")
             .toObject(IcebergSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IcebergSink model = new IcebergSink().withWriteBatchSize("datafozn")
-            .withWriteBatchTimeout("databoumpksxkdjpfsm")
-            .withSinkRetryCount("datar")
-            .withSinkRetryWait("datalwlehhqxyjlbk")
-            .withMaxConcurrentConnections("datarrptblsatakz")
-            .withDisableMetricsCollection("datay")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("databznjngerwo")
-                .withDisableMetricsCollection("dataps")
-                .withCopyBehavior("dataoslqmftkqzafjy")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("databzbaboeeg").withValue("dataecqyzdyzilo")))
+        IcebergSink model = new IcebergSink().withWriteBatchSize("datavwm")
+            .withWriteBatchTimeout("dataovturdhnnm")
+            .withSinkRetryCount("dataizwmptsygqzt")
+            .withSinkRetryWait("datavuei")
+            .withMaxConcurrentConnections("dataapgqx")
+            .withDisableMetricsCollection("databvwxyumqoqw")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datamvzi")
+                .withDisableMetricsCollection("datacxnxci")
+                .withCopyBehavior("datalvzxucnpa")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("datairefifb").withValue("dataljhgqqjmfrm"),
+                    new MetadataItem().withName("datav").withValue("databrmmweeuy"),
+                    new MetadataItem().withName("datajhpxjlg").withValue("datarmlirnadqeqf"),
+                    new MetadataItem().withName("datacxvpogrtkdit").withValue("dataokefdeeppycws")))
                 .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
             .withFormatSettings(new IcebergWriteSettings());
         model = BinaryData.fromObject(model).toObject(IcebergSink.class);

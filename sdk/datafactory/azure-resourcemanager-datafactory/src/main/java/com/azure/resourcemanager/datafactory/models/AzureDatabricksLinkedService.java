@@ -52,7 +52,7 @@ public final class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDatabricksLinkedServiceTypeProperties innerTypeProperties() {
+    AzureDatabricksLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

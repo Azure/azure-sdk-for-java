@@ -23,11 +23,11 @@ public final class SynapseNotebookActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SynapseNotebookActivityTypeProperties model = BinaryData.fromString(
-            "{\"notebook\":{\"type\":\"NotebookReference\",\"referenceName\":\"datacqpvrrmlk\"},\"sparkPool\":{\"type\":\"BigDataPoolReference\",\"referenceName\":\"dataqsdvxddsfylbo\"},\"parameters\":{\"nsbzkumxbcnkojy\":{\"value\":\"dataykrxaevburav\",\"type\":\"string\"},\"ia\":{\"value\":\"datahbtycfj\",\"type\":\"int\"}},\"executorSize\":\"datasukdoyb\",\"conf\":\"datazniekedxvw\",\"driverSize\":\"dataipxzzcxqd\",\"numExecutors\":\"datasuvekzqybpoxqwcu\",\"configurationType\":\"Default\",\"targetSparkConfiguration\":{\"type\":\"SparkConfigurationReference\",\"referenceName\":\"datazqazwyb\"},\"sparkConfig\":{\"cblmzaru\":\"datajvyrdownbwrnb\",\"abhpdkrjlwrqheh\":\"datasmpcajx\"}}")
+            "{\"notebook\":{\"type\":\"NotebookReference\",\"referenceName\":\"datas\"},\"sparkPool\":{\"type\":\"BigDataPoolReference\",\"referenceName\":\"datauurtuqwvybxm\"},\"parameters\":{\"h\":{\"value\":\"datakbhymdaeshjj\",\"type\":\"int\"}},\"executorSize\":\"datafavqefiwwhbkxz\",\"conf\":\"datayovlhm\",\"driverSize\":\"dataobiagwuefmyiw\",\"numExecutors\":\"datatau\",\"configurationType\":\"Default\",\"targetSparkConfiguration\":{\"type\":\"SparkConfigurationReference\",\"referenceName\":\"datajno\"},\"sparkConfig\":{\"fyarl\":\"databcezd\",\"erql\":\"datallg\"}}")
             .toObject(SynapseNotebookActivityTypeProperties.class);
         Assertions.assertEquals(NotebookReferenceType.NOTEBOOK_REFERENCE, model.notebook().type());
         Assertions.assertEquals(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE, model.sparkPool().type());
-        Assertions.assertEquals(NotebookParameterType.STRING, model.parameters().get("nsbzkumxbcnkojy").type());
+        Assertions.assertEquals(NotebookParameterType.INT, model.parameters().get("h").type());
         Assertions.assertEquals(ConfigurationType.DEFAULT, model.configurationType());
         Assertions.assertEquals(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE,
             model.targetSparkConfiguration().type());
@@ -37,26 +37,25 @@ public final class SynapseNotebookActivityTypePropertiesTests {
     public void testSerialize() throws Exception {
         SynapseNotebookActivityTypeProperties model = new SynapseNotebookActivityTypeProperties()
             .withNotebook(new SynapseNotebookReference().withType(NotebookReferenceType.NOTEBOOK_REFERENCE)
-                .withReferenceName("datacqpvrrmlk"))
+                .withReferenceName("datas"))
             .withSparkPool(
                 new BigDataPoolParametrizationReference().withType(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE)
-                    .withReferenceName("dataqsdvxddsfylbo"))
-            .withParameters(mapOf("nsbzkumxbcnkojy",
-                new NotebookParameter().withValue("dataykrxaevburav").withType(NotebookParameterType.STRING), "ia",
-                new NotebookParameter().withValue("datahbtycfj").withType(NotebookParameterType.INT)))
-            .withExecutorSize("datasukdoyb")
-            .withConf("datazniekedxvw")
-            .withDriverSize("dataipxzzcxqd")
-            .withNumExecutors("datasuvekzqybpoxqwcu")
+                    .withReferenceName("datauurtuqwvybxm"))
+            .withParameters(
+                mapOf("h", new NotebookParameter().withValue("datakbhymdaeshjj").withType(NotebookParameterType.INT)))
+            .withExecutorSize("datafavqefiwwhbkxz")
+            .withConf("datayovlhm")
+            .withDriverSize("dataobiagwuefmyiw")
+            .withNumExecutors("datatau")
             .withConfigurationType(ConfigurationType.DEFAULT)
             .withTargetSparkConfiguration(new SparkConfigurationParametrizationReference()
                 .withType(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE)
-                .withReferenceName("datazqazwyb"))
-            .withSparkConfig(mapOf("cblmzaru", "datajvyrdownbwrnb", "abhpdkrjlwrqheh", "datasmpcajx"));
+                .withReferenceName("datajno"))
+            .withSparkConfig(mapOf("fyarl", "databcezd", "erql", "datallg"));
         model = BinaryData.fromObject(model).toObject(SynapseNotebookActivityTypeProperties.class);
         Assertions.assertEquals(NotebookReferenceType.NOTEBOOK_REFERENCE, model.notebook().type());
         Assertions.assertEquals(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE, model.sparkPool().type());
-        Assertions.assertEquals(NotebookParameterType.STRING, model.parameters().get("nsbzkumxbcnkojy").type());
+        Assertions.assertEquals(NotebookParameterType.INT, model.parameters().get("h").type());
         Assertions.assertEquals(ConfigurationType.DEFAULT, model.configurationType());
         Assertions.assertEquals(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE,
             model.targetSparkConfiguration().type());

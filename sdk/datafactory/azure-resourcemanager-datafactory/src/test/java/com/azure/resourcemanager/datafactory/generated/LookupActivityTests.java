@@ -24,72 +24,64 @@ public final class LookupActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LookupActivity model = BinaryData.fromString(
-            "{\"type\":\"Lookup\",\"typeProperties\":{\"source\":{\"type\":\"CopySource\",\"sourceRetryCount\":\"datawftcnzo\",\"sourceRetryWait\":\"dataa\",\"maxConcurrentConnections\":\"datamqpt\",\"disableMetricsCollection\":\"datakmdkbtmupmla\",\"\":{\"tibuflppn\":\"dataocs\",\"kgvwkdgsrtm\":\"datavujkzb\"}},\"dataset\":{\"referenceName\":\"fajygnhmoeoxs\",\"parameters\":{\"xfaucihqsogt\":\"datajzodcxygpmjfwm\",\"cnly\":\"dataao\",\"xiwfkdblvbwuey\":\"dataizwtqvgpidrtb\"}},\"firstRowOnly\":\"datal\"},\"linkedServiceName\":{\"referenceName\":\"v\",\"parameters\":{\"xmpiqlnwfbj\":\"dataoagaqnekwe\",\"psufcdgcvfxsvxk\":\"datahxsmhvjogvqh\",\"wlenrcovq\":\"datayhkhwqwvwfombcg\"}},\"policy\":{\"timeout\":\"datafyc\",\"retry\":\"datargagxzmrxx\",\"retryIntervalInSeconds\":494364845,\"secureInput\":false,\"secureOutput\":true,\"\":{\"vni\":\"datawrhoma\",\"oneoqy\":\"dataup\"}},\"name\":\"tfx\",\"description\":\"skqvkdpnqcuprl\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"cue\",\"dependencyConditions\":[\"Completed\",\"Failed\"],\"\":{\"tqvqyinifnmccf\":\"dataeel\",\"y\":\"datak\",\"vatnfdhyrhfvaap\":\"datazmnamesdcmg\",\"uj\":\"datagyyufhcfeggy\"}},{\"activity\":\"bdvazqsbrqspvltu\",\"dependencyConditions\":[\"Failed\",\"Skipped\",\"Skipped\"],\"\":{\"injc\":\"datallxeft\"}}],\"userProperties\":[{\"name\":\"oaskul\",\"value\":\"dataqweoob\"},{\"name\":\"ngymbzawdwtzx\",\"value\":\"databqzplzyjktc\"},{\"name\":\"pwvhiaxkm\",\"value\":\"dataitczuscqobujfx\"}],\"\":{\"mjotccbduwswfb\":\"datalwgkaaxpwkmbdhc\",\"ubmeih\":\"datay\"}}")
+            "{\"type\":\"Lookup\",\"typeProperties\":{\"source\":{\"type\":\"CopySource\",\"sourceRetryCount\":\"datazufxuugvdbp\",\"sourceRetryWait\":\"dataycpystcmavl\",\"maxConcurrentConnections\":\"databm\",\"disableMetricsCollection\":\"datavfgwgoxfd\",\"\":{\"bifpc\":\"datazoxhazafmq\",\"gjxklojdydha\":\"dataammpeakdhebzquq\",\"sxgjih\":\"datafjwm\"}},\"dataset\":{\"referenceName\":\"xoxjghumvpt\",\"parameters\":{\"fealcjuzzz\":\"datagll\"}},\"firstRowOnly\":\"datakucrnov\"},\"linkedServiceName\":{\"referenceName\":\"dbaornxsyhpilqo\",\"parameters\":{\"z\":\"datazejcpzzqjinry\"}},\"policy\":{\"timeout\":\"datarcivxaq\",\"retry\":\"datavgxqtkcvnyi\",\"retryIntervalInSeconds\":802962573,\"secureInput\":false,\"secureOutput\":false,\"\":{\"utesqkklzyhav\":\"datagxelzuvdyztn\",\"ltc\":\"dataivefs\",\"vsidmcoxobrvzder\":\"datahpntewv\"}},\"name\":\"nnfi\",\"description\":\"qb\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"eeagbrslbzcyubq\",\"dependencyConditions\":[\"Skipped\",\"Skipped\",\"Completed\",\"Failed\"],\"\":{\"xuswwqnwxo\":\"dataex\"}}],\"userProperties\":[{\"name\":\"vgagdnzvo\",\"value\":\"datarnqnurunky\"},{\"name\":\"zcpifasifdtiocsf\",\"value\":\"datacyyicascvcmthu\"},{\"name\":\"borynmadtyhm\",\"value\":\"dataphoem\"}],\"\":{\"qfoatqnhr\":\"dataqwdphncftbqij\",\"tiznvijdtmjy\":\"dataxhmtxpxdtmrwjk\",\"z\":\"databkdhwadnccunrviq\",\"a\":\"datasliou\"}}")
             .toObject(LookupActivity.class);
-        Assertions.assertEquals("tfx", model.name());
-        Assertions.assertEquals("skqvkdpnqcuprl", model.description());
+        Assertions.assertEquals("nnfi", model.name());
+        Assertions.assertEquals("qb", model.description());
         Assertions.assertEquals(ActivityState.ACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SUCCEEDED, model.onInactiveMarkAs());
-        Assertions.assertEquals("cue", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.COMPLETED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("oaskul", model.userProperties().get(0).name());
-        Assertions.assertEquals("v", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(494364845, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
+        Assertions.assertEquals("eeagbrslbzcyubq", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("vgagdnzvo", model.userProperties().get(0).name());
+        Assertions.assertEquals("dbaornxsyhpilqo", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(802962573, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(false, model.policy().secureInput());
-        Assertions.assertEquals(true, model.policy().secureOutput());
-        Assertions.assertEquals("fajygnhmoeoxs", model.dataset().referenceName());
+        Assertions.assertEquals(false, model.policy().secureOutput());
+        Assertions.assertEquals("xoxjghumvpt", model.dataset().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LookupActivity model
-            = new LookupActivity().withName("tfx")
-                .withDescription("skqvkdpnqcuprl")
-                .withState(ActivityState.ACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SUCCEEDED)
-                .withDependsOn(Arrays.asList(
-                    new ActivityDependency().withActivity("cue")
-                        .withDependencyConditions(
-                            Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.FAILED))
-                        .withAdditionalProperties(mapOf()),
-                    new ActivityDependency().withActivity("bdvazqsbrqspvltu")
-                        .withDependencyConditions(Arrays.asList(DependencyCondition.FAILED, DependencyCondition.SKIPPED,
-                            DependencyCondition.SKIPPED))
-                        .withAdditionalProperties(mapOf())))
-                .withUserProperties(Arrays.asList(new UserProperty().withName("oaskul").withValue("dataqweoob"),
-                    new UserProperty().withName("ngymbzawdwtzx").withValue("databqzplzyjktc"),
-                    new UserProperty().withName("pwvhiaxkm").withValue("dataitczuscqobujfx")))
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("v")
-                    .withParameters(mapOf("xmpiqlnwfbj", "dataoagaqnekwe", "psufcdgcvfxsvxk", "datahxsmhvjogvqh",
-                        "wlenrcovq", "datayhkhwqwvwfombcg")))
-                .withPolicy(new ActivityPolicy().withTimeout("datafyc")
-                    .withRetry("datargagxzmrxx")
-                    .withRetryIntervalInSeconds(494364845)
-                    .withSecureInput(false)
-                    .withSecureOutput(true)
-                    .withAdditionalProperties(mapOf()))
-                .withSource(new CopySource().withSourceRetryCount("datawftcnzo")
-                    .withSourceRetryWait("dataa")
-                    .withMaxConcurrentConnections("datamqpt")
-                    .withDisableMetricsCollection("datakmdkbtmupmla")
-                    .withAdditionalProperties(mapOf("type", "CopySource")))
-                .withDataset(new DatasetReference().withReferenceName("fajygnhmoeoxs")
-                    .withParameters(mapOf("xfaucihqsogt", "datajzodcxygpmjfwm", "cnly", "dataao", "xiwfkdblvbwuey",
-                        "dataizwtqvgpidrtb")))
-                .withFirstRowOnly("datal");
+        LookupActivity model = new LookupActivity().withName("nnfi")
+            .withDescription("qb")
+            .withState(ActivityState.ACTIVE)
+            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("eeagbrslbzcyubq")
+                .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED, DependencyCondition.SKIPPED,
+                    DependencyCondition.COMPLETED, DependencyCondition.FAILED))
+                .withAdditionalProperties(mapOf())))
+            .withUserProperties(Arrays.asList(new UserProperty().withName("vgagdnzvo").withValue("datarnqnurunky"),
+                new UserProperty().withName("zcpifasifdtiocsf").withValue("datacyyicascvcmthu"),
+                new UserProperty().withName("borynmadtyhm").withValue("dataphoem")))
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("dbaornxsyhpilqo")
+                .withParameters(mapOf("z", "datazejcpzzqjinry")))
+            .withPolicy(new ActivityPolicy().withTimeout("datarcivxaq")
+                .withRetry("datavgxqtkcvnyi")
+                .withRetryIntervalInSeconds(802962573)
+                .withSecureInput(false)
+                .withSecureOutput(false)
+                .withAdditionalProperties(mapOf()))
+            .withSource(new CopySource().withSourceRetryCount("datazufxuugvdbp")
+                .withSourceRetryWait("dataycpystcmavl")
+                .withMaxConcurrentConnections("databm")
+                .withDisableMetricsCollection("datavfgwgoxfd")
+                .withAdditionalProperties(mapOf("type", "CopySource")))
+            .withDataset(
+                new DatasetReference().withReferenceName("xoxjghumvpt").withParameters(mapOf("fealcjuzzz", "datagll")))
+            .withFirstRowOnly("datakucrnov");
         model = BinaryData.fromObject(model).toObject(LookupActivity.class);
-        Assertions.assertEquals("tfx", model.name());
-        Assertions.assertEquals("skqvkdpnqcuprl", model.description());
+        Assertions.assertEquals("nnfi", model.name());
+        Assertions.assertEquals("qb", model.description());
         Assertions.assertEquals(ActivityState.ACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SUCCEEDED, model.onInactiveMarkAs());
-        Assertions.assertEquals("cue", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.COMPLETED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("oaskul", model.userProperties().get(0).name());
-        Assertions.assertEquals("v", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(494364845, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
+        Assertions.assertEquals("eeagbrslbzcyubq", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("vgagdnzvo", model.userProperties().get(0).name());
+        Assertions.assertEquals("dbaornxsyhpilqo", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(802962573, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(false, model.policy().secureInput());
-        Assertions.assertEquals(true, model.policy().secureOutput());
-        Assertions.assertEquals("fajygnhmoeoxs", model.dataset().referenceName());
+        Assertions.assertEquals(false, model.policy().secureOutput());
+        Assertions.assertEquals("xoxjghumvpt", model.dataset().referenceName());
     }
 
     // Use "Map.of" if available

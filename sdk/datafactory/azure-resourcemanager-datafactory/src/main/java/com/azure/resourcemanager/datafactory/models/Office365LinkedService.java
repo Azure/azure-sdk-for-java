@@ -51,7 +51,7 @@ public final class Office365LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private Office365LinkedServiceTypeProperties innerTypeProperties() {
+    Office365LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

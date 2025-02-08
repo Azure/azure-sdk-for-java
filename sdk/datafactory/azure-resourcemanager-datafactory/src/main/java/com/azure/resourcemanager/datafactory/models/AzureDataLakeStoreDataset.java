@@ -51,7 +51,7 @@ public final class AzureDataLakeStoreDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDataLakeStoreDatasetTypeProperties innerTypeProperties() {
+    AzureDataLakeStoreDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

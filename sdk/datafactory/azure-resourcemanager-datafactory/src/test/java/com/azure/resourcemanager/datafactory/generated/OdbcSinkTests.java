@@ -11,19 +11,19 @@ public final class OdbcSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OdbcSink model = BinaryData.fromString(
-            "{\"type\":\"OdbcSink\",\"preCopyScript\":\"datauaqtqnqm\",\"writeBatchSize\":\"dataptzgomuju\",\"writeBatchTimeout\":\"datankuyombkgkyobu\",\"sinkRetryCount\":\"dataprvokodrpyxkzx\",\"sinkRetryWait\":\"datamoycufkxygxoubek\",\"maxConcurrentConnections\":\"datadxgtgcfk\",\"disableMetricsCollection\":\"datae\",\"\":{\"fpqebbqetx\":\"datahtlk\"}}")
+            "{\"type\":\"OdbcSink\",\"preCopyScript\":\"datajcqz\",\"writeBatchSize\":\"datawlxz\",\"writeBatchTimeout\":\"datazxyfaidzvdqv\",\"sinkRetryCount\":\"datavzjyxsjblb\",\"sinkRetryWait\":\"datajbrqb\",\"maxConcurrentConnections\":\"datamacnqudmyduvaw\",\"disableMetricsCollection\":\"datajqfbvbv\",\"\":{\"zoqyymhdbg\":\"datay\",\"qqgr\":\"databhltmpay\"}}")
             .toObject(OdbcSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OdbcSink model = new OdbcSink().withWriteBatchSize("dataptzgomuju")
-            .withWriteBatchTimeout("datankuyombkgkyobu")
-            .withSinkRetryCount("dataprvokodrpyxkzx")
-            .withSinkRetryWait("datamoycufkxygxoubek")
-            .withMaxConcurrentConnections("datadxgtgcfk")
-            .withDisableMetricsCollection("datae")
-            .withPreCopyScript("datauaqtqnqm");
+        OdbcSink model = new OdbcSink().withWriteBatchSize("datawlxz")
+            .withWriteBatchTimeout("datazxyfaidzvdqv")
+            .withSinkRetryCount("datavzjyxsjblb")
+            .withSinkRetryWait("datajbrqb")
+            .withMaxConcurrentConnections("datamacnqudmyduvaw")
+            .withDisableMetricsCollection("datajqfbvbv")
+            .withPreCopyScript("datajcqz");
         model = BinaryData.fromObject(model).toObject(OdbcSink.class);
     }
 }

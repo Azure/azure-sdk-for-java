@@ -51,7 +51,7 @@ public final class RestServiceLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private RestServiceLinkedServiceTypeProperties innerTypeProperties() {
+    RestServiceLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

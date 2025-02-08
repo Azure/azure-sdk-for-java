@@ -51,7 +51,7 @@ public final class SapOpenHubTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapOpenHubTableDatasetTypeProperties innerTypeProperties() {
+    SapOpenHubTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

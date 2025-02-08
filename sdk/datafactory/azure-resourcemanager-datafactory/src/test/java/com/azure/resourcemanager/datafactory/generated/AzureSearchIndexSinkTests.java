@@ -13,19 +13,19 @@ public final class AzureSearchIndexSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSearchIndexSink model = BinaryData.fromString(
-            "{\"type\":\"AzureSearchIndexSink\",\"writeBehavior\":\"Upload\",\"writeBatchSize\":\"dataerejrdxhlo\",\"writeBatchTimeout\":\"dataxhztdca\",\"sinkRetryCount\":\"datamvqgqmi\",\"sinkRetryWait\":\"datapa\",\"maxConcurrentConnections\":\"datah\",\"disableMetricsCollection\":\"datacyasz\",\"\":{\"ni\":\"datamtcihupoelj\",\"awbsdeqqbdcbnrg\":\"datayoxajit\",\"mtgtnb\":\"datapnor\",\"rwldeinhnsd\":\"datasopuwesmxodyto\"}}")
+            "{\"type\":\"AzureSearchIndexSink\",\"writeBehavior\":\"Upload\",\"writeBatchSize\":\"datavqichzcajityjznp\",\"writeBatchTimeout\":\"dataouujqy\",\"sinkRetryCount\":\"datazoivincnihm\",\"sinkRetryWait\":\"datahcgcmuasutdhmilh\",\"maxConcurrentConnections\":\"datatd\",\"disableMetricsCollection\":\"datajunsdadyrhmpo\",\"\":{\"celnlwg\":\"datacbbxmxgajyr\",\"ins\":\"dataeouhjetxupxe\",\"geaenkfsxtsmzva\":\"dataru\",\"bswwbrllvva\":\"datazfaja\"}}")
             .toObject(AzureSearchIndexSink.class);
         Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.UPLOAD, model.writeBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSearchIndexSink model = new AzureSearchIndexSink().withWriteBatchSize("dataerejrdxhlo")
-            .withWriteBatchTimeout("dataxhztdca")
-            .withSinkRetryCount("datamvqgqmi")
-            .withSinkRetryWait("datapa")
-            .withMaxConcurrentConnections("datah")
-            .withDisableMetricsCollection("datacyasz")
+        AzureSearchIndexSink model = new AzureSearchIndexSink().withWriteBatchSize("datavqichzcajityjznp")
+            .withWriteBatchTimeout("dataouujqy")
+            .withSinkRetryCount("datazoivincnihm")
+            .withSinkRetryWait("datahcgcmuasutdhmilh")
+            .withMaxConcurrentConnections("datatd")
+            .withDisableMetricsCollection("datajunsdadyrhmpo")
             .withWriteBehavior(AzureSearchIndexWriteBehaviorType.UPLOAD);
         model = BinaryData.fromObject(model).toObject(AzureSearchIndexSink.class);
         Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.UPLOAD, model.writeBehavior());

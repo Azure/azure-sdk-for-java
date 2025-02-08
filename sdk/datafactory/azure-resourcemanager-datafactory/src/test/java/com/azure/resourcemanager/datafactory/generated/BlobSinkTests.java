@@ -13,26 +13,26 @@ public final class BlobSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobSink model = BinaryData.fromString(
-            "{\"type\":\"BlobSink\",\"blobWriterOverwriteFiles\":\"datajhgqqjmfrm\",\"blobWriterDateTimeFormat\":\"datav\",\"blobWriterAddHeader\":\"databrmmweeuy\",\"copyBehavior\":\"datajhpxjlg\",\"metadata\":[{\"name\":\"datalirnadqeqfxzc\",\"value\":\"datapogrtkditkwoke\"},{\"name\":\"dataeep\",\"value\":\"datacwsyqxfowfnsyy\"},{\"name\":\"datatrwyojhmgvme\",\"value\":\"datajazqlmigkxtgs\"}],\"writeBatchSize\":\"datadnholkoyxmspud\",\"writeBatchTimeout\":\"datawvzunrqvup\",\"sinkRetryCount\":\"datasrnqz\",\"sinkRetryWait\":\"datajwofgzifrm\",\"maxConcurrentConnections\":\"datatilhoy\",\"disableMetricsCollection\":\"datahwaepg\",\"\":{\"rifcqmfv\":\"datarcdtkv\",\"rvwmmuovturdhnn\":\"dataubmhsxtry\",\"vuei\":\"datahrizwmptsygqztn\"}}")
+            "{\"type\":\"BlobSink\",\"blobWriterOverwriteFiles\":\"datapvpc\",\"blobWriterDateTimeFormat\":\"datacovzkwhdtf\",\"blobWriterAddHeader\":\"datafctsfujdap\",\"copyBehavior\":\"datagamgbnktg\",\"metadata\":[{\"name\":\"dataydbatexkwcolnaer\",\"value\":\"datadyvahni\"},{\"name\":\"datacpmvnzhdsa\",\"value\":\"dataekgtkojrruhz\"},{\"name\":\"dataeerwlehsnlm\",\"value\":\"datasiy\"},{\"name\":\"datadcc\",\"value\":\"dataggbmzdnyrmol\"}],\"writeBatchSize\":\"dataekcpumckcbsa\",\"writeBatchTimeout\":\"dataucsscwdqilz\",\"sinkRetryCount\":\"datai\",\"sinkRetryWait\":\"datarqzwypwh\",\"maxConcurrentConnections\":\"databflrpvcgqqxek\",\"disableMetricsCollection\":\"datahpsqvuised\",\"\":{\"btpvwx\":\"datavfjkxxnqrqdx\",\"zss\":\"datalsvicvpagwohkro\",\"jpiezthflgpsal\":\"datamlozjyovrllvhbgk\",\"wzpfbiqjrz\":\"datanan\"}}")
             .toObject(BlobSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobSink model = new BlobSink().withWriteBatchSize("datadnholkoyxmspud")
-            .withWriteBatchTimeout("datawvzunrqvup")
-            .withSinkRetryCount("datasrnqz")
-            .withSinkRetryWait("datajwofgzifrm")
-            .withMaxConcurrentConnections("datatilhoy")
-            .withDisableMetricsCollection("datahwaepg")
-            .withBlobWriterOverwriteFiles("datajhgqqjmfrm")
-            .withBlobWriterDateTimeFormat("datav")
-            .withBlobWriterAddHeader("databrmmweeuy")
-            .withCopyBehavior("datajhpxjlg")
-            .withMetadata(
-                Arrays.asList(new MetadataItem().withName("datalirnadqeqfxzc").withValue("datapogrtkditkwoke"),
-                    new MetadataItem().withName("dataeep").withValue("datacwsyqxfowfnsyy"),
-                    new MetadataItem().withName("datatrwyojhmgvme").withValue("datajazqlmigkxtgs")));
+        BlobSink model = new BlobSink().withWriteBatchSize("dataekcpumckcbsa")
+            .withWriteBatchTimeout("dataucsscwdqilz")
+            .withSinkRetryCount("datai")
+            .withSinkRetryWait("datarqzwypwh")
+            .withMaxConcurrentConnections("databflrpvcgqqxek")
+            .withDisableMetricsCollection("datahpsqvuised")
+            .withBlobWriterOverwriteFiles("datapvpc")
+            .withBlobWriterDateTimeFormat("datacovzkwhdtf")
+            .withBlobWriterAddHeader("datafctsfujdap")
+            .withCopyBehavior("datagamgbnktg")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("dataydbatexkwcolnaer").withValue("datadyvahni"),
+                new MetadataItem().withName("datacpmvnzhdsa").withValue("dataekgtkojrruhz"),
+                new MetadataItem().withName("dataeerwlehsnlm").withValue("datasiy"),
+                new MetadataItem().withName("datadcc").withValue("dataggbmzdnyrmol")));
         model = BinaryData.fromObject(model).toObject(BlobSink.class);
     }
 }

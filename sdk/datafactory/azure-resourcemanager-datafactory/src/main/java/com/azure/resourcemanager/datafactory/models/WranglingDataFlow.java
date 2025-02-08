@@ -48,7 +48,7 @@ public final class WranglingDataFlow extends DataFlow {
      * 
      * @return the innerTypeProperties value.
      */
-    private PowerQueryTypeProperties innerTypeProperties() {
+    PowerQueryTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

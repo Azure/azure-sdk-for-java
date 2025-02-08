@@ -51,7 +51,7 @@ public final class SapHanaTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapHanaTableDatasetTypeProperties innerTypeProperties() {
+    SapHanaTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

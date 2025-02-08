@@ -51,7 +51,7 @@ public final class AmazonRdsForOracleTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonRdsForOracleTableDatasetTypeProperties innerTypeProperties() {
+    AmazonRdsForOracleTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

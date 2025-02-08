@@ -14,26 +14,26 @@ public final class RerunTumblingWindowTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RerunTumblingWindowTrigger model = BinaryData.fromString(
-            "{\"type\":\"RerunTumblingWindowTrigger\",\"typeProperties\":{\"parentTrigger\":\"datauhnh\",\"requestedStartTime\":\"2021-05-06T07:37:22Z\",\"requestedEndTime\":\"2021-01-01T04:14:19Z\",\"rerunConcurrency\":440558025},\"description\":\"fuukildlaytviw\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datazk\",\"dataidps\",\"dataklmytaeallsxfz\",\"datantssbzm\"],\"\":{\"nhmxkgxrf\":\"dataj\"}}")
+            "{\"type\":\"RerunTumblingWindowTrigger\",\"typeProperties\":{\"parentTrigger\":\"datacfvfwwevy\",\"requestedStartTime\":\"2021-06-28T12:07:37Z\",\"requestedEndTime\":\"2021-09-01T10:13:05Z\",\"rerunConcurrency\":727069286},\"description\":\"x\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datazttogblri\",\"datan\"],\"\":{\"jpalnzrjqlqh\":\"dataucolposnqljlwkj\"}}")
             .toObject(RerunTumblingWindowTrigger.class);
-        Assertions.assertEquals("fuukildlaytviw", model.description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T07:37:22Z"), model.requestedStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T04:14:19Z"), model.requestedEndTime());
-        Assertions.assertEquals(440558025, model.rerunConcurrency());
+        Assertions.assertEquals("x", model.description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T12:07:37Z"), model.requestedStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T10:13:05Z"), model.requestedEndTime());
+        Assertions.assertEquals(727069286, model.rerunConcurrency());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RerunTumblingWindowTrigger model = new RerunTumblingWindowTrigger().withDescription("fuukildlaytviw")
-            .withAnnotations(Arrays.asList("datazk", "dataidps", "dataklmytaeallsxfz", "datantssbzm"))
-            .withParentTrigger("datauhnh")
-            .withRequestedStartTime(OffsetDateTime.parse("2021-05-06T07:37:22Z"))
-            .withRequestedEndTime(OffsetDateTime.parse("2021-01-01T04:14:19Z"))
-            .withRerunConcurrency(440558025);
+        RerunTumblingWindowTrigger model = new RerunTumblingWindowTrigger().withDescription("x")
+            .withAnnotations(Arrays.asList("datazttogblri", "datan"))
+            .withParentTrigger("datacfvfwwevy")
+            .withRequestedStartTime(OffsetDateTime.parse("2021-06-28T12:07:37Z"))
+            .withRequestedEndTime(OffsetDateTime.parse("2021-09-01T10:13:05Z"))
+            .withRerunConcurrency(727069286);
         model = BinaryData.fromObject(model).toObject(RerunTumblingWindowTrigger.class);
-        Assertions.assertEquals("fuukildlaytviw", model.description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T07:37:22Z"), model.requestedStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T04:14:19Z"), model.requestedEndTime());
-        Assertions.assertEquals(440558025, model.rerunConcurrency());
+        Assertions.assertEquals("x", model.description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T12:07:37Z"), model.requestedStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T10:13:05Z"), model.requestedEndTime());
+        Assertions.assertEquals(727069286, model.rerunConcurrency());
     }
 }

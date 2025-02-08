@@ -51,7 +51,7 @@ public final class PrestoObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private PrestoDatasetTypeProperties innerTypeProperties() {
+    PrestoDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

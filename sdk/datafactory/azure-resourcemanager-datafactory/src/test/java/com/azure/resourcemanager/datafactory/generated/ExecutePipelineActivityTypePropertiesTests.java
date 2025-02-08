@@ -15,24 +15,23 @@ public final class ExecutePipelineActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutePipelineActivityTypeProperties model = BinaryData.fromString(
-            "{\"pipeline\":{\"referenceName\":\"az\",\"name\":\"xvksqifrgmid\"},\"parameters\":{\"l\":\"datardglecmeg\",\"ryhztwxuizakejo\":\"datadlt\",\"gqezgbqiiweoa\":\"datajnlxjhrzgnfqq\"},\"waitOnCompletion\":true}")
+            "{\"pipeline\":{\"referenceName\":\"dzqxkgr\",\"name\":\"nqipskpynrsacdc\"},\"parameters\":{\"qjnfdehhkeyhf\":\"datatahlhiqodxsscir\",\"uucojki\":\"dataji\",\"kvhldnscx\":\"datagb\"},\"waitOnCompletion\":false}")
             .toObject(ExecutePipelineActivityTypeProperties.class);
-        Assertions.assertEquals("az", model.pipeline().referenceName());
-        Assertions.assertEquals("xvksqifrgmid", model.pipeline().name());
-        Assertions.assertEquals(true, model.waitOnCompletion());
+        Assertions.assertEquals("dzqxkgr", model.pipeline().referenceName());
+        Assertions.assertEquals("nqipskpynrsacdc", model.pipeline().name());
+        Assertions.assertEquals(false, model.waitOnCompletion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecutePipelineActivityTypeProperties model = new ExecutePipelineActivityTypeProperties()
-            .withPipeline(new PipelineReference().withReferenceName("az").withName("xvksqifrgmid"))
-            .withParameters(
-                mapOf("l", "datardglecmeg", "ryhztwxuizakejo", "datadlt", "gqezgbqiiweoa", "datajnlxjhrzgnfqq"))
-            .withWaitOnCompletion(true);
+            .withPipeline(new PipelineReference().withReferenceName("dzqxkgr").withName("nqipskpynrsacdc"))
+            .withParameters(mapOf("qjnfdehhkeyhf", "datatahlhiqodxsscir", "uucojki", "dataji", "kvhldnscx", "datagb"))
+            .withWaitOnCompletion(false);
         model = BinaryData.fromObject(model).toObject(ExecutePipelineActivityTypeProperties.class);
-        Assertions.assertEquals("az", model.pipeline().referenceName());
-        Assertions.assertEquals("xvksqifrgmid", model.pipeline().name());
-        Assertions.assertEquals(true, model.waitOnCompletion());
+        Assertions.assertEquals("dzqxkgr", model.pipeline().referenceName());
+        Assertions.assertEquals("nqipskpynrsacdc", model.pipeline().name());
+        Assertions.assertEquals(false, model.waitOnCompletion());
     }
 
     // Use "Map.of" if available

@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class NotebookParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotebookParameter model = BinaryData.fromString("{\"value\":\"dataumccomjxx\",\"type\":\"string\"}")
-            .toObject(NotebookParameter.class);
+        NotebookParameter model
+            = BinaryData.fromString("{\"value\":\"datavkmfkm\",\"type\":\"string\"}").toObject(NotebookParameter.class);
         Assertions.assertEquals(NotebookParameterType.STRING, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NotebookParameter model
-            = new NotebookParameter().withValue("dataumccomjxx").withType(NotebookParameterType.STRING);
+            = new NotebookParameter().withValue("datavkmfkm").withType(NotebookParameterType.STRING);
         model = BinaryData.fromObject(model).toObject(NotebookParameter.class);
         Assertions.assertEquals(NotebookParameterType.STRING, model.type());
     }

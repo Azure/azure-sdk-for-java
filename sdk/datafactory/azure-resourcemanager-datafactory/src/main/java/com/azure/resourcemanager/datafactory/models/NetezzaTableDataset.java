@@ -51,7 +51,7 @@ public final class NetezzaTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private NetezzaTableDatasetTypeProperties innerTypeProperties() {
+    NetezzaTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

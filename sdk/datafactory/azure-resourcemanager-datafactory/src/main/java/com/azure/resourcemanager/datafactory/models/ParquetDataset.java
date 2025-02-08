@@ -51,7 +51,7 @@ public final class ParquetDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private ParquetDatasetTypeProperties innerTypeProperties() {
+    ParquetDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

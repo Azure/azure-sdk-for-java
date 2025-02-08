@@ -51,7 +51,7 @@ public final class AmazonS3Dataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonS3DatasetTypeProperties innerTypeProperties() {
+    AmazonS3DatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

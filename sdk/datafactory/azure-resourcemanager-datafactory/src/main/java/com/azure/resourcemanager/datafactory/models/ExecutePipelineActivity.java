@@ -76,7 +76,7 @@ public final class ExecutePipelineActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private ExecutePipelineActivityTypeProperties innerTypeProperties() {
+    ExecutePipelineActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

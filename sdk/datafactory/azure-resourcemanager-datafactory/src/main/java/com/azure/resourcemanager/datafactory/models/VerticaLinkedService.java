@@ -51,7 +51,7 @@ public final class VerticaLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private VerticaLinkedServiceTypeProperties innerTypeProperties() {
+    VerticaLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -56,7 +56,7 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
      * 
      * @return the innerTypeProperties value.
      */
-    private ExecutePowerQueryActivityTypeProperties innerTypeProperties() {
+    ExecutePowerQueryActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

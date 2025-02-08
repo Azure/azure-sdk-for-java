@@ -11,19 +11,19 @@ public final class LakeHouseTableSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseTableSource model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseTableSource\",\"timestampAsOf\":\"datacgg\",\"versionAsOf\":\"dataxbtqizydaiol\",\"additionalColumns\":\"datakghlexvq\",\"sourceRetryCount\":\"datanwmokz\",\"sourceRetryWait\":\"dataltbpqjfoujeiagny\",\"maxConcurrentConnections\":\"datafjssayrwyf\",\"disableMetricsCollection\":\"datatezxr\",\"\":{\"exwhoscinpmvcvnm\":\"datahzwdyvayhvxh\",\"ym\":\"dataqlshg\"}}")
+            "{\"type\":\"LakeHouseTableSource\",\"timestampAsOf\":\"datalytwzt\",\"versionAsOf\":\"datahyrwd\",\"additionalColumns\":\"datapuoa\",\"sourceRetryCount\":\"datafpizybpjypqat\",\"sourceRetryWait\":\"dataghw\",\"maxConcurrentConnections\":\"datawrbmxw\",\"disableMetricsCollection\":\"datakkffwf\",\"\":{\"bmhs\":\"datae\",\"fcoayu\":\"datayjswbzh\",\"xhyfj\":\"datawntghjmmjmmj\"}}")
             .toObject(LakeHouseTableSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseTableSource model = new LakeHouseTableSource().withSourceRetryCount("datanwmokz")
-            .withSourceRetryWait("dataltbpqjfoujeiagny")
-            .withMaxConcurrentConnections("datafjssayrwyf")
-            .withDisableMetricsCollection("datatezxr")
-            .withTimestampAsOf("datacgg")
-            .withVersionAsOf("dataxbtqizydaiol")
-            .withAdditionalColumns("datakghlexvq");
+        LakeHouseTableSource model = new LakeHouseTableSource().withSourceRetryCount("datafpizybpjypqat")
+            .withSourceRetryWait("dataghw")
+            .withMaxConcurrentConnections("datawrbmxw")
+            .withDisableMetricsCollection("datakkffwf")
+            .withTimestampAsOf("datalytwzt")
+            .withVersionAsOf("datahyrwd")
+            .withAdditionalColumns("datapuoa");
         model = BinaryData.fromObject(model).toObject(LakeHouseTableSource.class);
     }
 }

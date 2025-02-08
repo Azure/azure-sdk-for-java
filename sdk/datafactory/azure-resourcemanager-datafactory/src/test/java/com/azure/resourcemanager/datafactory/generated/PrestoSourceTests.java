@@ -11,19 +11,19 @@ public final class PrestoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrestoSource model = BinaryData.fromString(
-            "{\"type\":\"PrestoSource\",\"query\":\"datayddijfkktigisee\",\"queryTimeout\":\"datazrerxyds\",\"additionalColumns\":\"datapn\",\"sourceRetryCount\":\"dataarkjt\",\"sourceRetryWait\":\"dataaczkjkfakgrwt\",\"maxConcurrentConnections\":\"datasfanmjmpce\",\"disableMetricsCollection\":\"datamfdylvpyhhgqysz\",\"\":{\"jekolnylpyk\":\"datajzhvej\",\"aouyaanfxai\":\"datapa\"}}")
+            "{\"type\":\"PrestoSource\",\"query\":\"databetzydtgpvnczf\",\"queryTimeout\":\"dataybjku\",\"additionalColumns\":\"dataajkyrhucbfkaqlp\",\"sourceRetryCount\":\"dataptero\",\"sourceRetryWait\":\"dataqaktao\",\"maxConcurrentConnections\":\"datagefobcqvzmyw\",\"disableMetricsCollection\":\"datayns\",\"\":{\"kklzabauvncln\":\"dataosqvojgol\",\"ikireetvjfizafd\":\"dataaoidjhoykgtyvrn\",\"csipfwlye\":\"datajhnuvndgrolgxa\",\"rzfppopwxxdgzhn\":\"dataajdpjmqteirrjjm\"}}")
             .toObject(PrestoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrestoSource model = new PrestoSource().withSourceRetryCount("dataarkjt")
-            .withSourceRetryWait("dataaczkjkfakgrwt")
-            .withMaxConcurrentConnections("datasfanmjmpce")
-            .withDisableMetricsCollection("datamfdylvpyhhgqysz")
-            .withQueryTimeout("datazrerxyds")
-            .withAdditionalColumns("datapn")
-            .withQuery("datayddijfkktigisee");
+        PrestoSource model = new PrestoSource().withSourceRetryCount("dataptero")
+            .withSourceRetryWait("dataqaktao")
+            .withMaxConcurrentConnections("datagefobcqvzmyw")
+            .withDisableMetricsCollection("datayns")
+            .withQueryTimeout("dataybjku")
+            .withAdditionalColumns("dataajkyrhucbfkaqlp")
+            .withQuery("databetzydtgpvnczf");
         model = BinaryData.fromObject(model).toObject(PrestoSource.class);
     }
 }

@@ -11,19 +11,19 @@ public final class ImpalaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpalaSource model = BinaryData.fromString(
-            "{\"type\":\"ImpalaSource\",\"query\":\"dataht\",\"queryTimeout\":\"datauiptudw\",\"additionalColumns\":\"datasrpsjkqfabju\",\"sourceRetryCount\":\"datats\",\"sourceRetryWait\":\"dataupcio\",\"maxConcurrentConnections\":\"datarjdeyfnqanbadkzp\",\"disableMetricsCollection\":\"datatuplpkjexq\",\"\":{\"goeftrbxomaa\":\"datazlal\",\"gvjmllzykalbaumm\":\"datavarfqverxelquqze\",\"r\":\"datadwqiucpj\",\"ftt\":\"databssjtjwzelx\"}}")
+            "{\"type\":\"ImpalaSource\",\"query\":\"datajjprd\",\"queryTimeout\":\"datablonlhtgexwjhicu\",\"additionalColumns\":\"dataavimxnhylwogtvl\",\"sourceRetryCount\":\"datagd\",\"sourceRetryWait\":\"datat\",\"maxConcurrentConnections\":\"datadxlfn\",\"disableMetricsCollection\":\"dataclkmggnzlfyxaiaf\",\"\":{\"uoayapzzcxkuusba\":\"dataxekfvycvhw\",\"yak\":\"datacassqeybdnz\",\"zkicxtumqinawct\":\"datarkohfqm\",\"kjnpe\":\"dataarboxaluoadmcv\"}}")
             .toObject(ImpalaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImpalaSource model = new ImpalaSource().withSourceRetryCount("datats")
-            .withSourceRetryWait("dataupcio")
-            .withMaxConcurrentConnections("datarjdeyfnqanbadkzp")
-            .withDisableMetricsCollection("datatuplpkjexq")
-            .withQueryTimeout("datauiptudw")
-            .withAdditionalColumns("datasrpsjkqfabju")
-            .withQuery("dataht");
+        ImpalaSource model = new ImpalaSource().withSourceRetryCount("datagd")
+            .withSourceRetryWait("datat")
+            .withMaxConcurrentConnections("datadxlfn")
+            .withDisableMetricsCollection("dataclkmggnzlfyxaiaf")
+            .withQueryTimeout("datablonlhtgexwjhicu")
+            .withAdditionalColumns("dataavimxnhylwogtvl")
+            .withQuery("datajjprd");
         model = BinaryData.fromObject(model).toObject(ImpalaSource.class);
     }
 }

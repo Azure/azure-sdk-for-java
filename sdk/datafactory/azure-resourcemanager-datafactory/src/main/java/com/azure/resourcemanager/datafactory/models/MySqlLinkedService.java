@@ -51,7 +51,7 @@ public final class MySqlLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private MySqlLinkedServiceTypeProperties innerTypeProperties() {
+    MySqlLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -51,7 +51,7 @@ public final class FileShareDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private FileShareDatasetTypeProperties innerTypeProperties() {
+    FileShareDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -51,7 +51,7 @@ public final class SybaseLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SybaseLinkedServiceTypeProperties innerTypeProperties() {
+    SybaseLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

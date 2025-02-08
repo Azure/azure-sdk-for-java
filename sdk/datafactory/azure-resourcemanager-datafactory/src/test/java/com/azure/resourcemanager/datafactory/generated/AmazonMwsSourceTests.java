@@ -11,19 +11,19 @@ public final class AmazonMwsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonMwsSource model = BinaryData.fromString(
-            "{\"type\":\"AmazonMWSSource\",\"query\":\"datakujceeczhsdpfoa\",\"queryTimeout\":\"dataahuwxodddqz\",\"additionalColumns\":\"datarrytgsocqkdc\",\"sourceRetryCount\":\"datazqnaoxsgmpdcb\",\"sourceRetryWait\":\"datazautuaysxhfupvq\",\"maxConcurrentConnections\":\"dataqlafi\",\"disableMetricsCollection\":\"dataw\",\"\":{\"mgaifgy\":\"datapuyefhhd\",\"hxpcxqc\":\"datakgqwmp\",\"dhx\":\"datankxhc\"}}")
+            "{\"type\":\"AmazonMWSSource\",\"query\":\"datadtmzhofhkt\",\"queryTimeout\":\"datatacguki\",\"additionalColumns\":\"datadqrfassiiilcmrg\",\"sourceRetryCount\":\"datascayyxgc\",\"sourceRetryWait\":\"datavie\",\"maxConcurrentConnections\":\"datansbukznxdivqopx\",\"disableMetricsCollection\":\"dataooxtkmk\",\"\":{\"ytbhdjpagwszmw\":\"datanfz\",\"fy\":\"datagzfeyexbg\",\"qjgedxpbpjwznnv\":\"dataszwigvqgcea\"}}")
             .toObject(AmazonMwsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonMwsSource model = new AmazonMwsSource().withSourceRetryCount("datazqnaoxsgmpdcb")
-            .withSourceRetryWait("datazautuaysxhfupvq")
-            .withMaxConcurrentConnections("dataqlafi")
-            .withDisableMetricsCollection("dataw")
-            .withQueryTimeout("dataahuwxodddqz")
-            .withAdditionalColumns("datarrytgsocqkdc")
-            .withQuery("datakujceeczhsdpfoa");
+        AmazonMwsSource model = new AmazonMwsSource().withSourceRetryCount("datascayyxgc")
+            .withSourceRetryWait("datavie")
+            .withMaxConcurrentConnections("datansbukznxdivqopx")
+            .withDisableMetricsCollection("dataooxtkmk")
+            .withQueryTimeout("datatacguki")
+            .withAdditionalColumns("datadqrfassiiilcmrg")
+            .withQuery("datadtmzhofhkt");
         model = BinaryData.fromObject(model).toObject(AmazonMwsSource.class);
     }
 }

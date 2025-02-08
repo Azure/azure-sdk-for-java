@@ -51,7 +51,7 @@ public final class SapOdpResourceDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapOdpResourceDatasetTypeProperties innerTypeProperties() {
+    SapOdpResourceDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

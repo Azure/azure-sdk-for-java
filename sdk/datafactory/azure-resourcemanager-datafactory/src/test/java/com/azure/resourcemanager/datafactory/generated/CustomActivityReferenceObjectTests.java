@@ -17,34 +17,36 @@ public final class CustomActivityReferenceObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomActivityReferenceObject model = BinaryData.fromString(
-            "{\"linkedServices\":[{\"referenceName\":\"ylfdryes\",\"parameters\":{\"ybvgemkz\":\"datasparbjsv\",\"czctwacbnhk\":\"dataolvnosb\",\"fh\":\"datadcvjhykptcijuntm\"}},{\"referenceName\":\"ccqhtlqrfsrfxr\",\"parameters\":{\"vzadybhydlqf\":\"dataymtcwac\",\"aesp\":\"dataidastuihn\",\"haoviwuttlmfcn\":\"datawgpjri\"}}],\"datasets\":[{\"referenceName\":\"aiypihqmmmbokdqk\",\"parameters\":{\"l\":\"datafzxnivvuwrvg\",\"bfi\":\"datarlkgpipwtrt\"}},{\"referenceName\":\"bddhfkjsqqqu\",\"parameters\":{\"hvaovoqonqjl\":\"datawzkefzdu\",\"yqiytrhhmld\":\"datac\"}},{\"referenceName\":\"tyz\",\"parameters\":{\"lkfg\":\"datast\",\"fe\":\"dataovbbcsb\",\"chfssbqwvr\":\"datamcprg\",\"qipfrrvngill\":\"datagvxhw\"}}]}")
+            "{\"linkedServices\":[{\"referenceName\":\"cnhzhsaum\",\"parameters\":{\"znekbrq\":\"datauspflvglvwkgcp\",\"btmljob\":\"datawvxwqqmvsrbmf\",\"cwhebyczweg\":\"datauoyownygbra\",\"razqxxvksqifr\":\"datazd\"}},{\"referenceName\":\"midvturdgl\",\"parameters\":{\"uizakejomj\":\"dataegolldltpryhztw\",\"fq\":\"datalxjhrzg\"}},{\"referenceName\":\"lgqezgbqiiweoace\",\"parameters\":{\"znvyeuxd\":\"dataarzkza\",\"gslzb\":\"datazomtzpukm\"}}],\"datasets\":[{\"referenceName\":\"f\",\"parameters\":{\"wzesejdcpcpeu\":\"datamxuo\"}},{\"referenceName\":\"bofzmvtwyjc\",\"parameters\":{\"qhejhnwj\":\"dataptltyt\",\"uurxg\":\"databygqfmee\"}},{\"referenceName\":\"lx\",\"parameters\":{\"vqmtejhvggy\":\"dataygquiwcfqzobgwwd\",\"mimsyiwcdwqjbrrx\":\"datairqkskyyam\",\"o\":\"datalmibvczdj\"}},{\"referenceName\":\"lvlfkwdtsbjmc\",\"parameters\":{\"tslxe\":\"datafezjyfaqdwfalnzd\",\"lxxgelad\":\"datahwlvh\",\"rsycujnsznjsk\":\"datazil\"}}]}")
             .toObject(CustomActivityReferenceObject.class);
-        Assertions.assertEquals("ylfdryes", model.linkedServices().get(0).referenceName());
-        Assertions.assertEquals("aiypihqmmmbokdqk", model.datasets().get(0).referenceName());
+        Assertions.assertEquals("cnhzhsaum", model.linkedServices().get(0).referenceName());
+        Assertions.assertEquals("f", model.datasets().get(0).referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomActivityReferenceObject model
-            = new CustomActivityReferenceObject()
-                .withLinkedServices(Arrays.asList(
-                    new LinkedServiceReference().withReferenceName("ylfdryes")
-                        .withParameters(mapOf("ybvgemkz", "datasparbjsv", "czctwacbnhk", "dataolvnosb", "fh",
-                            "datadcvjhykptcijuntm")),
-                    new LinkedServiceReference().withReferenceName("ccqhtlqrfsrfxr")
-                        .withParameters(mapOf("vzadybhydlqf", "dataymtcwac", "aesp", "dataidastuihn", "haoviwuttlmfcn",
-                            "datawgpjri"))))
-                .withDatasets(Arrays.asList(
-                    new DatasetReference().withReferenceName("aiypihqmmmbokdqk")
-                        .withParameters(mapOf("l", "datafzxnivvuwrvg", "bfi", "datarlkgpipwtrt")),
-                    new DatasetReference().withReferenceName("bddhfkjsqqqu")
-                        .withParameters(mapOf("hvaovoqonqjl", "datawzkefzdu", "yqiytrhhmld", "datac")),
-                    new DatasetReference().withReferenceName("tyz")
-                        .withParameters(mapOf("lkfg", "datast", "fe", "dataovbbcsb", "chfssbqwvr", "datamcprg",
-                            "qipfrrvngill", "datagvxhw"))));
+        CustomActivityReferenceObject model = new CustomActivityReferenceObject()
+            .withLinkedServices(Arrays.asList(
+                new LinkedServiceReference().withReferenceName("cnhzhsaum")
+                    .withParameters(mapOf("znekbrq", "datauspflvglvwkgcp", "btmljob", "datawvxwqqmvsrbmf",
+                        "cwhebyczweg", "datauoyownygbra", "razqxxvksqifr", "datazd")),
+                new LinkedServiceReference().withReferenceName("midvturdgl")
+                    .withParameters(mapOf("uizakejomj", "dataegolldltpryhztw", "fq", "datalxjhrzg")),
+                new LinkedServiceReference().withReferenceName("lgqezgbqiiweoace")
+                    .withParameters(mapOf("znvyeuxd", "dataarzkza", "gslzb", "datazomtzpukm"))))
+            .withDatasets(Arrays.asList(
+                new DatasetReference().withReferenceName("f").withParameters(mapOf("wzesejdcpcpeu", "datamxuo")),
+                new DatasetReference().withReferenceName("bofzmvtwyjc")
+                    .withParameters(mapOf("qhejhnwj", "dataptltyt", "uurxg", "databygqfmee")),
+                new DatasetReference().withReferenceName("lx")
+                    .withParameters(mapOf("vqmtejhvggy", "dataygquiwcfqzobgwwd", "mimsyiwcdwqjbrrx", "datairqkskyyam",
+                        "o", "datalmibvczdj")),
+                new DatasetReference().withReferenceName("lvlfkwdtsbjmc")
+                    .withParameters(
+                        mapOf("tslxe", "datafezjyfaqdwfalnzd", "lxxgelad", "datahwlvh", "rsycujnsznjsk", "datazil"))));
         model = BinaryData.fromObject(model).toObject(CustomActivityReferenceObject.class);
-        Assertions.assertEquals("ylfdryes", model.linkedServices().get(0).referenceName());
-        Assertions.assertEquals("aiypihqmmmbokdqk", model.datasets().get(0).referenceName());
+        Assertions.assertEquals("cnhzhsaum", model.linkedServices().get(0).referenceName());
+        Assertions.assertEquals("f", model.datasets().get(0).referenceName());
     }
 
     // Use "Map.of" if available

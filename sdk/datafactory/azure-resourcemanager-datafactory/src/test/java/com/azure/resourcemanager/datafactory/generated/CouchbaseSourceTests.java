@@ -11,19 +11,19 @@ public final class CouchbaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CouchbaseSource model = BinaryData.fromString(
-            "{\"type\":\"CouchbaseSource\",\"query\":\"datahndfpf\",\"queryTimeout\":\"datafdgf\",\"additionalColumns\":\"dataoeh\",\"sourceRetryCount\":\"datapkssjbw\",\"sourceRetryWait\":\"dataxdgcfcfky\",\"maxConcurrentConnections\":\"datajwxhslrbwwk\",\"disableMetricsCollection\":\"datawodhsodofsxjiky\",\"\":{\"cxdmxhuwldfa\":\"datauhuixqwogg\",\"dkbgsg\":\"datakyft\",\"ayqkg\":\"datapyckmncrutoudjm\"}}")
+            "{\"type\":\"CouchbaseSource\",\"query\":\"dataohqzzkp\",\"queryTimeout\":\"datamcamse\",\"additionalColumns\":\"datauveengtjgfpqw\",\"sourceRetryCount\":\"datagfwpvj\",\"sourceRetryWait\":\"datawbqaibkyeysf\",\"maxConcurrentConnections\":\"datahdydyybztlylh\",\"disableMetricsCollection\":\"datacjq\",\"\":{\"qzkuixfvghvecjh\":\"datai\"}}")
             .toObject(CouchbaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datapkssjbw")
-            .withSourceRetryWait("dataxdgcfcfky")
-            .withMaxConcurrentConnections("datajwxhslrbwwk")
-            .withDisableMetricsCollection("datawodhsodofsxjiky")
-            .withQueryTimeout("datafdgf")
-            .withAdditionalColumns("dataoeh")
-            .withQuery("datahndfpf");
+        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datagfwpvj")
+            .withSourceRetryWait("datawbqaibkyeysf")
+            .withMaxConcurrentConnections("datahdydyybztlylh")
+            .withDisableMetricsCollection("datacjq")
+            .withQueryTimeout("datamcamse")
+            .withAdditionalColumns("datauveengtjgfpqw")
+            .withQuery("dataohqzzkp");
         model = BinaryData.fromObject(model).toObject(CouchbaseSource.class);
     }
 }

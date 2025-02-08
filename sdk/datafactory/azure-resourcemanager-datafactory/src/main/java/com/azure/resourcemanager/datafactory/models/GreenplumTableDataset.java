@@ -51,7 +51,7 @@ public final class GreenplumTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private GreenplumDatasetTypeProperties innerTypeProperties() {
+    GreenplumDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

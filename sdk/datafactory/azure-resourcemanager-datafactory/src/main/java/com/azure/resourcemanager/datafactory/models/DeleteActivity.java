@@ -51,7 +51,7 @@ public final class DeleteActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private DeleteActivityTypeProperties innerTypeProperties() {
+    DeleteActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

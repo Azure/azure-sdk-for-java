@@ -52,7 +52,7 @@ public final class SapOpenHubLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapOpenHubLinkedServiceTypeProperties innerTypeProperties() {
+    SapOpenHubLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -11,19 +11,19 @@ public final class JiraSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JiraSource model = BinaryData.fromString(
-            "{\"type\":\"JiraSource\",\"query\":\"dataylvrofhhitjhh\",\"queryTimeout\":\"datavwrc\",\"additionalColumns\":\"datahllmblls\",\"sourceRetryCount\":\"datafdrimoopfr\",\"sourceRetryWait\":\"datajjrhxornuoqpob\",\"maxConcurrentConnections\":\"datarsdx\",\"disableMetricsCollection\":\"datamq\",\"\":{\"lseoixqp\":\"databqyavcxj\",\"fsuwcmzpwkca\":\"datamsfqntakroxku\",\"zq\":\"datafq\"}}")
+            "{\"type\":\"JiraSource\",\"query\":\"datawevlohuahl\",\"queryTimeout\":\"datacboxgpmmz\",\"additionalColumns\":\"dataoyllxc\",\"sourceRetryCount\":\"datahzylspz\",\"sourceRetryWait\":\"datarhynlbtr\",\"maxConcurrentConnections\":\"dataecvag\",\"disableMetricsCollection\":\"datarhadg\",\"\":{\"hiafbhzdjv\":\"datarasxeomjqqhbkxi\",\"ggbpdpzgvq\":\"datayrzi\",\"lvxilaytj\":\"dataznxzaliicrutyhm\",\"ghqdlj\":\"datawfqzwn\"}}")
             .toObject(JiraSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JiraSource model = new JiraSource().withSourceRetryCount("datafdrimoopfr")
-            .withSourceRetryWait("datajjrhxornuoqpob")
-            .withMaxConcurrentConnections("datarsdx")
-            .withDisableMetricsCollection("datamq")
-            .withQueryTimeout("datavwrc")
-            .withAdditionalColumns("datahllmblls")
-            .withQuery("dataylvrofhhitjhh");
+        JiraSource model = new JiraSource().withSourceRetryCount("datahzylspz")
+            .withSourceRetryWait("datarhynlbtr")
+            .withMaxConcurrentConnections("dataecvag")
+            .withDisableMetricsCollection("datarhadg")
+            .withQueryTimeout("datacboxgpmmz")
+            .withAdditionalColumns("dataoyllxc")
+            .withQuery("datawevlohuahl");
         model = BinaryData.fromObject(model).toObject(JiraSource.class);
     }
 }

@@ -11,19 +11,19 @@ public final class AzurePostgreSqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePostgreSqlSource model = BinaryData.fromString(
-            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"dataxllfwxdou\",\"queryTimeout\":\"datazpaqjahjxgedtmzh\",\"additionalColumns\":\"datahktywtac\",\"sourceRetryCount\":\"datakie\",\"sourceRetryWait\":\"dataqrfassiiil\",\"maxConcurrentConnections\":\"datargahscay\",\"disableMetricsCollection\":\"datagc\",\"\":{\"vqopxun\":\"dataieqonsbukznxd\"}}")
+            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"databaodi\",\"queryTimeout\":\"dataxq\",\"additionalColumns\":\"datahehhtltwv\",\"sourceRetryCount\":\"datadrfqyqvhzkfyv\",\"sourceRetryWait\":\"dataenozlgxqfghlosh\",\"maxConcurrentConnections\":\"datamkpcmtsbande\",\"disableMetricsCollection\":\"datalvuewrljmlod\",\"\":{\"bsyni\":\"datavtfyqeog\",\"mdbazggr\":\"dataxhcygfg\",\"yanirlydsd\":\"dataaosttbwap\"}}")
             .toObject(AzurePostgreSqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("datakie")
-            .withSourceRetryWait("dataqrfassiiil")
-            .withMaxConcurrentConnections("datargahscay")
-            .withDisableMetricsCollection("datagc")
-            .withQueryTimeout("datazpaqjahjxgedtmzh")
-            .withAdditionalColumns("datahktywtac")
-            .withQuery("dataxllfwxdou");
+        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("datadrfqyqvhzkfyv")
+            .withSourceRetryWait("dataenozlgxqfghlosh")
+            .withMaxConcurrentConnections("datamkpcmtsbande")
+            .withDisableMetricsCollection("datalvuewrljmlod")
+            .withQueryTimeout("dataxq")
+            .withAdditionalColumns("datahehhtltwv")
+            .withQuery("databaodi");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlSource.class);
     }
 }

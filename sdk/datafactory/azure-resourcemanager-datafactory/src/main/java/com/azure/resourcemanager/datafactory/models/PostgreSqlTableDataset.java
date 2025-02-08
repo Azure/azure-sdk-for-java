@@ -51,7 +51,7 @@ public final class PostgreSqlTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private PostgreSqlTableDatasetTypeProperties innerTypeProperties() {
+    PostgreSqlTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

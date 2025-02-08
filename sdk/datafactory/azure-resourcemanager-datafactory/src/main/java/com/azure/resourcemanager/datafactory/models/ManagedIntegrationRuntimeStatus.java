@@ -53,7 +53,7 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
      * 
      * @return the innerTypeProperties value.
      */
-    private ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
+    ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

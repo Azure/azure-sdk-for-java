@@ -11,19 +11,19 @@ public final class CosmosDbMongoDbApiSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbMongoDbApiSink model = BinaryData.fromString(
-            "{\"type\":\"CosmosDbMongoDbApiSink\",\"writeBehavior\":\"dataeszx\",\"writeBatchSize\":\"datageuoihtik\",\"writeBatchTimeout\":\"datawp\",\"sinkRetryCount\":\"datayavcbdsuwctvbhc\",\"sinkRetryWait\":\"datagxtljyrey\",\"maxConcurrentConnections\":\"databtwzrzi\",\"disableMetricsCollection\":\"datak\",\"\":{\"buyuxg\":\"datajymdol\",\"sdoxhyi\":\"dataphviuexfb\",\"fkmti\":\"dataagaxru\"}}")
+            "{\"type\":\"CosmosDbMongoDbApiSink\",\"writeBehavior\":\"dataglmcgy\",\"writeBatchSize\":\"dataeqdj\",\"writeBatchTimeout\":\"datarbjxkarxvg\",\"sinkRetryCount\":\"datavtwfbqxoqnv\",\"sinkRetryWait\":\"datahd\",\"maxConcurrentConnections\":\"datalnxwdppi\",\"disableMetricsCollection\":\"datanntoloezpt\",\"\":{\"mxacxcaczc\":\"datapzv\",\"c\":\"datakomrp\"}}")
             .toObject(CosmosDbMongoDbApiSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbMongoDbApiSink model = new CosmosDbMongoDbApiSink().withWriteBatchSize("datageuoihtik")
-            .withWriteBatchTimeout("datawp")
-            .withSinkRetryCount("datayavcbdsuwctvbhc")
-            .withSinkRetryWait("datagxtljyrey")
-            .withMaxConcurrentConnections("databtwzrzi")
-            .withDisableMetricsCollection("datak")
-            .withWriteBehavior("dataeszx");
+        CosmosDbMongoDbApiSink model = new CosmosDbMongoDbApiSink().withWriteBatchSize("dataeqdj")
+            .withWriteBatchTimeout("datarbjxkarxvg")
+            .withSinkRetryCount("datavtwfbqxoqnv")
+            .withSinkRetryWait("datahd")
+            .withMaxConcurrentConnections("datalnxwdppi")
+            .withDisableMetricsCollection("datanntoloezpt")
+            .withWriteBehavior("dataglmcgy");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiSink.class);
     }
 }

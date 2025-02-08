@@ -11,19 +11,19 @@ public final class GoogleBigQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQuerySource model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataeydmeuimlhyze\",\"queryTimeout\":\"dataivkzrvya\",\"additionalColumns\":\"dataqgyui\",\"sourceRetryCount\":\"dataelyjduzapnopoto\",\"sourceRetryWait\":\"datarrqcaglyt\",\"maxConcurrentConnections\":\"datacbdpczmzuwr\",\"disableMetricsCollection\":\"datahfwce\",\"\":{\"cyfccnwmdpbso\":\"dataaqaviqskylwpq\",\"fxpveruuckrzw\":\"datakn\"}}")
+            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataomdyf\",\"queryTimeout\":\"dataskvzvkddaeiep\",\"additionalColumns\":\"datarmk\",\"sourceRetryCount\":\"dataxymkb\",\"sourceRetryWait\":\"datauawokrhhj\",\"maxConcurrentConnections\":\"datahrmuwvs\",\"disableMetricsCollection\":\"dataru\",\"\":{\"bn\":\"datadtx\",\"gzkq\":\"datajim\",\"nfbms\":\"datapldrnbjhd\",\"bddrtngdc\":\"dataetzufkvxe\"}}")
             .toObject(GoogleBigQuerySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("dataelyjduzapnopoto")
-            .withSourceRetryWait("datarrqcaglyt")
-            .withMaxConcurrentConnections("datacbdpczmzuwr")
-            .withDisableMetricsCollection("datahfwce")
-            .withQueryTimeout("dataivkzrvya")
-            .withAdditionalColumns("dataqgyui")
-            .withQuery("dataeydmeuimlhyze");
+        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("dataxymkb")
+            .withSourceRetryWait("datauawokrhhj")
+            .withMaxConcurrentConnections("datahrmuwvs")
+            .withDisableMetricsCollection("dataru")
+            .withQueryTimeout("dataskvzvkddaeiep")
+            .withAdditionalColumns("datarmk")
+            .withQuery("dataomdyf");
         model = BinaryData.fromObject(model).toObject(GoogleBigQuerySource.class);
     }
 }

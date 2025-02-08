@@ -11,19 +11,19 @@ public final class QuickBooksSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuickBooksSource model = BinaryData.fromString(
-            "{\"type\":\"QuickBooksSource\",\"query\":\"dataeycakkon\",\"queryTimeout\":\"datadpd\",\"additionalColumns\":\"datahadzyxaanhwuqewc\",\"sourceRetryCount\":\"datasksfbkxfkeeqo\",\"sourceRetryWait\":\"databek\",\"maxConcurrentConnections\":\"dataerwss\",\"disableMetricsCollection\":\"datamrpdjrylfpdudx\",\"\":{\"tqssngeviyffg\":\"dataeuriehxbanfsqfh\",\"hdapynpvgyaf\":\"datahrhjsps\"}}")
+            "{\"type\":\"QuickBooksSource\",\"query\":\"databuwauytq\",\"queryTimeout\":\"datagaxloafws\",\"additionalColumns\":\"dataxqrokw\",\"sourceRetryCount\":\"dataipn\",\"sourceRetryWait\":\"dataql\",\"maxConcurrentConnections\":\"datarhctbrvegdamoy\",\"disableMetricsCollection\":\"datafjpkezqjizbyczme\",\"\":{\"destarulnhbqt\":\"datacgvlnpjjbyryrktu\",\"xhcrffj\":\"datayh\",\"svzhlkeot\":\"dataexupcuizvx\"}}")
             .toObject(QuickBooksSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuickBooksSource model = new QuickBooksSource().withSourceRetryCount("datasksfbkxfkeeqo")
-            .withSourceRetryWait("databek")
-            .withMaxConcurrentConnections("dataerwss")
-            .withDisableMetricsCollection("datamrpdjrylfpdudx")
-            .withQueryTimeout("datadpd")
-            .withAdditionalColumns("datahadzyxaanhwuqewc")
-            .withQuery("dataeycakkon");
+        QuickBooksSource model = new QuickBooksSource().withSourceRetryCount("dataipn")
+            .withSourceRetryWait("dataql")
+            .withMaxConcurrentConnections("datarhctbrvegdamoy")
+            .withDisableMetricsCollection("datafjpkezqjizbyczme")
+            .withQueryTimeout("datagaxloafws")
+            .withAdditionalColumns("dataxqrokw")
+            .withQuery("databuwauytq");
         model = BinaryData.fromObject(model).toObject(QuickBooksSource.class);
     }
 }

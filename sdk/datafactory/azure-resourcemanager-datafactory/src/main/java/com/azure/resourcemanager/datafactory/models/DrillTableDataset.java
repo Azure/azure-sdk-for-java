@@ -51,7 +51,7 @@ public final class DrillTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private DrillDatasetTypeProperties innerTypeProperties() {
+    DrillDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

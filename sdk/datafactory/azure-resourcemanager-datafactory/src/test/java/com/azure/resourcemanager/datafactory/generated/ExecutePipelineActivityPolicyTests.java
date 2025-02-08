@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExecutePipelineActivityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecutePipelineActivityPolicy model = BinaryData.fromString(
-            "{\"secureInput\":false,\"\":{\"rbmfobtmljobg\":\"dataqgwvxwqqmv\",\"hebyc\":\"dataoyownygbralc\",\"dp\":\"datawegt\"}}")
+        ExecutePipelineActivityPolicy model = BinaryData
+            .fromString("{\"secureInput\":false,\"\":{\"lue\":\"datazpwqpuyrp\",\"qfupoamc\":\"datacnfgtup\"}}")
             .toObject(ExecutePipelineActivityPolicy.class);
         Assertions.assertEquals(false, model.secureInput());
     }

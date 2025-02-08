@@ -51,7 +51,7 @@ public final class ImpalaObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private ImpalaDatasetTypeProperties innerTypeProperties() {
+    ImpalaDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

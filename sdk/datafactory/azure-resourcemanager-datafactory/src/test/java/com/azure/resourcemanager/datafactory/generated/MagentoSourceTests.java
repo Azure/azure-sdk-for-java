@@ -11,19 +11,19 @@ public final class MagentoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MagentoSource model = BinaryData.fromString(
-            "{\"type\":\"MagentoSource\",\"query\":\"datajjprd\",\"queryTimeout\":\"datablonlhtgexwjhicu\",\"additionalColumns\":\"dataavimxnhylwogtvl\",\"sourceRetryCount\":\"datagd\",\"sourceRetryWait\":\"datat\",\"maxConcurrentConnections\":\"datadxlfn\",\"disableMetricsCollection\":\"dataclkmggnzlfyxaiaf\",\"\":{\"uoayapzzcxkuusba\":\"dataxekfvycvhw\",\"yak\":\"datacassqeybdnz\",\"zkicxtumqinawct\":\"datarkohfqm\",\"kjnpe\":\"dataarboxaluoadmcv\"}}")
+            "{\"type\":\"MagentoSource\",\"query\":\"dataqngpvvnbu\",\"queryTimeout\":\"datavkutl\",\"additionalColumns\":\"dataxuuqb\",\"sourceRetryCount\":\"datapbeswgkreozpufk\",\"sourceRetryWait\":\"datamzcbzgi\",\"maxConcurrentConnections\":\"dataqpegcgdndpb\",\"disableMetricsCollection\":\"dataeymmcbiktetzvqt\",\"\":{\"pdnbzqweohmlkzhx\":\"datavcsbyimygswdu\",\"haerhxd\":\"datadmauanxzrqt\",\"bqmoguy\":\"datahkbrkhjjbwelicrx\",\"dxljjzdbzk\":\"datamselwszqveak\"}}")
             .toObject(MagentoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MagentoSource model = new MagentoSource().withSourceRetryCount("datagd")
-            .withSourceRetryWait("datat")
-            .withMaxConcurrentConnections("datadxlfn")
-            .withDisableMetricsCollection("dataclkmggnzlfyxaiaf")
-            .withQueryTimeout("datablonlhtgexwjhicu")
-            .withAdditionalColumns("dataavimxnhylwogtvl")
-            .withQuery("datajjprd");
+        MagentoSource model = new MagentoSource().withSourceRetryCount("datapbeswgkreozpufk")
+            .withSourceRetryWait("datamzcbzgi")
+            .withMaxConcurrentConnections("dataqpegcgdndpb")
+            .withDisableMetricsCollection("dataeymmcbiktetzvqt")
+            .withQueryTimeout("datavkutl")
+            .withAdditionalColumns("dataxuuqb")
+            .withQuery("dataqngpvvnbu");
         model = BinaryData.fromObject(model).toObject(MagentoSource.class);
     }
 }

@@ -11,19 +11,19 @@ public final class GoogleAdWordsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleAdWordsSource model = BinaryData.fromString(
-            "{\"type\":\"GoogleAdWordsSource\",\"query\":\"dataxkwrvtlb\",\"queryTimeout\":\"datakbdtmr\",\"additionalColumns\":\"datatuzfhvb\",\"sourceRetryCount\":\"datai\",\"sourceRetryWait\":\"datauluilgmovadn\",\"maxConcurrentConnections\":\"datasmjxgqsbjc\",\"disableMetricsCollection\":\"dataaruvbzcqgtzxtlr\",\"\":{\"pswlepttabrkn\":\"datadznvjgovyqp\",\"keuyxgpcrvvmrdl\":\"datafw\",\"ysdharswhq\":\"datakpznoveabwpaiqik\",\"nndfplksdiehraj\":\"datarpdxnrdvtvtyqlt\"}}")
+            "{\"type\":\"GoogleAdWordsSource\",\"query\":\"dataeuapomoofbnbhp\",\"queryTimeout\":\"dataaljcqp\",\"additionalColumns\":\"datamathiydmkyvsxc\",\"sourceRetryCount\":\"datavghajpddgfoznmf\",\"sourceRetryWait\":\"datapjoesozcuhun\",\"maxConcurrentConnections\":\"datazbmwptdr\",\"disableMetricsCollection\":\"datauyknoiumuxn\",\"\":{\"xzsmpoiutaatvpb\":\"datavgmckxh\",\"cgjogmvo\":\"dataoj\"}}")
             .toObject(GoogleAdWordsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("datai")
-            .withSourceRetryWait("datauluilgmovadn")
-            .withMaxConcurrentConnections("datasmjxgqsbjc")
-            .withDisableMetricsCollection("dataaruvbzcqgtzxtlr")
-            .withQueryTimeout("datakbdtmr")
-            .withAdditionalColumns("datatuzfhvb")
-            .withQuery("dataxkwrvtlb");
+        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("datavghajpddgfoznmf")
+            .withSourceRetryWait("datapjoesozcuhun")
+            .withMaxConcurrentConnections("datazbmwptdr")
+            .withDisableMetricsCollection("datauyknoiumuxn")
+            .withQueryTimeout("dataaljcqp")
+            .withAdditionalColumns("datamathiydmkyvsxc")
+            .withQuery("dataeuapomoofbnbhp");
         model = BinaryData.fromObject(model).toObject(GoogleAdWordsSource.class);
     }
 }

@@ -51,7 +51,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private SynapseSparkJobActivityTypeProperties innerTypeProperties() {
+    SynapseSparkJobActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

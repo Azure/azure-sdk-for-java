@@ -51,7 +51,7 @@ public final class PhoenixObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private PhoenixDatasetTypeProperties innerTypeProperties() {
+    PhoenixDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

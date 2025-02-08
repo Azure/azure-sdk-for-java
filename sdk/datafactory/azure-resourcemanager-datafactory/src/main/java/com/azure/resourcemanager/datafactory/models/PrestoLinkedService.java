@@ -51,7 +51,7 @@ public final class PrestoLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private PrestoLinkedServiceTypeProperties innerTypeProperties() {
+    PrestoLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

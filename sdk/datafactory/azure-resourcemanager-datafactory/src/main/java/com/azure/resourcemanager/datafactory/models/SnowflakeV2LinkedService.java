@@ -51,7 +51,7 @@ public final class SnowflakeV2LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SnowflakeLinkedV2ServiceTypeProperties innerTypeProperties() {
+    SnowflakeLinkedV2ServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

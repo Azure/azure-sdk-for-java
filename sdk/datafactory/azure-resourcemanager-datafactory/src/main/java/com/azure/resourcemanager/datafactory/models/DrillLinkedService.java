@@ -51,7 +51,7 @@ public final class DrillLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private DrillLinkedServiceTypeProperties innerTypeProperties() {
+    DrillLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

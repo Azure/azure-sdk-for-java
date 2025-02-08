@@ -51,7 +51,7 @@ public final class ExcelDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private ExcelDatasetTypeProperties innerTypeProperties() {
+    ExcelDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -51,7 +51,7 @@ public final class SparkObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SparkDatasetTypeProperties innerTypeProperties() {
+    SparkDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

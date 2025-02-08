@@ -13,20 +13,19 @@ public final class ManagedIdentityCredentialTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedIdentityCredential model = BinaryData.fromString(
-            "{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"teiulvrpvhi\"},\"description\":\"lmzcvpoyhvfcwe\",\"annotations\":[\"dataeroezgibfisfmcx\",\"datarhgcuejtxxlkokt\",\"dataclpvwtwboxgrv\",\"dataavoqbsquwkuszll\"],\"\":{\"nyg\":\"dataledhvll\",\"vqaq\":\"datamn\",\"ulwdhjb\":\"datazo\"}}")
+            "{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"vdbdllmutwmarfbs\"},\"description\":\"pgxsczrdmbebxmk\",\"annotations\":[\"datalrhcen\",\"datagutitjwvvvapdsh\",\"databfweezzrzfytq\"],\"\":{\"dphi\":\"dataxgofiphlwy\",\"ztsgklu\":\"datahkigslczkzl\",\"xbyedca\":\"dataaxcbfrnttlrumv\"}}")
             .toObject(ManagedIdentityCredential.class);
-        Assertions.assertEquals("lmzcvpoyhvfcwe", model.description());
-        Assertions.assertEquals("teiulvrpvhi", model.resourceId());
+        Assertions.assertEquals("pgxsczrdmbebxmk", model.description());
+        Assertions.assertEquals("vdbdllmutwmarfbs", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentityCredential model = new ManagedIdentityCredential().withDescription("lmzcvpoyhvfcwe")
-            .withAnnotations(
-                Arrays.asList("dataeroezgibfisfmcx", "datarhgcuejtxxlkokt", "dataclpvwtwboxgrv", "dataavoqbsquwkuszll"))
-            .withResourceId("teiulvrpvhi");
+        ManagedIdentityCredential model = new ManagedIdentityCredential().withDescription("pgxsczrdmbebxmk")
+            .withAnnotations(Arrays.asList("datalrhcen", "datagutitjwvvvapdsh", "databfweezzrzfytq"))
+            .withResourceId("vdbdllmutwmarfbs");
         model = BinaryData.fromObject(model).toObject(ManagedIdentityCredential.class);
-        Assertions.assertEquals("lmzcvpoyhvfcwe", model.description());
-        Assertions.assertEquals("teiulvrpvhi", model.resourceId());
+        Assertions.assertEquals("pgxsczrdmbebxmk", model.description());
+        Assertions.assertEquals("vdbdllmutwmarfbs", model.resourceId());
     }
 }

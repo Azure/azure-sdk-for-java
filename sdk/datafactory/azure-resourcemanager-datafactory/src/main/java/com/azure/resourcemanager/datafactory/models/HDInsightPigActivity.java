@@ -51,7 +51,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private HDInsightPigActivityTypeProperties innerTypeProperties() {
+    HDInsightPigActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

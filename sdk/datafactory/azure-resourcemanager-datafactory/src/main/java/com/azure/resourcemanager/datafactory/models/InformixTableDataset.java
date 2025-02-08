@@ -51,7 +51,7 @@ public final class InformixTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private InformixTableDatasetTypeProperties innerTypeProperties() {
+    InformixTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

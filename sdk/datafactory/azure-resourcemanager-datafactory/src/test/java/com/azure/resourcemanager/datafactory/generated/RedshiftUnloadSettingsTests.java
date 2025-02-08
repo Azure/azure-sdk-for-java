@@ -15,19 +15,18 @@ public final class RedshiftUnloadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RedshiftUnloadSettings model = BinaryData.fromString(
-            "{\"s3LinkedServiceName\":{\"referenceName\":\"emqetmo\",\"parameters\":{\"oyl\":\"datahhed\",\"sghbdvsorvhbygwt\":\"datacrldwcc\"}},\"bucketName\":\"dataxqlzzkbx\"}")
+            "{\"s3LinkedServiceName\":{\"referenceName\":\"cinpmvcvnmgql\",\"parameters\":{\"pelazv\":\"dataly\"}},\"bucketName\":\"datafhiayropxeezlqw\"}")
             .toObject(RedshiftUnloadSettings.class);
-        Assertions.assertEquals("emqetmo", model.s3LinkedServiceName().referenceName());
+        Assertions.assertEquals("cinpmvcvnmgql", model.s3LinkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RedshiftUnloadSettings model = new RedshiftUnloadSettings()
-            .withS3LinkedServiceName(new LinkedServiceReference().withReferenceName("emqetmo")
-                .withParameters(mapOf("oyl", "datahhed", "sghbdvsorvhbygwt", "datacrldwcc")))
-            .withBucketName("dataxqlzzkbx");
+        RedshiftUnloadSettings model = new RedshiftUnloadSettings().withS3LinkedServiceName(
+            new LinkedServiceReference().withReferenceName("cinpmvcvnmgql").withParameters(mapOf("pelazv", "dataly")))
+            .withBucketName("datafhiayropxeezlqw");
         model = BinaryData.fromObject(model).toObject(RedshiftUnloadSettings.class);
-        Assertions.assertEquals("emqetmo", model.s3LinkedServiceName().referenceName());
+        Assertions.assertEquals("cinpmvcvnmgql", model.s3LinkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

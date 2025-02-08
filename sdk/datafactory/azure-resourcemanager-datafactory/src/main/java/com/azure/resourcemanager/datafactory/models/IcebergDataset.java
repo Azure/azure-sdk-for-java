@@ -51,7 +51,7 @@ public final class IcebergDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private IcebergDatasetTypeProperties innerTypeProperties() {
+    IcebergDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

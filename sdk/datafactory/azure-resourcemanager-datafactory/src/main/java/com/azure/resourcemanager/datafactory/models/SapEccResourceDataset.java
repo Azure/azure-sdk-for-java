@@ -51,7 +51,7 @@ public final class SapEccResourceDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapEccResourceDatasetTypeProperties innerTypeProperties() {
+    SapEccResourceDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

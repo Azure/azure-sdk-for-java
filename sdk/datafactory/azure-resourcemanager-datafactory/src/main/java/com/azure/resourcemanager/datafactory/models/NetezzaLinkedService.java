@@ -51,7 +51,7 @@ public final class NetezzaLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private NetezzaLinkedServiceTypeProperties innerTypeProperties() {
+    NetezzaLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

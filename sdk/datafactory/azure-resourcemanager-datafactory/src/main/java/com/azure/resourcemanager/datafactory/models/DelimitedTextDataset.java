@@ -51,7 +51,7 @@ public final class DelimitedTextDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private DelimitedTextDatasetTypeProperties innerTypeProperties() {
+    DelimitedTextDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

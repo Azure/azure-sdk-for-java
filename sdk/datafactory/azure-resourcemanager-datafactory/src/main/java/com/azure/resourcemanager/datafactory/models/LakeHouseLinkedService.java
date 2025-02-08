@@ -51,7 +51,7 @@ public final class LakeHouseLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private LakeHouseLinkedServiceTypeProperties innerTypeProperties() {
+    LakeHouseLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
