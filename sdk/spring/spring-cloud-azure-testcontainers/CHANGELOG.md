@@ -1,8 +1,8 @@
 # Release History
 
-## 5.20.0 (2025-02-05)
+## 5.20.0 (2025-02-08)
 
-Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#5200-2025-02-05) for more details.
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#5200-2025-02-08) for more details.
 
 ## 5.19.0 (2024-12-17)
 
