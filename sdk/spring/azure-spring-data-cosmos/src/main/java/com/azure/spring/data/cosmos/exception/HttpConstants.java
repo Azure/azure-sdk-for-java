@@ -57,4 +57,10 @@ public class HttpConstants {
         static final int CLIENT_OPERATION_TIMEOUT = 20008;
     }
 
+    /**
+     * Default constructor.
+     */
+    private HttpConstants() {
+    }
+
 }
