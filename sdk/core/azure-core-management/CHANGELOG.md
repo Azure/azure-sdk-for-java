@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added sync-stack support `SyncPollerFactory`, for Azure Resource Manager(ARM) long-running-operation(LRO).
+
 ### Breaking Changes
 
 ### Bugs Fixed
