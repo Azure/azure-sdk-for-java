@@ -3,26 +3,14 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.BadRequestException;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.ObjectNodeMap;
-import com.azure.cosmos.implementation.PrimitiveJsonNodeMap;
 import com.azure.cosmos.implementation.Utils;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.io.IOException;
 import java.util.Map;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * The {@link CosmosItemSerializer} allows customizing the serialization of Cosmos Items - either to transform payload (for

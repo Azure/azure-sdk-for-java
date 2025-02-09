@@ -5,6 +5,8 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -61,10 +63,18 @@ public class SimpleSerializationTest extends TestSuiteBase {
         try {
             createdCollection.createItem(testObject).block();
             Assert.fail();
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage()).startsWith("BadSerializer");
-            assertThat(e.getCause()).isInstanceOf(JsonMappingException.class);
-            assertThat(e.getCause().getMessage()).contains("bad");
+        } catch (BadRequestException e) {
+
+            Throwable cause = e.getCause();
+
+            assertThat(cause).isInstanceOf(IllegalArgumentException.class);
+
+            Throwable oneLevelInnerCause = cause.getCause();
+
+            assertThat(oneLevelInnerCause).isInstanceOf(JsonMappingException.class);
+            assertThat(oneLevelInnerCause.getMessage()).startsWith("BadSerializer");
+            assertThat(oneLevelInnerCause.getCause().getMessage()).contains("bad");
+            assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.CUSTOM_SERIALIZER_EXCEPTION);
         }
     }
 
