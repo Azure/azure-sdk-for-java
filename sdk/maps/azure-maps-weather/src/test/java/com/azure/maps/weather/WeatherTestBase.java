@@ -16,7 +16,6 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.weather.models.ActiveStormResult;
 import com.azure.maps.weather.models.AirQualityResult;
