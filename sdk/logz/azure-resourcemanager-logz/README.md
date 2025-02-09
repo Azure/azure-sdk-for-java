@@ -1,5 +1,7 @@
 # Azure Resource Manager logz client library for Java
 
+Please note, this package has been deprecated and will no longer be maintained after 01/01/2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 Azure Resource Manager logz client library for Java.
 
 This package contains Microsoft Azure SDK for logz Management SDK.  Package tag package-2020-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
