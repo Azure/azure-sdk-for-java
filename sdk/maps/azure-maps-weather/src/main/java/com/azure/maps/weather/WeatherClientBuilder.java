@@ -44,7 +44,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Builder class used to instantiate both synchronous and asynchronous {@link WeatherClient} clients.
+ * Builder class used to instantiate both synchronous and asynchronous
+ * {@link WeatherClient} clients.
  */
 @ServiceClientBuilder(serviceClients = { WeatherClient.class, WeatherAsyncClient.class })
 public final class WeatherClientBuilder implements AzureKeyCredentialTrait<WeatherClientBuilder>,
@@ -89,10 +90,13 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     }
 
     /**
-     * Sets the Azure Maps client id for use with Azure AD Authentication. This client id
+     * Sets the Azure Maps client id for use with Azure AD Authentication. This
+     * client id
      * is the account-based GUID that appears on the Azure Maps Authentication page.
      * <p>
-     * More details: <a href="https://docs.microsoft.com/azure/azure-maps/azure-maps-authentication">Azure Maps AD Authentication</a>
+     * More details: <a href=
+     * "https://docs.microsoft.com/azure/azure-maps/azure-maps-authentication">Azure
+     * Maps AD Authentication</a>
      *
      * @param weatherClientId the clientId value.
      * @return the WeatherClientBuilder.
@@ -117,13 +121,18 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     /**
      * Sets the {@link WeatherServiceVersion} that is used when making API requests.
      * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * If a service version is not provided, the service version that will be used
+     * will be the latest known service
+     * version based on the version of the client library being used. If no service
+     * version is specified, updating to a
+     * newer version of the client library will have the result of potentially
+     * moving to a newer service version.
      * <p>
-     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
+     * Targeting a specific service version may also mean that the service will
+     * return an error for newer APIs.
      *
-     * @param version {@link WeatherServiceVersion} of the service to be used when making requests.
+     * @param version {@link WeatherServiceVersion} of the service to be used when
+     *                making requests.
      * @return the updated WeatherClientBuilder object
      */
     public WeatherClientBuilder serviceVersion(WeatherServiceVersion version) {
@@ -162,7 +171,8 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     }
 
     /**
-     * Sets The configuration store that is used during construction of the service client.
+     * Sets The configuration store that is used during construction of the service
+     * client.
      *
      * @param configuration the configuration value.
      * @return the WeatherClientBuilder.
@@ -185,7 +195,8 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     }
 
     /**
-     * Sets The retry policy that will attempt to retry failed requests, if applicable.
+     * Sets The retry policy that will attempt to retry failed requests, if
+     * applicable.
      *
      * @param retryPolicy the retryPolicy value.
      * @return the WeatherClientBuilder.
@@ -196,7 +207,8 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     }
 
     /**
-     * Sets The client options such as application ID and custom headers to set on a request.
+     * Sets The client options such as application ID and custom headers to set on a
+     * request.
      *
      * @param clientOptions the clientOptions value.
      * @return the WeatherClientBuilder.
@@ -220,7 +232,8 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     /**
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
-     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP
+     *                        requests.
      * @return The updated {@link WeatherClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
@@ -232,7 +245,8 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     /**
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP
+     *                      requests.
      * @return The updated {@link WeatherClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
@@ -244,7 +258,8 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     /**
      * Sets the {@link AzureSasCredential} used to authenticate HTTP requests.
      *
-     * @param sasCredential The {@link AzureSasCredential} used to authenticate HTTP requests.
+     * @param sasCredential The {@link AzureSasCredential} used to authenticate HTTP
+     *                      requests.
      * @return The updated {@link WeatherClientBuilder} object.
      * @throws NullPointerException If {@code sasCredential} is null.
      */
@@ -255,6 +270,7 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
 
     /**
      * Sets retry options
+     * 
      * @param retryOptions the retry options for the client
      * @return a reference to this {@code WeatherClientBuilder}
      */

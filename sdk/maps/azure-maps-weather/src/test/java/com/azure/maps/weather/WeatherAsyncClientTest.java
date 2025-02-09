@@ -161,7 +161,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncGetCurrentConditions(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier
-            .create(client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), null, null, null, null))
+            .create(client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), null, true, null, null))
             .assertNext(
                 actualResults -> validateGetCurrentConditions(TestUtils.getExpectedCurrentConditions(), actualResults))
             .expectComplete()
@@ -175,7 +175,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncGetCurrentConditionsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier
-            .create(client.getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), null, null, null,
+            .create(client.getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), null, true, null,
                 null, null))
             .assertNext(response -> validateGetCurrentConditionsWithResponse(TestUtils.getExpectedCurrentConditions(),
                 response))

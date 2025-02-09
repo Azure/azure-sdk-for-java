@@ -228,7 +228,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the realFeelTemperature property: RealFeel™ Temperature being returned.
+     * Get the realFeelTemperature property: RealFeelâ„¢ Temperature being returned.
      * Describes what the temperature
      * really feels like in the shade.
      *

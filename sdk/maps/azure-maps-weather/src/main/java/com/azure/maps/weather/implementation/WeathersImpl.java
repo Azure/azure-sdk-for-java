@@ -49,8 +49,7 @@ import java.util.List;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * Weathers.
+ * An instance of this class provides access to all the operations defined in Weathers.
  */
 public final class WeathersImpl {
     /**
@@ -65,9 +64,8 @@ public final class WeathersImpl {
 
     /**
      * Initializes an instance of WeathersImpl.
-     *
-     * @param client the instance of the service client containing this operation
-     *               class.
+     * 
+     * @param client the instance of the service client containing this operation class.
      */
     WeathersImpl(WeatherClientImpl client) {
         this.service = RestProxy.create(WeathersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -75,8 +73,7 @@ public final class WeathersImpl {
     }
 
     /**
-     * The interface defining all the services for WeatherClientWeathers to be used
-     * by the proxy service to perform REST
+     * The interface defining all the services for WeatherClientWeathers to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{$host}")
@@ -206,7 +203,7 @@ public final class WeathersImpl {
         @Get("/weather/airQuality/forecasts/daily/{format}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<DailyAirQualityForecastResult>> getDailyAirQualityForecast(@HostParam("$host") String host,
+        Mono<Response<DailyAirQualityForecastResult>> getAirQualityDailyForecasts(@HostParam("$host") String host,
             @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
             @PathParam("format") JsonFormat format, @QueryParam("language") String language,
             @QueryParam("query") String coordinates, @QueryParam("duration") DailyDuration duration,
@@ -215,7 +212,7 @@ public final class WeathersImpl {
         @Get("/weather/airQuality/forecasts/hourly/{format}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<AirQualityResult>> getHourlyAirQualityForecast(@HostParam("$host") String host,
+        Mono<Response<AirQualityResult>> getAirQualityHourlyForecasts(@HostParam("$host") String host,
             @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
             @PathParam("format") JsonFormat format, @QueryParam("language") String language,
             @QueryParam("query") String coordinates, @QueryParam("duration") HourlyDuration duration,
@@ -251,67 +248,45 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily
-     * forecast for up to 10 days.
-     *
-     *
-     *
-     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather
-     * forecast by the hour for the next 1,
-     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the
-     * given the given coordinate location.
-     * The API returns details such as temperature, humidity, wind, precipitation,
-     * and ultraviolet (UV) index. For more
+     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily forecast for up to 10 days.
+     * 
+     * 
+     * 
+     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather forecast by the hour for the next 1,
+     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the given the given coordinate location.
+     * The API returns details such as temperature, humidity, wind, precipitation, and ultraviolet (UV) index. For more
      * information, see [Request hourly weather forecast
      * data](/azure/azure-maps/how-to-request-weather-data#request-hourly-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast
-     * for the next 1, 12, 24 hours (1 day),
-     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can
-     * also request hourly forecast for
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast for the next 1, 12, 24 hours (1 day),
+     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can also request hourly forecast for
      * the next 120 (5 days) and 240 hours (10 days).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Time frame of the returned weather forecast. By default,
-     *                    the forecast data for next hour will be
-     *                    returned. Available values are
-     *                    * `1` - Return forecast data for the next hour. Default
-     *                    value.
-     *                    * `12` - Return hourly forecast for next 12 hours.
-     *                    * `24` - Return hourly forecast for next 24 hours.
-     *                    * `72` - Return hourly forecast for next 72 hours (3
-     *                    days).
-     *                    * `120` - Return hourly forecast for next 120 hours (5
-     *                    days). Only available in S1 SKU.
-     *                    * `240` - Return hourly forecast for next 240 hours (10
-     *                    days). Only available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Time frame of the returned weather forecast. By default, the forecast data for next hour will be
+     * returned. Available values are
+     * * `1` - Return forecast data for the next hour. Default value.
+     * * `12` - Return hourly forecast for next 12 hours.
+     * * `24` - Return hourly forecast for next 24 hours.
+     * * `72` - Return hourly forecast for next 72 hours (3 days).
+     * * `120` - Return hourly forecast for next 120 hours (5 days). Only available in S1 SKU.
+     * * `240` - Return hourly forecast for next 240 hours (10 days). Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HourlyForecastResult>> getHourlyForecastWithResponseAsync(JsonFormat format,
@@ -325,68 +300,46 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily
-     * forecast for up to 10 days.
-     *
-     *
-     *
-     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather
-     * forecast by the hour for the next 1,
-     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the
-     * given the given coordinate location.
-     * The API returns details such as temperature, humidity, wind, precipitation,
-     * and ultraviolet (UV) index. For more
+     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily forecast for up to 10 days.
+     * 
+     * 
+     * 
+     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather forecast by the hour for the next 1,
+     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the given the given coordinate location.
+     * The API returns details such as temperature, humidity, wind, precipitation, and ultraviolet (UV) index. For more
      * information, see [Request hourly weather forecast
      * data](/azure/azure-maps/how-to-request-weather-data#request-hourly-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast
-     * for the next 1, 12, 24 hours (1 day),
-     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can
-     * also request hourly forecast for
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast for the next 1, 12, 24 hours (1 day),
+     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can also request hourly forecast for
      * the next 120 (5 days) and 240 hours (10 days).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Time frame of the returned weather forecast. By default,
-     *                    the forecast data for next hour will be
-     *                    returned. Available values are
-     *                    * `1` - Return forecast data for the next hour. Default
-     *                    value.
-     *                    * `12` - Return hourly forecast for next 12 hours.
-     *                    * `24` - Return hourly forecast for next 24 hours.
-     *                    * `72` - Return hourly forecast for next 72 hours (3
-     *                    days).
-     *                    * `120` - Return hourly forecast for next 120 hours (5
-     *                    days). Only available in S1 SKU.
-     *                    * `240` - Return hourly forecast for next 240 hours (10
-     *                    days). Only available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Time frame of the returned weather forecast. By default, the forecast data for next hour will be
+     * returned. Available values are
+     * * `1` - Return forecast data for the next hour. Default value.
+     * * `12` - Return hourly forecast for next 12 hours.
+     * * `24` - Return hourly forecast for next 24 hours.
+     * * `72` - Return hourly forecast for next 72 hours (3 days).
+     * * `120` - Return hourly forecast for next 120 hours (5 days). Only available in S1 SKU.
+     * * `240` - Return hourly forecast for next 240 hours (10 days). Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HourlyForecastResult>> getHourlyForecastWithResponseAsync(JsonFormat format,
@@ -399,65 +352,44 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily
-     * forecast for up to 10 days.
-     *
-     *
-     *
-     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather
-     * forecast by the hour for the next 1,
-     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the
-     * given the given coordinate location.
-     * The API returns details such as temperature, humidity, wind, precipitation,
-     * and ultraviolet (UV) index. For more
+     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily forecast for up to 10 days.
+     * 
+     * 
+     * 
+     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather forecast by the hour for the next 1,
+     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the given the given coordinate location.
+     * The API returns details such as temperature, humidity, wind, precipitation, and ultraviolet (UV) index. For more
      * information, see [Request hourly weather forecast
      * data](/azure/azure-maps/how-to-request-weather-data#request-hourly-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast
-     * for the next 1, 12, 24 hours (1 day),
-     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can
-     * also request hourly forecast for
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast for the next 1, 12, 24 hours (1 day),
+     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can also request hourly forecast for
      * the next 120 (5 days) and 240 hours (10 days).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Time frame of the returned weather forecast. By default,
-     *                    the forecast data for next hour will be
-     *                    returned. Available values are
-     *                    * `1` - Return forecast data for the next hour. Default
-     *                    value.
-     *                    * `12` - Return hourly forecast for next 12 hours.
-     *                    * `24` - Return hourly forecast for next 24 hours.
-     *                    * `72` - Return hourly forecast for next 72 hours (3
-     *                    days).
-     *                    * `120` - Return hourly forecast for next 120 hours (5
-     *                    days). Only available in S1 SKU.
-     *                    * `240` - Return hourly forecast for next 240 hours (10
-     *                    days). Only available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Time frame of the returned weather forecast. By default, the forecast data for next hour will be
+     * returned. Available values are
+     * * `1` - Return forecast data for the next hour. Default value.
+     * * `12` - Return hourly forecast for next 12 hours.
+     * * `24` - Return hourly forecast for next 24 hours.
+     * * `72` - Return hourly forecast for next 72 hours (3 days).
+     * * `120` - Return hourly forecast for next 120 hours (5 days). Only available in S1 SKU.
+     * * `240` - Return hourly forecast for next 240 hours (10 days). Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -468,66 +400,45 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily
-     * forecast for up to 10 days.
-     *
-     *
-     *
-     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather
-     * forecast by the hour for the next 1,
-     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the
-     * given the given coordinate location.
-     * The API returns details such as temperature, humidity, wind, precipitation,
-     * and ultraviolet (UV) index. For more
+     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily forecast for up to 10 days.
+     * 
+     * 
+     * 
+     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather forecast by the hour for the next 1,
+     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the given the given coordinate location.
+     * The API returns details such as temperature, humidity, wind, precipitation, and ultraviolet (UV) index. For more
      * information, see [Request hourly weather forecast
      * data](/azure/azure-maps/how-to-request-weather-data#request-hourly-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast
-     * for the next 1, 12, 24 hours (1 day),
-     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can
-     * also request hourly forecast for
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast for the next 1, 12, 24 hours (1 day),
+     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can also request hourly forecast for
      * the next 120 (5 days) and 240 hours (10 days).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Time frame of the returned weather forecast. By default,
-     *                    the forecast data for next hour will be
-     *                    returned. Available values are
-     *                    * `1` - Return forecast data for the next hour. Default
-     *                    value.
-     *                    * `12` - Return hourly forecast for next 12 hours.
-     *                    * `24` - Return hourly forecast for next 24 hours.
-     *                    * `72` - Return hourly forecast for next 72 hours (3
-     *                    days).
-     *                    * `120` - Return hourly forecast for next 120 hours (5
-     *                    days). Only available in S1 SKU.
-     *                    * `240` - Return hourly forecast for next 240 hours (10
-     *                    days). Only available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Time frame of the returned weather forecast. By default, the forecast data for next hour will be
+     * returned. Available values are
+     * * `1` - Return forecast data for the next hour. Default value.
+     * * `12` - Return hourly forecast for next 12 hours.
+     * * `24` - Return hourly forecast for next 24 hours.
+     * * `72` - Return hourly forecast for next 72 hours (3 days).
+     * * `120` - Return hourly forecast for next 120 hours (5 days). Only available in S1 SKU.
+     * * `240` - Return hourly forecast for next 240 hours (10 days). Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -538,66 +449,45 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily
-     * forecast for up to 10 days.
-     *
-     *
-     *
-     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather
-     * forecast by the hour for the next 1,
-     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the
-     * given the given coordinate location.
-     * The API returns details such as temperature, humidity, wind, precipitation,
-     * and ultraviolet (UV) index. For more
+     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily forecast for up to 10 days.
+     * 
+     * 
+     * 
+     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather forecast by the hour for the next 1,
+     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the given the given coordinate location.
+     * The API returns details such as temperature, humidity, wind, precipitation, and ultraviolet (UV) index. For more
      * information, see [Request hourly weather forecast
      * data](/azure/azure-maps/how-to-request-weather-data#request-hourly-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast
-     * for the next 1, 12, 24 hours (1 day),
-     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can
-     * also request hourly forecast for
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast for the next 1, 12, 24 hours (1 day),
+     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can also request hourly forecast for
      * the next 120 (5 days) and 240 hours (10 days).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Time frame of the returned weather forecast. By default,
-     *                    the forecast data for next hour will be
-     *                    returned. Available values are
-     *                    * `1` - Return forecast data for the next hour. Default
-     *                    value.
-     *                    * `12` - Return hourly forecast for next 12 hours.
-     *                    * `24` - Return hourly forecast for next 24 hours.
-     *                    * `72` - Return hourly forecast for next 72 hours (3
-     *                    days).
-     *                    * `120` - Return hourly forecast for next 120 hours (5
-     *                    days). Only available in S1 SKU.
-     *                    * `240` - Return hourly forecast for next 240 hours (10
-     *                    days). Only available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Time frame of the returned weather forecast. By default, the forecast data for next hour will be
+     * returned. Available values are
+     * * `1` - Return forecast data for the next hour. Default value.
+     * * `12` - Return hourly forecast for next 12 hours.
+     * * `24` - Return hourly forecast for next 24 hours.
+     * * `72` - Return hourly forecast for next 72 hours (3 days).
+     * * `120` - Return hourly forecast for next 120 hours (5 days). Only available in S1 SKU.
+     * * `240` - Return hourly forecast for next 240 hours (10 days). Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -607,65 +497,44 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily
-     * forecast for up to 10 days.
-     *
-     *
-     *
-     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather
-     * forecast by the hour for the next 1,
-     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the
-     * given the given coordinate location.
-     * The API returns details such as temperature, humidity, wind, precipitation,
-     * and ultraviolet (UV) index. For more
+     * Use to get a detailed hourly weather forecast for up to 24 hours or a daily forecast for up to 10 days.
+     * 
+     * 
+     * 
+     * The `Get Hourly Forecast` API is an HTTP `GET` that Request detailed weather forecast by the hour for the next 1,
+     * 12, 24 (1 day), 72 (3 days), 120 (5 days), and 240 hours (10 days) for the given the given coordinate location.
+     * The API returns details such as temperature, humidity, wind, precipitation, and ultraviolet (UV) index. For more
      * information, see [Request hourly weather forecast
      * data](/azure/azure-maps/how-to-request-weather-data#request-hourly-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast
-     * for the next 1, 12, 24 hours (1 day),
-     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can
-     * also request hourly forecast for
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request hourly forecast for the next 1, 12, 24 hours (1 day),
+     * and 72 hours (3 days). If you are using Gen1 S1 or Gen2 pricing tier, you can also request hourly forecast for
      * the next 120 (5 days) and 240 hours (10 days).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Time frame of the returned weather forecast. By default,
-     *                    the forecast data for next hour will be
-     *                    returned. Available values are
-     *                    * `1` - Return forecast data for the next hour. Default
-     *                    value.
-     *                    * `12` - Return hourly forecast for next 12 hours.
-     *                    * `24` - Return hourly forecast for next 24 hours.
-     *                    * `72` - Return hourly forecast for next 72 hours (3
-     *                    days).
-     *                    * `120` - Return hourly forecast for next 120 hours (5
-     *                    days). Only available in S1 SKU.
-     *                    * `240` - Return hourly forecast for next 240 hours (10
-     *                    days). Only available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Time frame of the returned weather forecast. By default, the forecast data for next hour will be
+     * returned. Available values are
+     * * `1` - Return forecast data for the next hour. Default value.
+     * * `12` - Return hourly forecast for next 12 hours.
+     * * `24` - Return hourly forecast for next 24 hours.
+     * * `72` - Return hourly forecast for next 72 hours (3 days).
+     * * `120` - Return hourly forecast for next 120 hours (5 days). Only available in S1 SKU.
+     * * `240` - Return hourly forecast for next 240 hours (10 days). Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -675,54 +544,36 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals
-     * of 1, 5 and 15 minutes.
-     *
-     *
-     *
-     * The `Get Minute Forecast` API is an HTTP `GET` request that returns
-     * minute-by-minute forecasts for a given
-     * location for the next 120 minutes. Users can request weather forecasts in
-     * intervals of 1, 5 and 15 minutes. The
-     * response will include details such as the type of precipitation (including
-     * rain, snow, or a mixture of both),
-     * start time, and precipitation intensity value (dBZ). For more information,
-     * see [Request minute-by-minute weather
-     * forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param interval    Specifies time interval in minutes for the returned
-     *                    weather forecast. Supported values are
-     *                    * `1` - Retrieve forecast for 1-minute intervals. Returned
-     *                    by default.
-     *                    * `5` - Retrieve forecasts for 5-minute intervals.
-     *                    * `15` - Retrieve forecasts for 15-minute intervals.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals of 1, 5 and 15 minutes.
+     * 
+     * 
+     * 
+     * The `Get Minute Forecast` API is an HTTP `GET` request that returns minute-by-minute forecasts for a given
+     * location for the next 120 minutes. Users can request weather forecasts in intervals of 1, 5 and 15 minutes. The
+     * response will include details such as the type of precipitation (including rain, snow, or a mixture of both),
+     * start time, and precipitation intensity value (dBZ). For more information, see [Request minute-by-minute weather
+     * forecast data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param interval Specifies time interval in minutes for the returned weather forecast. Supported values are
+     * * `1` - Retrieve forecast for 1-minute intervals. Returned by default.
+     * * `5` - Retrieve forecasts for 5-minute intervals.
+     * * `15` - Retrieve forecasts for 15-minute intervals.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MinuteForecastResult>> getMinuteForecastWithResponseAsync(JsonFormat format,
@@ -736,55 +587,37 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals
-     * of 1, 5 and 15 minutes.
-     *
-     *
-     *
-     * The `Get Minute Forecast` API is an HTTP `GET` request that returns
-     * minute-by-minute forecasts for a given
-     * location for the next 120 minutes. Users can request weather forecasts in
-     * intervals of 1, 5 and 15 minutes. The
-     * response will include details such as the type of precipitation (including
-     * rain, snow, or a mixture of both),
-     * start time, and precipitation intensity value (dBZ). For more information,
-     * see [Request minute-by-minute weather
-     * forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param interval    Specifies time interval in minutes for the returned
-     *                    weather forecast. Supported values are
-     *                    * `1` - Retrieve forecast for 1-minute intervals. Returned
-     *                    by default.
-     *                    * `5` - Retrieve forecasts for 5-minute intervals.
-     *                    * `15` - Retrieve forecasts for 15-minute intervals.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals of 1, 5 and 15 minutes.
+     * 
+     * 
+     * 
+     * The `Get Minute Forecast` API is an HTTP `GET` request that returns minute-by-minute forecasts for a given
+     * location for the next 120 minutes. Users can request weather forecasts in intervals of 1, 5 and 15 minutes. The
+     * response will include details such as the type of precipitation (including rain, snow, or a mixture of both),
+     * start time, and precipitation intensity value (dBZ). For more information, see [Request minute-by-minute weather
+     * forecast data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param interval Specifies time interval in minutes for the returned weather forecast. Supported values are
+     * * `1` - Retrieve forecast for 1-minute intervals. Returned by default.
+     * * `5` - Retrieve forecasts for 5-minute intervals.
+     * * `15` - Retrieve forecasts for 15-minute intervals.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MinuteForecastResult>> getMinuteForecastWithResponseAsync(JsonFormat format,
@@ -797,52 +630,35 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals
-     * of 1, 5 and 15 minutes.
-     *
-     *
-     *
-     * The `Get Minute Forecast` API is an HTTP `GET` request that returns
-     * minute-by-minute forecasts for a given
-     * location for the next 120 minutes. Users can request weather forecasts in
-     * intervals of 1, 5 and 15 minutes. The
-     * response will include details such as the type of precipitation (including
-     * rain, snow, or a mixture of both),
-     * start time, and precipitation intensity value (dBZ). For more information,
-     * see [Request minute-by-minute weather
-     * forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param interval    Specifies time interval in minutes for the returned
-     *                    weather forecast. Supported values are
-     *                    * `1` - Retrieve forecast for 1-minute intervals. Returned
-     *                    by default.
-     *                    * `5` - Retrieve forecasts for 5-minute intervals.
-     *                    * `15` - Retrieve forecasts for 15-minute intervals.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals of 1, 5 and 15 minutes.
+     * 
+     * 
+     * 
+     * The `Get Minute Forecast` API is an HTTP `GET` request that returns minute-by-minute forecasts for a given
+     * location for the next 120 minutes. Users can request weather forecasts in intervals of 1, 5 and 15 minutes. The
+     * response will include details such as the type of precipitation (including rain, snow, or a mixture of both),
+     * start time, and precipitation intensity value (dBZ). For more information, see [Request minute-by-minute weather
+     * forecast data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param interval Specifies time interval in minutes for the returned weather forecast. Supported values are
+     * * `1` - Retrieve forecast for 1-minute intervals. Returned by default.
+     * * `5` - Retrieve forecasts for 5-minute intervals.
+     * * `15` - Retrieve forecasts for 15-minute intervals.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -853,53 +669,36 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals
-     * of 1, 5 and 15 minutes.
-     *
-     *
-     *
-     * The `Get Minute Forecast` API is an HTTP `GET` request that returns
-     * minute-by-minute forecasts for a given
-     * location for the next 120 minutes. Users can request weather forecasts in
-     * intervals of 1, 5 and 15 minutes. The
-     * response will include details such as the type of precipitation (including
-     * rain, snow, or a mixture of both),
-     * start time, and precipitation intensity value (dBZ). For more information,
-     * see [Request minute-by-minute weather
-     * forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param interval    Specifies time interval in minutes for the returned
-     *                    weather forecast. Supported values are
-     *                    * `1` - Retrieve forecast for 1-minute intervals. Returned
-     *                    by default.
-     *                    * `5` - Retrieve forecasts for 5-minute intervals.
-     *                    * `15` - Retrieve forecasts for 15-minute intervals.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals of 1, 5 and 15 minutes.
+     * 
+     * 
+     * 
+     * The `Get Minute Forecast` API is an HTTP `GET` request that returns minute-by-minute forecasts for a given
+     * location for the next 120 minutes. Users can request weather forecasts in intervals of 1, 5 and 15 minutes. The
+     * response will include details such as the type of precipitation (including rain, snow, or a mixture of both),
+     * start time, and precipitation intensity value (dBZ). For more information, see [Request minute-by-minute weather
+     * forecast data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param interval Specifies time interval in minutes for the returned weather forecast. Supported values are
+     * * `1` - Retrieve forecast for 1-minute intervals. Returned by default.
+     * * `5` - Retrieve forecasts for 5-minute intervals.
+     * * `15` - Retrieve forecasts for 15-minute intervals.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -910,53 +709,36 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals
-     * of 1, 5 and 15 minutes.
-     *
-     *
-     *
-     * The `Get Minute Forecast` API is an HTTP `GET` request that returns
-     * minute-by-minute forecasts for a given
-     * location for the next 120 minutes. Users can request weather forecasts in
-     * intervals of 1, 5 and 15 minutes. The
-     * response will include details such as the type of precipitation (including
-     * rain, snow, or a mixture of both),
-     * start time, and precipitation intensity value (dBZ). For more information,
-     * see [Request minute-by-minute weather
-     * forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param interval    Specifies time interval in minutes for the returned
-     *                    weather forecast. Supported values are
-     *                    * `1` - Retrieve forecast for 1-minute intervals. Returned
-     *                    by default.
-     *                    * `5` - Retrieve forecasts for 5-minute intervals.
-     *                    * `15` - Retrieve forecasts for 15-minute intervals.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals of 1, 5 and 15 minutes.
+     * 
+     * 
+     * 
+     * The `Get Minute Forecast` API is an HTTP `GET` request that returns minute-by-minute forecasts for a given
+     * location for the next 120 minutes. Users can request weather forecasts in intervals of 1, 5 and 15 minutes. The
+     * response will include details such as the type of precipitation (including rain, snow, or a mixture of both),
+     * start time, and precipitation intensity value (dBZ). For more information, see [Request minute-by-minute weather
+     * forecast data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param interval Specifies time interval in minutes for the returned weather forecast. Supported values are
+     * * `1` - Retrieve forecast for 1-minute intervals. Returned by default.
+     * * `5` - Retrieve forecasts for 5-minute intervals.
+     * * `15` - Retrieve forecasts for 15-minute intervals.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -966,52 +748,35 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals
-     * of 1, 5 and 15 minutes.
-     *
-     *
-     *
-     * The `Get Minute Forecast` API is an HTTP `GET` request that returns
-     * minute-by-minute forecasts for a given
-     * location for the next 120 minutes. Users can request weather forecasts in
-     * intervals of 1, 5 and 15 minutes. The
-     * response will include details such as the type of precipitation (including
-     * rain, snow, or a mixture of both),
-     * start time, and precipitation intensity value (dBZ). For more information,
-     * see [Request minute-by-minute weather
-     * forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param interval    Specifies time interval in minutes for the returned
-     *                    weather forecast. Supported values are
-     *                    * `1` - Retrieve forecast for 1-minute intervals. Returned
-     *                    by default.
-     *                    * `5` - Retrieve forecasts for 5-minute intervals.
-     *                    * `15` - Retrieve forecasts for 15-minute intervals.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * Use to get a minute-by-minute forecast for the next 120 minutes in intervals of 1, 5 and 15 minutes.
+     * 
+     * 
+     * 
+     * The `Get Minute Forecast` API is an HTTP `GET` request that returns minute-by-minute forecasts for a given
+     * location for the next 120 minutes. Users can request weather forecasts in intervals of 1, 5 and 15 minutes. The
+     * response will include details such as the type of precipitation (including rain, snow, or a mixture of both),
+     * start time, and precipitation intensity value (dBZ). For more information, see [Request minute-by-minute weather
+     * forecast data](/azure/azure-maps/how-to-request-weather-data#request-minute-by-minute-weather-forecast-data).
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param interval Specifies time interval in minutes for the returned weather forecast. Supported values are
+     * * `1` - Retrieve forecast for 1-minute intervals. Returned by default.
+     * * `5` - Retrieve forecasts for 5-minute intervals.
+     * * `15` - Retrieve forecasts for 15-minute intervals.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1022,53 +787,37 @@ public final class WeathersImpl {
 
     /**
      * Use to get a Quarter-Day Forecast for the next 1, 5, 10, or 15 days.
-     *
-     *
-     *
-     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a
-     * detailed weather forecast by
-     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response
-     * data is presented by quarters of the
-     * day - morning, afternoon, evening, and overnight. Details such as
-     * temperature, humidity, wind, precipitation, and
+     * 
+     * 
+     * 
+     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a detailed weather forecast by
+     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response data is presented by quarters of the
+     * day - morning, afternoon, evening, and overnight. Details such as temperature, humidity, wind, precipitation, and
      * UV index are returned.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the quester-day forecast
-     *                    responses are returned. Supported values
-     *                    are:
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for next 10 days.
-     *                    * `15` - Return forecast data for the next 15 days.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the quester-day forecast responses are returned. Supported values
+     * are:
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for next 10 days.
+     * * `15` - Return forecast data for the next 15 days.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QuarterDayForecastResult>> getQuarterDayForecastWithResponseAsync(JsonFormat format,
@@ -1083,54 +832,38 @@ public final class WeathersImpl {
 
     /**
      * Use to get a Quarter-Day Forecast for the next 1, 5, 10, or 15 days.
-     *
-     *
-     *
-     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a
-     * detailed weather forecast by
-     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response
-     * data is presented by quarters of the
-     * day - morning, afternoon, evening, and overnight. Details such as
-     * temperature, humidity, wind, precipitation, and
+     * 
+     * 
+     * 
+     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a detailed weather forecast by
+     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response data is presented by quarters of the
+     * day - morning, afternoon, evening, and overnight. Details such as temperature, humidity, wind, precipitation, and
      * UV index are returned.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the quester-day forecast
-     *                    responses are returned. Supported values
-     *                    are:
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for next 10 days.
-     *                    * `15` - Return forecast data for the next 15 days.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the quester-day forecast responses are returned. Supported values
+     * are:
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for next 10 days.
+     * * `15` - Return forecast data for the next 15 days.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QuarterDayForecastResult>> getQuarterDayForecastWithResponseAsync(JsonFormat format,
@@ -1144,51 +877,36 @@ public final class WeathersImpl {
 
     /**
      * Use to get a Quarter-Day Forecast for the next 1, 5, 10, or 15 days.
-     *
-     *
-     *
-     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a
-     * detailed weather forecast by
-     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response
-     * data is presented by quarters of the
-     * day - morning, afternoon, evening, and overnight. Details such as
-     * temperature, humidity, wind, precipitation, and
+     * 
+     * 
+     * 
+     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a detailed weather forecast by
+     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response data is presented by quarters of the
+     * day - morning, afternoon, evening, and overnight. Details such as temperature, humidity, wind, precipitation, and
      * UV index are returned.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the quester-day forecast
-     *                    responses are returned. Supported values
-     *                    are:
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for next 10 days.
-     *                    * `15` - Return forecast data for the next 15 days.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the quester-day forecast responses are returned. Supported values
+     * are:
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for next 10 days.
+     * * `15` - Return forecast data for the next 15 days.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1200,52 +918,37 @@ public final class WeathersImpl {
 
     /**
      * Use to get a Quarter-Day Forecast for the next 1, 5, 10, or 15 days.
-     *
-     *
-     *
-     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a
-     * detailed weather forecast by
-     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response
-     * data is presented by quarters of the
-     * day - morning, afternoon, evening, and overnight. Details such as
-     * temperature, humidity, wind, precipitation, and
+     * 
+     * 
+     * 
+     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a detailed weather forecast by
+     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response data is presented by quarters of the
+     * day - morning, afternoon, evening, and overnight. Details such as temperature, humidity, wind, precipitation, and
      * UV index are returned.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the quester-day forecast
-     *                    responses are returned. Supported values
-     *                    are:
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for next 10 days.
-     *                    * `15` - Return forecast data for the next 15 days.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the quester-day forecast responses are returned. Supported values
+     * are:
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for next 10 days.
+     * * `15` - Return forecast data for the next 15 days.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1257,52 +960,37 @@ public final class WeathersImpl {
 
     /**
      * Use to get a Quarter-Day Forecast for the next 1, 5, 10, or 15 days.
-     *
-     *
-     *
-     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a
-     * detailed weather forecast by
-     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response
-     * data is presented by quarters of the
-     * day - morning, afternoon, evening, and overnight. Details such as
-     * temperature, humidity, wind, precipitation, and
+     * 
+     * 
+     * 
+     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a detailed weather forecast by
+     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response data is presented by quarters of the
+     * day - morning, afternoon, evening, and overnight. Details such as temperature, humidity, wind, precipitation, and
      * UV index are returned.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the quester-day forecast
-     *                    responses are returned. Supported values
-     *                    are:
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for next 10 days.
-     *                    * `15` - Return forecast data for the next 15 days.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the quester-day forecast responses are returned. Supported values
+     * are:
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for next 10 days.
+     * * `15` - Return forecast data for the next 15 days.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1313,51 +1001,36 @@ public final class WeathersImpl {
 
     /**
      * Use to get a Quarter-Day Forecast for the next 1, 5, 10, or 15 days.
-     *
-     *
-     *
-     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a
-     * detailed weather forecast by
-     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response
-     * data is presented by quarters of the
-     * day - morning, afternoon, evening, and overnight. Details such as
-     * temperature, humidity, wind, precipitation, and
+     * 
+     * 
+     * 
+     * The `Get Quarter-Day Forecast` API is an HTTP `GET` request that returns a detailed weather forecast by
+     * quarter-day for the next 1, 5, 10, or 15 days for a given location. Response data is presented by quarters of the
+     * day - morning, afternoon, evening, and overnight. Details such as temperature, humidity, wind, precipitation, and
      * UV index are returned.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the quester-day forecast
-     *                    responses are returned. Supported values
-     *                    are:
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for next 10 days.
-     *                    * `15` - Return forecast data for the next 15 days.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the quester-day forecast responses are returned. Supported values
+     * are:
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for next 10 days.
+     * * `15` - Return forecast data for the next 15 days.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1369,65 +1042,43 @@ public final class WeathersImpl {
 
     /**
      * Use to get current weather conditions.
-     *
-     *
-     *
-     * The `Get Current Conditions` API is an HTTP `GET` request that returns
-     * detailed current weather conditions such
-     * as precipitation, temperature and wind for a given coordinate location. Also,
-     * observations from the past 6 or 24
-     * hours for a particular location can be retrieved. The basic information
-     * returned with The response includes
-     * details such as observation date and time, brief description of the weather
-     * conditions, weather icon,
-     * precipitation indicator flags, and temperature. Additional details such as
-     * RealFeel™ Temperature and UV index are
+     * 
+     * 
+     * 
+     * The `Get Current Conditions` API is an HTTP `GET` request that returns detailed current weather conditions such
+     * as precipitation, temperature and wind for a given coordinate location. Also, observations from the past 6 or 24
+     * hours for a particular location can be retrieved. The basic information returned with The response includes
+     * details such as observation date and time, brief description of the weather conditions, weather icon,
+     * precipitation indicator flags, and temperature. Additional details such as RealFeel™ Temperature and UV index are
      * also returned. For more information, see [Request real-time weather
      * data](/azure/azure-maps/how-to-request-weather-data#request-real-time-weather-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param details     Return full details for the current conditions. Available
-     *                    values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the current
-     *                    condition data, which includes observation date time,
-     *                    weather phrase, icon code, precipitation indicator flag,
-     *                    and temperature.
-     * @param duration    Time frame of the returned weather conditions. By default,
-     *                    the most current weather conditions
-     *                    will be returned. Default value is 0. Supported values
-     *                    are:
-     *                    * `0` - Return the most current weather conditions.
-     *                    * `6` - Return weather conditions from past 6 hours.
-     *                    * `24` - Return weather conditions from past 24 hours.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param details Return full details for the current conditions. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the current condition data, which includes observation date time,
+     * weather phrase, icon code, precipitation indicator flag, and temperature.
+     * @param duration Time frame of the returned weather conditions. By default, the most current weather conditions
+     * will be returned. Default value is 0. Supported values are:
+     * * `0` - Return the most current weather conditions.
+     * * `6` - Return weather conditions from past 6 hours.
+     * * `24` - Return weather conditions from past 24 hours.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CurrentConditionsResult>> getCurrentConditionsWithResponseAsync(JsonFormat format,
@@ -1442,66 +1093,44 @@ public final class WeathersImpl {
 
     /**
      * Use to get current weather conditions.
-     *
-     *
-     *
-     * The `Get Current Conditions` API is an HTTP `GET` request that returns
-     * detailed current weather conditions such
-     * as precipitation, temperature and wind for a given coordinate location. Also,
-     * observations from the past 6 or 24
-     * hours for a particular location can be retrieved. The basic information
-     * returned with The response includes
-     * details such as observation date and time, brief description of the weather
-     * conditions, weather icon,
-     * precipitation indicator flags, and temperature. Additional details such as
-     * RealFeel™ Temperature and UV index are
+     * 
+     * 
+     * 
+     * The `Get Current Conditions` API is an HTTP `GET` request that returns detailed current weather conditions such
+     * as precipitation, temperature and wind for a given coordinate location. Also, observations from the past 6 or 24
+     * hours for a particular location can be retrieved. The basic information returned with The response includes
+     * details such as observation date and time, brief description of the weather conditions, weather icon,
+     * precipitation indicator flags, and temperature. Additional details such as RealFeel™ Temperature and UV index are
      * also returned. For more information, see [Request real-time weather
      * data](/azure/azure-maps/how-to-request-weather-data#request-real-time-weather-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param details     Return full details for the current conditions. Available
-     *                    values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the current
-     *                    condition data, which includes observation date time,
-     *                    weather phrase, icon code, precipitation indicator flag,
-     *                    and temperature.
-     * @param duration    Time frame of the returned weather conditions. By default,
-     *                    the most current weather conditions
-     *                    will be returned. Default value is 0. Supported values
-     *                    are:
-     *                    * `0` - Return the most current weather conditions.
-     *                    * `6` - Return weather conditions from past 6 hours.
-     *                    * `24` - Return weather conditions from past 24 hours.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param details Return full details for the current conditions. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the current condition data, which includes observation date time,
+     * weather phrase, icon code, precipitation indicator flag, and temperature.
+     * @param duration Time frame of the returned weather conditions. By default, the most current weather conditions
+     * will be returned. Default value is 0. Supported values are:
+     * * `0` - Return the most current weather conditions.
+     * * `6` - Return weather conditions from past 6 hours.
+     * * `24` - Return weather conditions from past 24 hours.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CurrentConditionsResult>> getCurrentConditionsWithResponseAsync(JsonFormat format,
@@ -1517,63 +1146,42 @@ public final class WeathersImpl {
 
     /**
      * Use to get current weather conditions.
-     *
-     *
-     *
-     * The `Get Current Conditions` API is an HTTP `GET` request that returns
-     * detailed current weather conditions such
-     * as precipitation, temperature and wind for a given coordinate location. Also,
-     * observations from the past 6 or 24
-     * hours for a particular location can be retrieved. The basic information
-     * returned with The response includes
-     * details such as observation date and time, brief description of the weather
-     * conditions, weather icon,
-     * precipitation indicator flags, and temperature. Additional details such as
-     * RealFeel™ Temperature and UV index are
+     * 
+     * 
+     * 
+     * The `Get Current Conditions` API is an HTTP `GET` request that returns detailed current weather conditions such
+     * as precipitation, temperature and wind for a given coordinate location. Also, observations from the past 6 or 24
+     * hours for a particular location can be retrieved. The basic information returned with The response includes
+     * details such as observation date and time, brief description of the weather conditions, weather icon,
+     * precipitation indicator flags, and temperature. Additional details such as RealFeel™ Temperature and UV index are
      * also returned. For more information, see [Request real-time weather
      * data](/azure/azure-maps/how-to-request-weather-data#request-real-time-weather-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param details     Return full details for the current conditions. Available
-     *                    values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the current
-     *                    condition data, which includes observation date time,
-     *                    weather phrase, icon code, precipitation indicator flag,
-     *                    and temperature.
-     * @param duration    Time frame of the returned weather conditions. By default,
-     *                    the most current weather conditions
-     *                    will be returned. Default value is 0. Supported values
-     *                    are:
-     *                    * `0` - Return the most current weather conditions.
-     *                    * `6` - Return weather conditions from past 6 hours.
-     *                    * `24` - Return weather conditions from past 24 hours.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param details Return full details for the current conditions. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the current condition data, which includes observation date time,
+     * weather phrase, icon code, precipitation indicator flag, and temperature.
+     * @param duration Time frame of the returned weather conditions. By default, the most current weather conditions
+     * will be returned. Default value is 0. Supported values are:
+     * * `0` - Return the most current weather conditions.
+     * * `6` - Return weather conditions from past 6 hours.
+     * * `24` - Return weather conditions from past 24 hours.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1585,64 +1193,43 @@ public final class WeathersImpl {
 
     /**
      * Use to get current weather conditions.
-     *
-     *
-     *
-     * The `Get Current Conditions` API is an HTTP `GET` request that returns
-     * detailed current weather conditions such
-     * as precipitation, temperature and wind for a given coordinate location. Also,
-     * observations from the past 6 or 24
-     * hours for a particular location can be retrieved. The basic information
-     * returned with The response includes
-     * details such as observation date and time, brief description of the weather
-     * conditions, weather icon,
-     * precipitation indicator flags, and temperature. Additional details such as
-     * RealFeel™ Temperature and UV index are
+     * 
+     * 
+     * 
+     * The `Get Current Conditions` API is an HTTP `GET` request that returns detailed current weather conditions such
+     * as precipitation, temperature and wind for a given coordinate location. Also, observations from the past 6 or 24
+     * hours for a particular location can be retrieved. The basic information returned with The response includes
+     * details such as observation date and time, brief description of the weather conditions, weather icon,
+     * precipitation indicator flags, and temperature. Additional details such as RealFeel™ Temperature and UV index are
      * also returned. For more information, see [Request real-time weather
      * data](/azure/azure-maps/how-to-request-weather-data#request-real-time-weather-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param details     Return full details for the current conditions. Available
-     *                    values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the current
-     *                    condition data, which includes observation date time,
-     *                    weather phrase, icon code, precipitation indicator flag,
-     *                    and temperature.
-     * @param duration    Time frame of the returned weather conditions. By default,
-     *                    the most current weather conditions
-     *                    will be returned. Default value is 0. Supported values
-     *                    are:
-     *                    * `0` - Return the most current weather conditions.
-     *                    * `6` - Return weather conditions from past 6 hours.
-     *                    * `24` - Return weather conditions from past 24 hours.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param details Return full details for the current conditions. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the current condition data, which includes observation date time,
+     * weather phrase, icon code, precipitation indicator flag, and temperature.
+     * @param duration Time frame of the returned weather conditions. By default, the most current weather conditions
+     * will be returned. Default value is 0. Supported values are:
+     * * `0` - Return the most current weather conditions.
+     * * `6` - Return weather conditions from past 6 hours.
+     * * `24` - Return weather conditions from past 24 hours.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1654,64 +1241,43 @@ public final class WeathersImpl {
 
     /**
      * Use to get current weather conditions.
-     *
-     *
-     *
-     * The `Get Current Conditions` API is an HTTP `GET` request that returns
-     * detailed current weather conditions such
-     * as precipitation, temperature and wind for a given coordinate location. Also,
-     * observations from the past 6 or 24
-     * hours for a particular location can be retrieved. The basic information
-     * returned with The response includes
-     * details such as observation date and time, brief description of the weather
-     * conditions, weather icon,
-     * precipitation indicator flags, and temperature. Additional details such as
-     * RealFeel™ Temperature and UV index are
+     * 
+     * 
+     * 
+     * The `Get Current Conditions` API is an HTTP `GET` request that returns detailed current weather conditions such
+     * as precipitation, temperature and wind for a given coordinate location. Also, observations from the past 6 or 24
+     * hours for a particular location can be retrieved. The basic information returned with The response includes
+     * details such as observation date and time, brief description of the weather conditions, weather icon,
+     * precipitation indicator flags, and temperature. Additional details such as RealFeel™ Temperature and UV index are
      * also returned. For more information, see [Request real-time weather
      * data](/azure/azure-maps/how-to-request-weather-data#request-real-time-weather-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param details     Return full details for the current conditions. Available
-     *                    values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the current
-     *                    condition data, which includes observation date time,
-     *                    weather phrase, icon code, precipitation indicator flag,
-     *                    and temperature.
-     * @param duration    Time frame of the returned weather conditions. By default,
-     *                    the most current weather conditions
-     *                    will be returned. Default value is 0. Supported values
-     *                    are:
-     *                    * `0` - Return the most current weather conditions.
-     *                    * `6` - Return weather conditions from past 6 hours.
-     *                    * `24` - Return weather conditions from past 24 hours.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param details Return full details for the current conditions. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the current condition data, which includes observation date time,
+     * weather phrase, icon code, precipitation indicator flag, and temperature.
+     * @param duration Time frame of the returned weather conditions. By default, the most current weather conditions
+     * will be returned. Default value is 0. Supported values are:
+     * * `0` - Return the most current weather conditions.
+     * * `6` - Return weather conditions from past 6 hours.
+     * * `24` - Return weather conditions from past 24 hours.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1724,63 +1290,42 @@ public final class WeathersImpl {
 
     /**
      * Use to get current weather conditions.
-     *
-     *
-     *
-     * The `Get Current Conditions` API is an HTTP `GET` request that returns
-     * detailed current weather conditions such
-     * as precipitation, temperature and wind for a given coordinate location. Also,
-     * observations from the past 6 or 24
-     * hours for a particular location can be retrieved. The basic information
-     * returned with The response includes
-     * details such as observation date and time, brief description of the weather
-     * conditions, weather icon,
-     * precipitation indicator flags, and temperature. Additional details such as
-     * RealFeel™ Temperature and UV index are
+     * 
+     * 
+     * 
+     * The `Get Current Conditions` API is an HTTP `GET` request that returns detailed current weather conditions such
+     * as precipitation, temperature and wind for a given coordinate location. Also, observations from the past 6 or 24
+     * hours for a particular location can be retrieved. The basic information returned with The response includes
+     * details such as observation date and time, brief description of the weather conditions, weather icon,
+     * precipitation indicator flags, and temperature. Additional details such as RealFeel™ Temperature and UV index are
      * also returned. For more information, see [Request real-time weather
      * data](/azure/azure-maps/how-to-request-weather-data#request-real-time-weather-data).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param details     Return full details for the current conditions. Available
-     *                    values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the current
-     *                    condition data, which includes observation date time,
-     *                    weather phrase, icon code, precipitation indicator flag,
-     *                    and temperature.
-     * @param duration    Time frame of the returned weather conditions. By default,
-     *                    the most current weather conditions
-     *                    will be returned. Default value is 0. Supported values
-     *                    are:
-     *                    * `0` - Return the most current weather conditions.
-     *                    * `6` - Return weather conditions from past 6 hours.
-     *                    * `24` - Return weather conditions from past 24 hours.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param details Return full details for the current conditions. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the current condition data, which includes observation date time,
+     * weather phrase, icon code, precipitation indicator flag, and temperature.
+     * @param duration Time frame of the returned weather conditions. By default, the most current weather conditions
+     * will be returned. Default value is 0. Supported values are:
+     * * `0` - Return the most current weather conditions.
+     * * `6` - Return weather conditions from past 6 hours.
+     * * `24` - Return weather conditions from past 24 hours.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1791,64 +1336,42 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25,
-     * or 45 days.
-     *
-     *
-     *
-     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed
-     * weather forecast such as temperature
-     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given
-     * coordinate location. The response includes
-     * details such as temperature, wind, precipitation, air quality, and UV index.
-     * For more information, see [Request
-     * daily weather forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for
-     * the next 1, 5, 10, and 15 days. If
-     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily
-     * forecast for the next 25 days, and 45
+     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25, or 45 days.
+     * 
+     * 
+     * 
+     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed weather forecast such as temperature
+     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given coordinate location. The response includes
+     * details such as temperature, wind, precipitation, air quality, and UV index. For more information, see [Request
+     * daily weather forecast data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for the next 1, 5, 10, and 15 days. If
+     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily forecast for the next 25 days, and 45
      * days.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the daily forecast responses
-     *                    are returned. Available values are
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for the next 10 days.
-     *                    * `25` - Return forecast data for the next 25 days. Only
-     *                    available in S1 SKU.
-     *                    * `45` - Return forecast data for the next 45 days. Only
-     *                    available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the daily forecast responses are returned. Available values are
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for the next 10 days.
+     * * `25` - Return forecast data for the next 25 days. Only available in S1 SKU.
+     * * `45` - Return forecast data for the next 45 days. Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyForecastResult>> getDailyForecastWithResponseAsync(JsonFormat format,
@@ -1862,65 +1385,43 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25,
-     * or 45 days.
-     *
-     *
-     *
-     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed
-     * weather forecast such as temperature
-     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given
-     * coordinate location. The response includes
-     * details such as temperature, wind, precipitation, air quality, and UV index.
-     * For more information, see [Request
-     * daily weather forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for
-     * the next 1, 5, 10, and 15 days. If
-     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily
-     * forecast for the next 25 days, and 45
+     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25, or 45 days.
+     * 
+     * 
+     * 
+     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed weather forecast such as temperature
+     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given coordinate location. The response includes
+     * details such as temperature, wind, precipitation, air quality, and UV index. For more information, see [Request
+     * daily weather forecast data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for the next 1, 5, 10, and 15 days. If
+     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily forecast for the next 25 days, and 45
      * days.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the daily forecast responses
-     *                    are returned. Available values are
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for the next 10 days.
-     *                    * `25` - Return forecast data for the next 25 days. Only
-     *                    available in S1 SKU.
-     *                    * `45` - Return forecast data for the next 45 days. Only
-     *                    available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the daily forecast responses are returned. Available values are
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for the next 10 days.
+     * * `25` - Return forecast data for the next 25 days. Only available in S1 SKU.
+     * * `45` - Return forecast data for the next 45 days. Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyForecastResult>> getDailyForecastWithResponseAsync(JsonFormat format,
@@ -1933,62 +1434,41 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25,
-     * or 45 days.
-     *
-     *
-     *
-     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed
-     * weather forecast such as temperature
-     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given
-     * coordinate location. The response includes
-     * details such as temperature, wind, precipitation, air quality, and UV index.
-     * For more information, see [Request
-     * daily weather forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for
-     * the next 1, 5, 10, and 15 days. If
-     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily
-     * forecast for the next 25 days, and 45
+     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25, or 45 days.
+     * 
+     * 
+     * 
+     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed weather forecast such as temperature
+     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given coordinate location. The response includes
+     * details such as temperature, wind, precipitation, air quality, and UV index. For more information, see [Request
+     * daily weather forecast data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for the next 1, 5, 10, and 15 days. If
+     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily forecast for the next 25 days, and 45
      * days.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the daily forecast responses
-     *                    are returned. Available values are
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for the next 10 days.
-     *                    * `25` - Return forecast data for the next 25 days. Only
-     *                    available in S1 SKU.
-     *                    * `45` - Return forecast data for the next 45 days. Only
-     *                    available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the daily forecast responses are returned. Available values are
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for the next 10 days.
+     * * `25` - Return forecast data for the next 25 days. Only available in S1 SKU.
+     * * `45` - Return forecast data for the next 45 days. Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1999,63 +1479,42 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25,
-     * or 45 days.
-     *
-     *
-     *
-     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed
-     * weather forecast such as temperature
-     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given
-     * coordinate location. The response includes
-     * details such as temperature, wind, precipitation, air quality, and UV index.
-     * For more information, see [Request
-     * daily weather forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for
-     * the next 1, 5, 10, and 15 days. If
-     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily
-     * forecast for the next 25 days, and 45
+     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25, or 45 days.
+     * 
+     * 
+     * 
+     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed weather forecast such as temperature
+     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given coordinate location. The response includes
+     * details such as temperature, wind, precipitation, air quality, and UV index. For more information, see [Request
+     * daily weather forecast data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for the next 1, 5, 10, and 15 days. If
+     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily forecast for the next 25 days, and 45
      * days.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the daily forecast responses
-     *                    are returned. Available values are
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for the next 10 days.
-     *                    * `25` - Return forecast data for the next 25 days. Only
-     *                    available in S1 SKU.
-     *                    * `45` - Return forecast data for the next 45 days. Only
-     *                    available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the daily forecast responses are returned. Available values are
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for the next 10 days.
+     * * `25` - Return forecast data for the next 25 days. Only available in S1 SKU.
+     * * `45` - Return forecast data for the next 45 days. Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2066,63 +1525,42 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25,
-     * or 45 days.
-     *
-     *
-     *
-     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed
-     * weather forecast such as temperature
-     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given
-     * coordinate location. The response includes
-     * details such as temperature, wind, precipitation, air quality, and UV index.
-     * For more information, see [Request
-     * daily weather forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for
-     * the next 1, 5, 10, and 15 days. If
-     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily
-     * forecast for the next 25 days, and 45
+     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25, or 45 days.
+     * 
+     * 
+     * 
+     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed weather forecast such as temperature
+     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given coordinate location. The response includes
+     * details such as temperature, wind, precipitation, air quality, and UV index. For more information, see [Request
+     * daily weather forecast data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for the next 1, 5, 10, and 15 days. If
+     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily forecast for the next 25 days, and 45
      * days.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the daily forecast responses
-     *                    are returned. Available values are
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for the next 10 days.
-     *                    * `25` - Return forecast data for the next 25 days. Only
-     *                    available in S1 SKU.
-     *                    * `45` - Return forecast data for the next 45 days. Only
-     *                    available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the daily forecast responses are returned. Available values are
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for the next 10 days.
+     * * `25` - Return forecast data for the next 25 days. Only available in S1 SKU.
+     * * `45` - Return forecast data for the next 45 days. Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2132,62 +1570,41 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25,
-     * or 45 days.
-     *
-     *
-     *
-     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed
-     * weather forecast such as temperature
-     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given
-     * coordinate location. The response includes
-     * details such as temperature, wind, precipitation, air quality, and UV index.
-     * For more information, see [Request
-     * daily weather forecast
-     * data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
-     *
-     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for
-     * the next 1, 5, 10, and 15 days. If
-     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily
-     * forecast for the next 25 days, and 45
+     * Use to get a daily detailed weather forecast for the next 1, 5, 10, 15, 25, or 45 days.
+     * 
+     * 
+     * 
+     * The `Get Daily Forecast` API is an HTTP `GET` request that returns detailed weather forecast such as temperature
+     * and wind by day for the next 1, 5, 10, 15, 25, or 45 days for a given coordinate location. The response includes
+     * details such as temperature, wind, precipitation, air quality, and UV index. For more information, see [Request
+     * daily weather forecast data](/azure/azure-maps/how-to-request-weather-data#request-daily-weather-forecast-data).
+     * 
+     * If you are using the Gen1 S0 pricing tier, you can request daily forecast for the next 1, 5, 10, and 15 days. If
+     * you are using Gen1 S1 or Gen2 pricing tier, you can also request daily forecast for the next 25 days, and 45
      * days.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param duration    Specifies for how many days the daily forecast responses
-     *                    are returned. Available values are
-     *                    * `1` - Return forecast data for the next day. Returned by
-     *                    default.
-     *                    * `5` - Return forecast data for the next 5 days.
-     *                    * `10` - Return forecast data for the next 10 days.
-     *                    * `25` - Return forecast data for the next 25 days. Only
-     *                    available in S1 SKU.
-     *                    * `45` - Return forecast data for the next 45 days. Only
-     *                    available in S1 SKU.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param duration Specifies for how many days the daily forecast responses are returned. Available values are
+     * * `1` - Return forecast data for the next day. Returned by default.
+     * * `5` - Return forecast data for the next 5 days.
+     * * `10` - Return forecast data for the next 10 days.
+     * * `25` - Return forecast data for the next 25 days. Only available in S1 SKU.
+     * * `45` - Return forecast data for the next 45 days. Only available in S1 SKU.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2197,97 +1614,62 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a locationally precise, up-to-the-minute forecast that includes
-     * weather hazard assessments and
+     * Use to get a locationally precise, up-to-the-minute forecast that includes weather hazard assessments and
      * notifications along a route.
-     *
-     *
-     *
-     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper
-     * local (one kilometer or less),
-     * up-to-the-minute weather nowcasts, weather hazard assessments, and
-     * notifications along a route described as a
+     * 
+     * 
+     * 
+     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper local (one kilometer or less),
+     * up-to-the-minute weather nowcasts, weather hazard assessments, and notifications along a route described as a
      * sequence of waypoints.
-     * This includes a list of weather hazards affecting the waypoint or route, and
-     * the aggregated hazard index for each
-     * waypoint might be used to paint each portion of a route according to how safe
-     * it is for the driver. When
-     * submitting the waypoints, it is recommended to stay within, or close to, the
-     * distance that can be traveled within
+     * This includes a list of weather hazards affecting the waypoint or route, and the aggregated hazard index for each
+     * waypoint might be used to paint each portion of a route according to how safe it is for the driver. When
+     * submitting the waypoints, it is recommended to stay within, or close to, the distance that can be traveled within
      * 120-mins or shortly after. Data is updated every five minutes.
-     *
-     * The service supplements Azure Maps [Route
-     * Service](https://docs.microsoft.com/rest/api/maps/route) that allows
-     * you to first request a route between an origin and a destination and use that
-     * as an input for Weather Along Route
+     * 
+     * The service supplements Azure Maps [Route Service](https://docs.microsoft.com/rest/api/maps/route) that allows
+     * you to first request a route between an origin and a destination and use that as an input for Weather Along Route
      * endpoint.
-     *
-     * In addition, the service supports scenarios to generate weather notifications
-     * for waypoints that experience an
-     * increase in intensity of a weather hazard. For example, if the vehicle is
-     * expected to begin experiencing heavy
-     * rain as it reaches a waypoint, a weather notification for heavy rain will be
-     * generated for that waypoint allowing
-     * the end product to display a heavy rain notification before the driver
-     * reaches that waypoint.
-     * The trigger for when to display the notification for a waypoint could be
-     * based, for example, on a
-     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps),
-     * or selectable distance to the
+     * 
+     * In addition, the service supports scenarios to generate weather notifications for waypoints that experience an
+     * increase in intensity of a weather hazard. For example, if the vehicle is expected to begin experiencing heavy
+     * rain as it reaches a waypoint, a weather notification for heavy rain will be generated for that waypoint allowing
+     * the end product to display a heavy rain notification before the driver reaches that waypoint.
+     * The trigger for when to display the notification for a waypoint could be based, for example, on a
+     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps), or selectable distance to the
      * waypoint.
-     *
-     * The API covers all regions of the planet except latitudes above Greenland and
-     * Antarctica.
-     *
-     * @param format   Desired format of the response. Only `json` format is
-     *                 supported.
-     * @param query    Coordinates through which the route is calculated, separated
-     *                 by colon (:) and entered in
-     *                 chronological order. A minimum of two waypoints is required.
-     *                 A single API call may contain up to 60 waypoints.
-     *                 A waypoint indicates location, ETA, and optional heading:
-     *                 latitude,longitude,ETA,heading, where
-     *                 * `Latitude` - Latitude coordinate in decimal degrees.
-     *                 * `Longitude` - Longitude coordinate in decimal degrees.
-     *                 * `ETA (estimated time of arrival)` - The number of minutes
-     *                 from the present time that it will take for the
-     *                 vehicle to reach the waypoint. Allowed range is from 0.0 to
-     *                 120.0 minutes.
-     *                 * `Heading` - An optional value indicating the vehicle
-     *                 heading as it passes the waypoint. Expressed in clockwise
-     *                 degrees relative to true north. This is issued to calculate
-     *                 sun glare as a driving hazard. Allowed range is from
-     *                 0.0 to 360.0 degrees. If not provided, a heading will
-     *                 automatically be derived based on the position of
-     *                 neighboring waypoints.
-     *
-     *                 It is recommended to stay within, or close to, the distance
-     *                 that can be traveled within 120-mins or shortly
-     *                 after. This way a more accurate assessment can be provided
-     *                 for the trip and prevent isolated events not being
-     *                 captured between waypoints. Information can and should be
-     *                 updated along the route (especially for trips greater
-     *                 than 2 hours) to continuously pull new waypoints moving
-     *                 forward, but also to ensure that forecast information for
-     *                 content such as precipitation type and intensity is accurate
-     *                 as storms develop and dissipate over time.
-     * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case insensitive. When data in specified language is
-     *                 not available for a specific field, default language
-     *                 is used.
-     *
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * 
+     * The API covers all regions of the planet except latitudes above Greenland and Antarctica.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param query Coordinates through which the route is calculated, separated by colon (:) and entered in
+     * chronological order. A minimum of two waypoints is required. A single API call may contain up to 60 waypoints.
+     * A waypoint indicates location, ETA, and optional heading: latitude,longitude,ETA,heading, where
+     * * `Latitude` - Latitude coordinate in decimal degrees.
+     * * `Longitude` - Longitude coordinate in decimal degrees.
+     * * `ETA (estimated time of arrival)` - The number of minutes from the present time that it will take for the
+     * vehicle to reach the waypoint. Allowed range is from 0.0 to 120.0 minutes.
+     * * `Heading` - An optional value indicating the vehicle heading as it passes the waypoint. Expressed in clockwise
+     * degrees relative to true north. This is issued to calculate sun glare as a driving hazard. Allowed range is from
+     * 0.0 to 360.0 degrees. If not provided, a heading will automatically be derived based on the position of
+     * neighboring waypoints.
+     * 
+     * It is recommended to stay within, or close to, the distance that can be traveled within 120-mins or shortly
+     * after. This way a more accurate assessment can be provided for the trip and prevent isolated events not being
+     * captured between waypoints. Information can and should be updated along the route (especially for trips greater
+     * than 2 hours) to continuously pull new waypoints moving forward, but also to ensure that forecast information for
+     * content such as precipitation type and intensity is accurate as storms develop and dissipate over time.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Weather Along Route along
-     *         with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Weather Along Route along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WeatherAlongRouteResult>> getWeatherAlongRouteWithResponseAsync(JsonFormat format,
@@ -2298,98 +1680,63 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a locationally precise, up-to-the-minute forecast that includes
-     * weather hazard assessments and
+     * Use to get a locationally precise, up-to-the-minute forecast that includes weather hazard assessments and
      * notifications along a route.
-     *
-     *
-     *
-     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper
-     * local (one kilometer or less),
-     * up-to-the-minute weather nowcasts, weather hazard assessments, and
-     * notifications along a route described as a
+     * 
+     * 
+     * 
+     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper local (one kilometer or less),
+     * up-to-the-minute weather nowcasts, weather hazard assessments, and notifications along a route described as a
      * sequence of waypoints.
-     * This includes a list of weather hazards affecting the waypoint or route, and
-     * the aggregated hazard index for each
-     * waypoint might be used to paint each portion of a route according to how safe
-     * it is for the driver. When
-     * submitting the waypoints, it is recommended to stay within, or close to, the
-     * distance that can be traveled within
+     * This includes a list of weather hazards affecting the waypoint or route, and the aggregated hazard index for each
+     * waypoint might be used to paint each portion of a route according to how safe it is for the driver. When
+     * submitting the waypoints, it is recommended to stay within, or close to, the distance that can be traveled within
      * 120-mins or shortly after. Data is updated every five minutes.
-     *
-     * The service supplements Azure Maps [Route
-     * Service](https://docs.microsoft.com/rest/api/maps/route) that allows
-     * you to first request a route between an origin and a destination and use that
-     * as an input for Weather Along Route
+     * 
+     * The service supplements Azure Maps [Route Service](https://docs.microsoft.com/rest/api/maps/route) that allows
+     * you to first request a route between an origin and a destination and use that as an input for Weather Along Route
      * endpoint.
-     *
-     * In addition, the service supports scenarios to generate weather notifications
-     * for waypoints that experience an
-     * increase in intensity of a weather hazard. For example, if the vehicle is
-     * expected to begin experiencing heavy
-     * rain as it reaches a waypoint, a weather notification for heavy rain will be
-     * generated for that waypoint allowing
-     * the end product to display a heavy rain notification before the driver
-     * reaches that waypoint.
-     * The trigger for when to display the notification for a waypoint could be
-     * based, for example, on a
-     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps),
-     * or selectable distance to the
+     * 
+     * In addition, the service supports scenarios to generate weather notifications for waypoints that experience an
+     * increase in intensity of a weather hazard. For example, if the vehicle is expected to begin experiencing heavy
+     * rain as it reaches a waypoint, a weather notification for heavy rain will be generated for that waypoint allowing
+     * the end product to display a heavy rain notification before the driver reaches that waypoint.
+     * The trigger for when to display the notification for a waypoint could be based, for example, on a
+     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps), or selectable distance to the
      * waypoint.
-     *
-     * The API covers all regions of the planet except latitudes above Greenland and
-     * Antarctica.
-     *
-     * @param format   Desired format of the response. Only `json` format is
-     *                 supported.
-     * @param query    Coordinates through which the route is calculated, separated
-     *                 by colon (:) and entered in
-     *                 chronological order. A minimum of two waypoints is required.
-     *                 A single API call may contain up to 60 waypoints.
-     *                 A waypoint indicates location, ETA, and optional heading:
-     *                 latitude,longitude,ETA,heading, where
-     *                 * `Latitude` - Latitude coordinate in decimal degrees.
-     *                 * `Longitude` - Longitude coordinate in decimal degrees.
-     *                 * `ETA (estimated time of arrival)` - The number of minutes
-     *                 from the present time that it will take for the
-     *                 vehicle to reach the waypoint. Allowed range is from 0.0 to
-     *                 120.0 minutes.
-     *                 * `Heading` - An optional value indicating the vehicle
-     *                 heading as it passes the waypoint. Expressed in clockwise
-     *                 degrees relative to true north. This is issued to calculate
-     *                 sun glare as a driving hazard. Allowed range is from
-     *                 0.0 to 360.0 degrees. If not provided, a heading will
-     *                 automatically be derived based on the position of
-     *                 neighboring waypoints.
-     *
-     *                 It is recommended to stay within, or close to, the distance
-     *                 that can be traveled within 120-mins or shortly
-     *                 after. This way a more accurate assessment can be provided
-     *                 for the trip and prevent isolated events not being
-     *                 captured between waypoints. Information can and should be
-     *                 updated along the route (especially for trips greater
-     *                 than 2 hours) to continuously pull new waypoints moving
-     *                 forward, but also to ensure that forecast information for
-     *                 content such as precipitation type and intensity is accurate
-     *                 as storms develop and dissipate over time.
-     * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case insensitive. When data in specified language is
-     *                 not available for a specific field, default language
-     *                 is used.
-     *
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
-     * @param context  The context to associate with this operation.
+     * 
+     * The API covers all regions of the planet except latitudes above Greenland and Antarctica.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param query Coordinates through which the route is calculated, separated by colon (:) and entered in
+     * chronological order. A minimum of two waypoints is required. A single API call may contain up to 60 waypoints.
+     * A waypoint indicates location, ETA, and optional heading: latitude,longitude,ETA,heading, where
+     * * `Latitude` - Latitude coordinate in decimal degrees.
+     * * `Longitude` - Longitude coordinate in decimal degrees.
+     * * `ETA (estimated time of arrival)` - The number of minutes from the present time that it will take for the
+     * vehicle to reach the waypoint. Allowed range is from 0.0 to 120.0 minutes.
+     * * `Heading` - An optional value indicating the vehicle heading as it passes the waypoint. Expressed in clockwise
+     * degrees relative to true north. This is issued to calculate sun glare as a driving hazard. Allowed range is from
+     * 0.0 to 360.0 degrees. If not provided, a heading will automatically be derived based on the position of
+     * neighboring waypoints.
+     * 
+     * It is recommended to stay within, or close to, the distance that can be traveled within 120-mins or shortly
+     * after. This way a more accurate assessment can be provided for the trip and prevent isolated events not being
+     * captured between waypoints. Information can and should be updated along the route (especially for trips greater
+     * than 2 hours) to continuously pull new waypoints moving forward, but also to ensure that forecast information for
+     * content such as precipitation type and intensity is accurate as storms develop and dissipate over time.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Weather Along Route along
-     *         with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Weather Along Route along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WeatherAlongRouteResult>> getWeatherAlongRouteWithResponseAsync(JsonFormat format,
@@ -2400,96 +1747,61 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a locationally precise, up-to-the-minute forecast that includes
-     * weather hazard assessments and
+     * Use to get a locationally precise, up-to-the-minute forecast that includes weather hazard assessments and
      * notifications along a route.
-     *
-     *
-     *
-     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper
-     * local (one kilometer or less),
-     * up-to-the-minute weather nowcasts, weather hazard assessments, and
-     * notifications along a route described as a
+     * 
+     * 
+     * 
+     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper local (one kilometer or less),
+     * up-to-the-minute weather nowcasts, weather hazard assessments, and notifications along a route described as a
      * sequence of waypoints.
-     * This includes a list of weather hazards affecting the waypoint or route, and
-     * the aggregated hazard index for each
-     * waypoint might be used to paint each portion of a route according to how safe
-     * it is for the driver. When
-     * submitting the waypoints, it is recommended to stay within, or close to, the
-     * distance that can be traveled within
+     * This includes a list of weather hazards affecting the waypoint or route, and the aggregated hazard index for each
+     * waypoint might be used to paint each portion of a route according to how safe it is for the driver. When
+     * submitting the waypoints, it is recommended to stay within, or close to, the distance that can be traveled within
      * 120-mins or shortly after. Data is updated every five minutes.
-     *
-     * The service supplements Azure Maps [Route
-     * Service](https://docs.microsoft.com/rest/api/maps/route) that allows
-     * you to first request a route between an origin and a destination and use that
-     * as an input for Weather Along Route
+     * 
+     * The service supplements Azure Maps [Route Service](https://docs.microsoft.com/rest/api/maps/route) that allows
+     * you to first request a route between an origin and a destination and use that as an input for Weather Along Route
      * endpoint.
-     *
-     * In addition, the service supports scenarios to generate weather notifications
-     * for waypoints that experience an
-     * increase in intensity of a weather hazard. For example, if the vehicle is
-     * expected to begin experiencing heavy
-     * rain as it reaches a waypoint, a weather notification for heavy rain will be
-     * generated for that waypoint allowing
-     * the end product to display a heavy rain notification before the driver
-     * reaches that waypoint.
-     * The trigger for when to display the notification for a waypoint could be
-     * based, for example, on a
-     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps),
-     * or selectable distance to the
+     * 
+     * In addition, the service supports scenarios to generate weather notifications for waypoints that experience an
+     * increase in intensity of a weather hazard. For example, if the vehicle is expected to begin experiencing heavy
+     * rain as it reaches a waypoint, a weather notification for heavy rain will be generated for that waypoint allowing
+     * the end product to display a heavy rain notification before the driver reaches that waypoint.
+     * The trigger for when to display the notification for a waypoint could be based, for example, on a
+     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps), or selectable distance to the
      * waypoint.
-     *
-     * The API covers all regions of the planet except latitudes above Greenland and
-     * Antarctica.
-     *
-     * @param format   Desired format of the response. Only `json` format is
-     *                 supported.
-     * @param query    Coordinates through which the route is calculated, separated
-     *                 by colon (:) and entered in
-     *                 chronological order. A minimum of two waypoints is required.
-     *                 A single API call may contain up to 60 waypoints.
-     *                 A waypoint indicates location, ETA, and optional heading:
-     *                 latitude,longitude,ETA,heading, where
-     *                 * `Latitude` - Latitude coordinate in decimal degrees.
-     *                 * `Longitude` - Longitude coordinate in decimal degrees.
-     *                 * `ETA (estimated time of arrival)` - The number of minutes
-     *                 from the present time that it will take for the
-     *                 vehicle to reach the waypoint. Allowed range is from 0.0 to
-     *                 120.0 minutes.
-     *                 * `Heading` - An optional value indicating the vehicle
-     *                 heading as it passes the waypoint. Expressed in clockwise
-     *                 degrees relative to true north. This is issued to calculate
-     *                 sun glare as a driving hazard. Allowed range is from
-     *                 0.0 to 360.0 degrees. If not provided, a heading will
-     *                 automatically be derived based on the position of
-     *                 neighboring waypoints.
-     *
-     *                 It is recommended to stay within, or close to, the distance
-     *                 that can be traveled within 120-mins or shortly
-     *                 after. This way a more accurate assessment can be provided
-     *                 for the trip and prevent isolated events not being
-     *                 captured between waypoints. Information can and should be
-     *                 updated along the route (especially for trips greater
-     *                 than 2 hours) to continuously pull new waypoints moving
-     *                 forward, but also to ensure that forecast information for
-     *                 content such as precipitation type and intensity is accurate
-     *                 as storms develop and dissipate over time.
-     * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case insensitive. When data in specified language is
-     *                 not available for a specific field, default language
-     *                 is used.
-     *
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * 
+     * The API covers all regions of the planet except latitudes above Greenland and Antarctica.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param query Coordinates through which the route is calculated, separated by colon (:) and entered in
+     * chronological order. A minimum of two waypoints is required. A single API call may contain up to 60 waypoints.
+     * A waypoint indicates location, ETA, and optional heading: latitude,longitude,ETA,heading, where
+     * * `Latitude` - Latitude coordinate in decimal degrees.
+     * * `Longitude` - Longitude coordinate in decimal degrees.
+     * * `ETA (estimated time of arrival)` - The number of minutes from the present time that it will take for the
+     * vehicle to reach the waypoint. Allowed range is from 0.0 to 120.0 minutes.
+     * * `Heading` - An optional value indicating the vehicle heading as it passes the waypoint. Expressed in clockwise
+     * degrees relative to true north. This is issued to calculate sun glare as a driving hazard. Allowed range is from
+     * 0.0 to 360.0 degrees. If not provided, a heading will automatically be derived based on the position of
+     * neighboring waypoints.
+     * 
+     * It is recommended to stay within, or close to, the distance that can be traveled within 120-mins or shortly
+     * after. This way a more accurate assessment can be provided for the trip and prevent isolated events not being
+     * captured between waypoints. Information can and should be updated along the route (especially for trips greater
+     * than 2 hours) to continuously pull new waypoints moving forward, but also to ensure that forecast information for
+     * content such as precipitation type and intensity is accurate as storms develop and dissipate over time.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Weather Along Route on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Weather Along Route on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WeatherAlongRouteResult> getWeatherAlongRouteAsync(JsonFormat format, String query, String language) {
@@ -2498,97 +1810,62 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a locationally precise, up-to-the-minute forecast that includes
-     * weather hazard assessments and
+     * Use to get a locationally precise, up-to-the-minute forecast that includes weather hazard assessments and
      * notifications along a route.
-     *
-     *
-     *
-     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper
-     * local (one kilometer or less),
-     * up-to-the-minute weather nowcasts, weather hazard assessments, and
-     * notifications along a route described as a
+     * 
+     * 
+     * 
+     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper local (one kilometer or less),
+     * up-to-the-minute weather nowcasts, weather hazard assessments, and notifications along a route described as a
      * sequence of waypoints.
-     * This includes a list of weather hazards affecting the waypoint or route, and
-     * the aggregated hazard index for each
-     * waypoint might be used to paint each portion of a route according to how safe
-     * it is for the driver. When
-     * submitting the waypoints, it is recommended to stay within, or close to, the
-     * distance that can be traveled within
+     * This includes a list of weather hazards affecting the waypoint or route, and the aggregated hazard index for each
+     * waypoint might be used to paint each portion of a route according to how safe it is for the driver. When
+     * submitting the waypoints, it is recommended to stay within, or close to, the distance that can be traveled within
      * 120-mins or shortly after. Data is updated every five minutes.
-     *
-     * The service supplements Azure Maps [Route
-     * Service](https://docs.microsoft.com/rest/api/maps/route) that allows
-     * you to first request a route between an origin and a destination and use that
-     * as an input for Weather Along Route
+     * 
+     * The service supplements Azure Maps [Route Service](https://docs.microsoft.com/rest/api/maps/route) that allows
+     * you to first request a route between an origin and a destination and use that as an input for Weather Along Route
      * endpoint.
-     *
-     * In addition, the service supports scenarios to generate weather notifications
-     * for waypoints that experience an
-     * increase in intensity of a weather hazard. For example, if the vehicle is
-     * expected to begin experiencing heavy
-     * rain as it reaches a waypoint, a weather notification for heavy rain will be
-     * generated for that waypoint allowing
-     * the end product to display a heavy rain notification before the driver
-     * reaches that waypoint.
-     * The trigger for when to display the notification for a waypoint could be
-     * based, for example, on a
-     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps),
-     * or selectable distance to the
+     * 
+     * In addition, the service supports scenarios to generate weather notifications for waypoints that experience an
+     * increase in intensity of a weather hazard. For example, if the vehicle is expected to begin experiencing heavy
+     * rain as it reaches a waypoint, a weather notification for heavy rain will be generated for that waypoint allowing
+     * the end product to display a heavy rain notification before the driver reaches that waypoint.
+     * The trigger for when to display the notification for a waypoint could be based, for example, on a
+     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps), or selectable distance to the
      * waypoint.
-     *
-     * The API covers all regions of the planet except latitudes above Greenland and
-     * Antarctica.
-     *
-     * @param format   Desired format of the response. Only `json` format is
-     *                 supported.
-     * @param query    Coordinates through which the route is calculated, separated
-     *                 by colon (:) and entered in
-     *                 chronological order. A minimum of two waypoints is required.
-     *                 A single API call may contain up to 60 waypoints.
-     *                 A waypoint indicates location, ETA, and optional heading:
-     *                 latitude,longitude,ETA,heading, where
-     *                 * `Latitude` - Latitude coordinate in decimal degrees.
-     *                 * `Longitude` - Longitude coordinate in decimal degrees.
-     *                 * `ETA (estimated time of arrival)` - The number of minutes
-     *                 from the present time that it will take for the
-     *                 vehicle to reach the waypoint. Allowed range is from 0.0 to
-     *                 120.0 minutes.
-     *                 * `Heading` - An optional value indicating the vehicle
-     *                 heading as it passes the waypoint. Expressed in clockwise
-     *                 degrees relative to true north. This is issued to calculate
-     *                 sun glare as a driving hazard. Allowed range is from
-     *                 0.0 to 360.0 degrees. If not provided, a heading will
-     *                 automatically be derived based on the position of
-     *                 neighboring waypoints.
-     *
-     *                 It is recommended to stay within, or close to, the distance
-     *                 that can be traveled within 120-mins or shortly
-     *                 after. This way a more accurate assessment can be provided
-     *                 for the trip and prevent isolated events not being
-     *                 captured between waypoints. Information can and should be
-     *                 updated along the route (especially for trips greater
-     *                 than 2 hours) to continuously pull new waypoints moving
-     *                 forward, but also to ensure that forecast information for
-     *                 content such as precipitation type and intensity is accurate
-     *                 as storms develop and dissipate over time.
-     * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case insensitive. When data in specified language is
-     *                 not available for a specific field, default language
-     *                 is used.
-     *
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
-     * @param context  The context to associate with this operation.
+     * 
+     * The API covers all regions of the planet except latitudes above Greenland and Antarctica.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param query Coordinates through which the route is calculated, separated by colon (:) and entered in
+     * chronological order. A minimum of two waypoints is required. A single API call may contain up to 60 waypoints.
+     * A waypoint indicates location, ETA, and optional heading: latitude,longitude,ETA,heading, where
+     * * `Latitude` - Latitude coordinate in decimal degrees.
+     * * `Longitude` - Longitude coordinate in decimal degrees.
+     * * `ETA (estimated time of arrival)` - The number of minutes from the present time that it will take for the
+     * vehicle to reach the waypoint. Allowed range is from 0.0 to 120.0 minutes.
+     * * `Heading` - An optional value indicating the vehicle heading as it passes the waypoint. Expressed in clockwise
+     * degrees relative to true north. This is issued to calculate sun glare as a driving hazard. Allowed range is from
+     * 0.0 to 360.0 degrees. If not provided, a heading will automatically be derived based on the position of
+     * neighboring waypoints.
+     * 
+     * It is recommended to stay within, or close to, the distance that can be traveled within 120-mins or shortly
+     * after. This way a more accurate assessment can be provided for the trip and prevent isolated events not being
+     * captured between waypoints. Information can and should be updated along the route (especially for trips greater
+     * than 2 hours) to continuously pull new waypoints moving forward, but also to ensure that forecast information for
+     * content such as precipitation type and intensity is accurate as storms develop and dissipate over time.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Weather Along Route on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Weather Along Route on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WeatherAlongRouteResult> getWeatherAlongRouteAsync(JsonFormat format, String query, String language,
@@ -2598,97 +1875,62 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a locationally precise, up-to-the-minute forecast that includes
-     * weather hazard assessments and
+     * Use to get a locationally precise, up-to-the-minute forecast that includes weather hazard assessments and
      * notifications along a route.
-     *
-     *
-     *
-     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper
-     * local (one kilometer or less),
-     * up-to-the-minute weather nowcasts, weather hazard assessments, and
-     * notifications along a route described as a
+     * 
+     * 
+     * 
+     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper local (one kilometer or less),
+     * up-to-the-minute weather nowcasts, weather hazard assessments, and notifications along a route described as a
      * sequence of waypoints.
-     * This includes a list of weather hazards affecting the waypoint or route, and
-     * the aggregated hazard index for each
-     * waypoint might be used to paint each portion of a route according to how safe
-     * it is for the driver. When
-     * submitting the waypoints, it is recommended to stay within, or close to, the
-     * distance that can be traveled within
+     * This includes a list of weather hazards affecting the waypoint or route, and the aggregated hazard index for each
+     * waypoint might be used to paint each portion of a route according to how safe it is for the driver. When
+     * submitting the waypoints, it is recommended to stay within, or close to, the distance that can be traveled within
      * 120-mins or shortly after. Data is updated every five minutes.
-     *
-     * The service supplements Azure Maps [Route
-     * Service](https://docs.microsoft.com/rest/api/maps/route) that allows
-     * you to first request a route between an origin and a destination and use that
-     * as an input for Weather Along Route
+     * 
+     * The service supplements Azure Maps [Route Service](https://docs.microsoft.com/rest/api/maps/route) that allows
+     * you to first request a route between an origin and a destination and use that as an input for Weather Along Route
      * endpoint.
-     *
-     * In addition, the service supports scenarios to generate weather notifications
-     * for waypoints that experience an
-     * increase in intensity of a weather hazard. For example, if the vehicle is
-     * expected to begin experiencing heavy
-     * rain as it reaches a waypoint, a weather notification for heavy rain will be
-     * generated for that waypoint allowing
-     * the end product to display a heavy rain notification before the driver
-     * reaches that waypoint.
-     * The trigger for when to display the notification for a waypoint could be
-     * based, for example, on a
-     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps),
-     * or selectable distance to the
+     * 
+     * In addition, the service supports scenarios to generate weather notifications for waypoints that experience an
+     * increase in intensity of a weather hazard. For example, if the vehicle is expected to begin experiencing heavy
+     * rain as it reaches a waypoint, a weather notification for heavy rain will be generated for that waypoint allowing
+     * the end product to display a heavy rain notification before the driver reaches that waypoint.
+     * The trigger for when to display the notification for a waypoint could be based, for example, on a
+     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps), or selectable distance to the
      * waypoint.
-     *
-     * The API covers all regions of the planet except latitudes above Greenland and
-     * Antarctica.
-     *
-     * @param format   Desired format of the response. Only `json` format is
-     *                 supported.
-     * @param query    Coordinates through which the route is calculated, separated
-     *                 by colon (:) and entered in
-     *                 chronological order. A minimum of two waypoints is required.
-     *                 A single API call may contain up to 60 waypoints.
-     *                 A waypoint indicates location, ETA, and optional heading:
-     *                 latitude,longitude,ETA,heading, where
-     *                 * `Latitude` - Latitude coordinate in decimal degrees.
-     *                 * `Longitude` - Longitude coordinate in decimal degrees.
-     *                 * `ETA (estimated time of arrival)` - The number of minutes
-     *                 from the present time that it will take for the
-     *                 vehicle to reach the waypoint. Allowed range is from 0.0 to
-     *                 120.0 minutes.
-     *                 * `Heading` - An optional value indicating the vehicle
-     *                 heading as it passes the waypoint. Expressed in clockwise
-     *                 degrees relative to true north. This is issued to calculate
-     *                 sun glare as a driving hazard. Allowed range is from
-     *                 0.0 to 360.0 degrees. If not provided, a heading will
-     *                 automatically be derived based on the position of
-     *                 neighboring waypoints.
-     *
-     *                 It is recommended to stay within, or close to, the distance
-     *                 that can be traveled within 120-mins or shortly
-     *                 after. This way a more accurate assessment can be provided
-     *                 for the trip and prevent isolated events not being
-     *                 captured between waypoints. Information can and should be
-     *                 updated along the route (especially for trips greater
-     *                 than 2 hours) to continuously pull new waypoints moving
-     *                 forward, but also to ensure that forecast information for
-     *                 content such as precipitation type and intensity is accurate
-     *                 as storms develop and dissipate over time.
-     * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case insensitive. When data in specified language is
-     *                 not available for a specific field, default language
-     *                 is used.
-     *
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
-     * @param context  The context to associate with this operation.
+     * 
+     * The API covers all regions of the planet except latitudes above Greenland and Antarctica.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param query Coordinates through which the route is calculated, separated by colon (:) and entered in
+     * chronological order. A minimum of two waypoints is required. A single API call may contain up to 60 waypoints.
+     * A waypoint indicates location, ETA, and optional heading: latitude,longitude,ETA,heading, where
+     * * `Latitude` - Latitude coordinate in decimal degrees.
+     * * `Longitude` - Longitude coordinate in decimal degrees.
+     * * `ETA (estimated time of arrival)` - The number of minutes from the present time that it will take for the
+     * vehicle to reach the waypoint. Allowed range is from 0.0 to 120.0 minutes.
+     * * `Heading` - An optional value indicating the vehicle heading as it passes the waypoint. Expressed in clockwise
+     * degrees relative to true north. This is issued to calculate sun glare as a driving hazard. Allowed range is from
+     * 0.0 to 360.0 degrees. If not provided, a heading will automatically be derived based on the position of
+     * neighboring waypoints.
+     * 
+     * It is recommended to stay within, or close to, the distance that can be traveled within 120-mins or shortly
+     * after. This way a more accurate assessment can be provided for the trip and prevent isolated events not being
+     * captured between waypoints. Information can and should be updated along the route (especially for trips greater
+     * than 2 hours) to continuously pull new waypoints moving forward, but also to ensure that forecast information for
+     * content such as precipitation type and intensity is accurate as storms develop and dissipate over time.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Weather Along Route along
-     *         with {@link Response}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Weather Along Route along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WeatherAlongRouteResult> getWeatherAlongRouteWithResponse(JsonFormat format, String query,
@@ -2697,94 +1939,60 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a locationally precise, up-to-the-minute forecast that includes
-     * weather hazard assessments and
+     * Use to get a locationally precise, up-to-the-minute forecast that includes weather hazard assessments and
      * notifications along a route.
-     *
-     *
-     *
-     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper
-     * local (one kilometer or less),
-     * up-to-the-minute weather nowcasts, weather hazard assessments, and
-     * notifications along a route described as a
+     * 
+     * 
+     * 
+     * The `Get Weather Along Route` API is an HTTP `GET` request that returns hyper local (one kilometer or less),
+     * up-to-the-minute weather nowcasts, weather hazard assessments, and notifications along a route described as a
      * sequence of waypoints.
-     * This includes a list of weather hazards affecting the waypoint or route, and
-     * the aggregated hazard index for each
-     * waypoint might be used to paint each portion of a route according to how safe
-     * it is for the driver. When
-     * submitting the waypoints, it is recommended to stay within, or close to, the
-     * distance that can be traveled within
+     * This includes a list of weather hazards affecting the waypoint or route, and the aggregated hazard index for each
+     * waypoint might be used to paint each portion of a route according to how safe it is for the driver. When
+     * submitting the waypoints, it is recommended to stay within, or close to, the distance that can be traveled within
      * 120-mins or shortly after. Data is updated every five minutes.
-     *
-     * The service supplements Azure Maps [Route
-     * Service](https://docs.microsoft.com/rest/api/maps/route) that allows
-     * you to first request a route between an origin and a destination and use that
-     * as an input for Weather Along Route
+     * 
+     * The service supplements Azure Maps [Route Service](https://docs.microsoft.com/rest/api/maps/route) that allows
+     * you to first request a route between an origin and a destination and use that as an input for Weather Along Route
      * endpoint.
-     *
-     * In addition, the service supports scenarios to generate weather notifications
-     * for waypoints that experience an
-     * increase in intensity of a weather hazard. For example, if the vehicle is
-     * expected to begin experiencing heavy
-     * rain as it reaches a waypoint, a weather notification for heavy rain will be
-     * generated for that waypoint allowing
-     * the end product to display a heavy rain notification before the driver
-     * reaches that waypoint.
-     * The trigger for when to display the notification for a waypoint could be
-     * based, for example, on a
-     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps),
-     * or selectable distance to the
+     * 
+     * In addition, the service supports scenarios to generate weather notifications for waypoints that experience an
+     * increase in intensity of a weather hazard. For example, if the vehicle is expected to begin experiencing heavy
+     * rain as it reaches a waypoint, a weather notification for heavy rain will be generated for that waypoint allowing
+     * the end product to display a heavy rain notification before the driver reaches that waypoint.
+     * The trigger for when to display the notification for a waypoint could be based, for example, on a
+     * [geofence](https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps), or selectable distance to the
      * waypoint.
-     *
-     * The API covers all regions of the planet except latitudes above Greenland and
-     * Antarctica.
-     *
-     * @param format   Desired format of the response. Only `json` format is
-     *                 supported.
-     * @param query    Coordinates through which the route is calculated, separated
-     *                 by colon (:) and entered in
-     *                 chronological order. A minimum of two waypoints is required.
-     *                 A single API call may contain up to 60 waypoints.
-     *                 A waypoint indicates location, ETA, and optional heading:
-     *                 latitude,longitude,ETA,heading, where
-     *                 * `Latitude` - Latitude coordinate in decimal degrees.
-     *                 * `Longitude` - Longitude coordinate in decimal degrees.
-     *                 * `ETA (estimated time of arrival)` - The number of minutes
-     *                 from the present time that it will take for the
-     *                 vehicle to reach the waypoint. Allowed range is from 0.0 to
-     *                 120.0 minutes.
-     *                 * `Heading` - An optional value indicating the vehicle
-     *                 heading as it passes the waypoint. Expressed in clockwise
-     *                 degrees relative to true north. This is issued to calculate
-     *                 sun glare as a driving hazard. Allowed range is from
-     *                 0.0 to 360.0 degrees. If not provided, a heading will
-     *                 automatically be derived based on the position of
-     *                 neighboring waypoints.
-     *
-     *                 It is recommended to stay within, or close to, the distance
-     *                 that can be traveled within 120-mins or shortly
-     *                 after. This way a more accurate assessment can be provided
-     *                 for the trip and prevent isolated events not being
-     *                 captured between waypoints. Information can and should be
-     *                 updated along the route (especially for trips greater
-     *                 than 2 hours) to continuously pull new waypoints moving
-     *                 forward, but also to ensure that forecast information for
-     *                 content such as precipitation type and intensity is accurate
-     *                 as storms develop and dissipate over time.
-     * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case insensitive. When data in specified language is
-     *                 not available for a specific field, default language
-     *                 is used.
-     *
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * 
+     * The API covers all regions of the planet except latitudes above Greenland and Antarctica.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param query Coordinates through which the route is calculated, separated by colon (:) and entered in
+     * chronological order. A minimum of two waypoints is required. A single API call may contain up to 60 waypoints.
+     * A waypoint indicates location, ETA, and optional heading: latitude,longitude,ETA,heading, where
+     * * `Latitude` - Latitude coordinate in decimal degrees.
+     * * `Longitude` - Longitude coordinate in decimal degrees.
+     * * `ETA (estimated time of arrival)` - The number of minutes from the present time that it will take for the
+     * vehicle to reach the waypoint. Allowed range is from 0.0 to 120.0 minutes.
+     * * `Heading` - An optional value indicating the vehicle heading as it passes the waypoint. Expressed in clockwise
+     * degrees relative to true north. This is issued to calculate sun glare as a driving hazard. Allowed range is from
+     * 0.0 to 360.0 degrees. If not provided, a heading will automatically be derived based on the position of
+     * neighboring waypoints.
+     * 
+     * It is recommended to stay within, or close to, the distance that can be traveled within 120-mins or shortly
+     * after. This way a more accurate assessment can be provided for the trip and prevent isolated events not being
+     * captured between waypoints. Information can and should be updated along the route (especially for trips greater
+     * than 2 hours) to continuously pull new waypoints moving forward, but also to ensure that forecast information for
+     * content such as precipitation type and intensity is accurate as storms develop and dissipate over time.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Weather Along Route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2793,65 +2001,44 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get information about severe weather conditions such as hurricanes,
-     * thunderstorms, flooding, lightning,
+     * Use to get information about severe weather conditions such as hurricanes, thunderstorms, flooding, lightning,
      * heat waves or forest fires for a given location.
-     *
-     *
-     *
-     * Severe weather phenomenon can significantly impact our everyday life and
-     * business operations. For example, severe
-     * weather conditions such as tropical storms, high winds or flooding can close
-     * roads and force logistics companies
-     * to reroute their fleet causing delays in reaching destinations and breaking
-     * the cold chain of refrigerated food
+     * 
+     * 
+     * 
+     * Severe weather phenomenon can significantly impact our everyday life and business operations. For example, severe
+     * weather conditions such as tropical storms, high winds or flooding can close roads and force logistics companies
+     * to reroute their fleet causing delays in reaching destinations and breaking the cold chain of refrigerated food
      * products.
-     *
-     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the
-     * severe weather alerts that are
-     * available worldwide from both official Government Meteorological Agencies and
-     * leading global to regional weather
-     * alert providers. The service can return details such as alert type, category,
-     * level and detailed description
-     * about the active severe alerts for the requested location, like hurricanes,
-     * thunderstorms, lightning, heat waves
+     * 
+     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the severe weather alerts that are
+     * available worldwide from both official Government Meteorological Agencies and leading global to regional weather
+     * alert providers. The service can return details such as alert type, category, level and detailed description
+     * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
      * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param details     Return full details for the severe weather alerts.
-     *                    Available values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the alerts
-     *                    data, which excludes the area-specific full description of
-     *                    alert details (`alertDetails`).
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param details Return full details for the severe weather alerts. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the alerts data, which excludes the area-specific full description of
+     * alert details (`alertDetails`).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Severe Weather Alerts
-     *         call along with {@link Response} on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Severe Weather Alerts call along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SevereWeatherAlertsResult>> getSevereWeatherAlertsWithResponseAsync(JsonFormat format,
@@ -2865,66 +2052,45 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get information about severe weather conditions such as hurricanes,
-     * thunderstorms, flooding, lightning,
+     * Use to get information about severe weather conditions such as hurricanes, thunderstorms, flooding, lightning,
      * heat waves or forest fires for a given location.
-     *
-     *
-     *
-     * Severe weather phenomenon can significantly impact our everyday life and
-     * business operations. For example, severe
-     * weather conditions such as tropical storms, high winds or flooding can close
-     * roads and force logistics companies
-     * to reroute their fleet causing delays in reaching destinations and breaking
-     * the cold chain of refrigerated food
+     * 
+     * 
+     * 
+     * Severe weather phenomenon can significantly impact our everyday life and business operations. For example, severe
+     * weather conditions such as tropical storms, high winds or flooding can close roads and force logistics companies
+     * to reroute their fleet causing delays in reaching destinations and breaking the cold chain of refrigerated food
      * products.
-     *
-     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the
-     * severe weather alerts that are
-     * available worldwide from both official Government Meteorological Agencies and
-     * leading global to regional weather
-     * alert providers. The service can return details such as alert type, category,
-     * level and detailed description
-     * about the active severe alerts for the requested location, like hurricanes,
-     * thunderstorms, lightning, heat waves
+     * 
+     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the severe weather alerts that are
+     * available worldwide from both official Government Meteorological Agencies and leading global to regional weather
+     * alert providers. The service can return details such as alert type, category, level and detailed description
+     * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
      * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param details     Return full details for the severe weather alerts.
-     *                    Available values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the alerts
-     *                    data, which excludes the area-specific full description of
-     *                    alert details (`alertDetails`).
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param details Return full details for the severe weather alerts. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the alerts data, which excludes the area-specific full description of
+     * alert details (`alertDetails`).
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Severe Weather Alerts
-     *         call along with {@link Response} on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Severe Weather Alerts call along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SevereWeatherAlertsResult>> getSevereWeatherAlertsWithResponseAsync(JsonFormat format,
@@ -2937,65 +2103,44 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get information about severe weather conditions such as hurricanes,
-     * thunderstorms, flooding, lightning,
+     * Use to get information about severe weather conditions such as hurricanes, thunderstorms, flooding, lightning,
      * heat waves or forest fires for a given location.
-     *
-     *
-     *
-     * Severe weather phenomenon can significantly impact our everyday life and
-     * business operations. For example, severe
-     * weather conditions such as tropical storms, high winds or flooding can close
-     * roads and force logistics companies
-     * to reroute their fleet causing delays in reaching destinations and breaking
-     * the cold chain of refrigerated food
+     * 
+     * 
+     * 
+     * Severe weather phenomenon can significantly impact our everyday life and business operations. For example, severe
+     * weather conditions such as tropical storms, high winds or flooding can close roads and force logistics companies
+     * to reroute their fleet causing delays in reaching destinations and breaking the cold chain of refrigerated food
      * products.
-     *
-     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the
-     * severe weather alerts that are
-     * available worldwide from both official Government Meteorological Agencies and
-     * leading global to regional weather
-     * alert providers. The service can return details such as alert type, category,
-     * level and detailed description
-     * about the active severe alerts for the requested location, like hurricanes,
-     * thunderstorms, lightning, heat waves
+     * 
+     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the severe weather alerts that are
+     * available worldwide from both official Government Meteorological Agencies and leading global to regional weather
+     * alert providers. The service can return details such as alert type, category, level and detailed description
+     * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
      * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param details     Return full details for the severe weather alerts.
-     *                    Available values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the alerts
-     *                    data, which excludes the area-specific full description of
-     *                    alert details (`alertDetails`).
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param details Return full details for the severe weather alerts. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the alerts data, which excludes the area-specific full description of
+     * alert details (`alertDetails`).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Severe Weather Alerts
-     *         call on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Severe Weather Alerts call on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SevereWeatherAlertsResult> getSevereWeatherAlertsAsync(JsonFormat format, List<Double> coordinates,
@@ -3005,66 +2150,45 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get information about severe weather conditions such as hurricanes,
-     * thunderstorms, flooding, lightning,
+     * Use to get information about severe weather conditions such as hurricanes, thunderstorms, flooding, lightning,
      * heat waves or forest fires for a given location.
-     *
-     *
-     *
-     * Severe weather phenomenon can significantly impact our everyday life and
-     * business operations. For example, severe
-     * weather conditions such as tropical storms, high winds or flooding can close
-     * roads and force logistics companies
-     * to reroute their fleet causing delays in reaching destinations and breaking
-     * the cold chain of refrigerated food
+     * 
+     * 
+     * 
+     * Severe weather phenomenon can significantly impact our everyday life and business operations. For example, severe
+     * weather conditions such as tropical storms, high winds or flooding can close roads and force logistics companies
+     * to reroute their fleet causing delays in reaching destinations and breaking the cold chain of refrigerated food
      * products.
-     *
-     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the
-     * severe weather alerts that are
-     * available worldwide from both official Government Meteorological Agencies and
-     * leading global to regional weather
-     * alert providers. The service can return details such as alert type, category,
-     * level and detailed description
-     * about the active severe alerts for the requested location, like hurricanes,
-     * thunderstorms, lightning, heat waves
+     * 
+     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the severe weather alerts that are
+     * available worldwide from both official Government Meteorological Agencies and leading global to regional weather
+     * alert providers. The service can return details such as alert type, category, level and detailed description
+     * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
      * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param details     Return full details for the severe weather alerts.
-     *                    Available values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the alerts
-     *                    data, which excludes the area-specific full description of
-     *                    alert details (`alertDetails`).
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param details Return full details for the severe weather alerts. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the alerts data, which excludes the area-specific full description of
+     * alert details (`alertDetails`).
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Severe Weather Alerts
-     *         call on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Severe Weather Alerts call on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SevereWeatherAlertsResult> getSevereWeatherAlertsAsync(JsonFormat format, List<Double> coordinates,
@@ -3074,65 +2198,44 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get information about severe weather conditions such as hurricanes,
-     * thunderstorms, flooding, lightning,
+     * Use to get information about severe weather conditions such as hurricanes, thunderstorms, flooding, lightning,
      * heat waves or forest fires for a given location.
-     *
-     *
-     *
-     * Severe weather phenomenon can significantly impact our everyday life and
-     * business operations. For example, severe
-     * weather conditions such as tropical storms, high winds or flooding can close
-     * roads and force logistics companies
-     * to reroute their fleet causing delays in reaching destinations and breaking
-     * the cold chain of refrigerated food
+     * 
+     * 
+     * 
+     * Severe weather phenomenon can significantly impact our everyday life and business operations. For example, severe
+     * weather conditions such as tropical storms, high winds or flooding can close roads and force logistics companies
+     * to reroute their fleet causing delays in reaching destinations and breaking the cold chain of refrigerated food
      * products.
-     *
-     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the
-     * severe weather alerts that are
-     * available worldwide from both official Government Meteorological Agencies and
-     * leading global to regional weather
-     * alert providers. The service can return details such as alert type, category,
-     * level and detailed description
-     * about the active severe alerts for the requested location, like hurricanes,
-     * thunderstorms, lightning, heat waves
+     * 
+     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the severe weather alerts that are
+     * available worldwide from both official Government Meteorological Agencies and leading global to regional weather
+     * alert providers. The service can return details such as alert type, category, level and detailed description
+     * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
      * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param details     Return full details for the severe weather alerts.
-     *                    Available values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the alerts
-     *                    data, which excludes the area-specific full description of
-     *                    alert details (`alertDetails`).
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param details Return full details for the severe weather alerts. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the alerts data, which excludes the area-specific full description of
+     * alert details (`alertDetails`).
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Severe Weather Alerts
-     *         call along with {@link Response}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Severe Weather Alerts call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SevereWeatherAlertsResult> getSevereWeatherAlertsWithResponse(JsonFormat format,
@@ -3141,64 +2244,43 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get information about severe weather conditions such as hurricanes,
-     * thunderstorms, flooding, lightning,
+     * Use to get information about severe weather conditions such as hurricanes, thunderstorms, flooding, lightning,
      * heat waves or forest fires for a given location.
-     *
-     *
-     *
-     * Severe weather phenomenon can significantly impact our everyday life and
-     * business operations. For example, severe
-     * weather conditions such as tropical storms, high winds or flooding can close
-     * roads and force logistics companies
-     * to reroute their fleet causing delays in reaching destinations and breaking
-     * the cold chain of refrigerated food
+     * 
+     * 
+     * 
+     * Severe weather phenomenon can significantly impact our everyday life and business operations. For example, severe
+     * weather conditions such as tropical storms, high winds or flooding can close roads and force logistics companies
+     * to reroute their fleet causing delays in reaching destinations and breaking the cold chain of refrigerated food
      * products.
-     *
-     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the
-     * severe weather alerts that are
-     * available worldwide from both official Government Meteorological Agencies and
-     * leading global to regional weather
-     * alert providers. The service can return details such as alert type, category,
-     * level and detailed description
-     * about the active severe alerts for the requested location, like hurricanes,
-     * thunderstorms, lightning, heat waves
+     * 
+     * The `Get Severe Weather Alerts` API is an HTTP `GET` request that returns the severe weather alerts that are
+     * available worldwide from both official Government Meteorological Agencies and leading global to regional weather
+     * alert providers. The service can return details such as alert type, category, level and detailed description
+     * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
      * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param details     Return full details for the severe weather alerts.
-     *                    Available values are
-     *                    * `true` - Returns full details. By default all details
-     *                    are returned.
-     *                    * `false` - Returns a truncated version of the alerts
-     *                    data, which excludes the area-specific full description of
-     *                    alert details (`alertDetails`).
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param details Return full details for the severe weather alerts. Available values are
+     * * `true` - Returns full details. By default all details are returned.
+     * * `false` - Returns a truncated version of the alerts data, which excludes the area-specific full description of
+     * alert details (`alertDetails`).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Severe Weather Alerts
-     *         call.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Severe Weather Alerts call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SevereWeatherAlertsResult getSevereWeatherAlerts(JsonFormat format, List<Double> coordinates,
@@ -3207,79 +2289,49 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use when you want to know if the weather conditions are optimal for a
-     * specific activity such as outdoor sporting
-     * activities, construction, or farming (results includes soil moisture
-     * information).
-     *
-     *
-     *
-     * The `Get Daily Indices` API is an HTTP `GET` request returns index values
-     * that provide guidance to help when
-     * planning future activities. For example, a health mobile application can
-     * notify users that today is good weather
-     * for running or for other outdoors activities like playing golf or flying a
-     * kite. Retail stores can optimize their
-     * digital marketing campaigns based on predicted index values. The service
-     * returns in daily indices values for
+     * Use when you want to know if the weather conditions are optimal for a specific activity such as outdoor sporting
+     * activities, construction, or farming (results includes soil moisture information).
+     * 
+     * 
+     * 
+     * The `Get Daily Indices` API is an HTTP `GET` request returns index values that provide guidance to help when
+     * planning future activities. For example, a health mobile application can notify users that today is good weather
+     * for running or for other outdoors activities like playing golf or flying a kite. Retail stores can optimize their
+     * digital marketing campaigns based on predicted index values. The service returns in daily indices values for
      * current and next 5, 10 and 15 days starting from current day.
-     *
-     * @param format       Desired format of the response. Only `json` format is
-     *                     supported.
-     * @param coordinates  The applicable query specified as a comma separated
-     *                     string composed by latitude followed by
-     *                     longitude e.g. "47.641268,-122.125679".
-     *
-     *                     Weather information is generally available for locations
-     *                     on land, bodies of water surrounded by land, and areas
-     *                     of the ocean that are within approximately 50 nautical
-     *                     miles of a coastline.
-     * @param language     Language in which search results should be returned.
-     *                     Should be one of supported IETF language
-     *                     tags, case insensitive. When data in specified language
-     *                     is not available for a specific field, default language
-     *                     is used.
-     *
-     *                     Please refer to [Supported
-     *                     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                     for
-     *                     details.
-     * @param duration     Specifies for how many days the daily indices are
-     *                     returned. By default, the indices data for the
-     *                     current day will be returned. When requesting future
-     *                     indices data, the current day is included in the response
-     *                     as
-     *                     day 1. Available values are
-     *                     * `1` - Return daily index data for the current day.
-     *                     Default value.
-     *                     * `5` - Return 5 days of daily index data starting from
-     *                     the current day.
-     *                     * `10` - Return 10 days of daily index data starting from
-     *                     the current day.
-     *                     * `15` - Return 15 days of daily index data starting from
-     *                     the current day.
-     * @param indexId      Numeric index identifier that can be used for restricting
-     *                     returned results to the corresponding
-     *                     index type. Cannot be paired with `indexGroupId`. Please
-     *                     refer to [Weather services in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see the
-     *                     supported indices.
-     * @param indexGroupId Numeric index group identifier that can be used for
-     *                     restricting returned results to the
-     *                     corresponding subset of indices (index group). Cannot be
-     *                     paired with `indexId`. Please refer to [Weather services
-     *                     in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see
-     *                     the supported index groups.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days the daily indices are returned. By default, the indices data for the
+     * current day will be returned. When requesting future indices data, the current day is included in the response as
+     * day 1. Available values are
+     * * `1` - Return daily index data for the current day. Default value.
+     * * `5` - Return 5 days of daily index data starting from the current day.
+     * * `10` - Return 10 days of daily index data starting from the current day.
+     * * `15` - Return 15 days of daily index data starting from the current day.
+     * @param indexId Numeric index identifier that can be used for restricting returned results to the corresponding
+     * index type. Cannot be paired with `indexGroupId`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see the
+     * supported indices.
+     * @param indexGroupId Numeric index group identifier that can be used for restricting returned results to the
+     * corresponding subset of indices (index group). Cannot be paired with `indexId`. Please refer to [Weather services
+     * in Azure Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see
+     * the supported index groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Indices call
-     *         along with {@link Response} on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Indices call along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyIndicesResult>> getDailyIndicesWithResponseAsync(JsonFormat format,
@@ -3293,80 +2345,50 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use when you want to know if the weather conditions are optimal for a
-     * specific activity such as outdoor sporting
-     * activities, construction, or farming (results includes soil moisture
-     * information).
-     *
-     *
-     *
-     * The `Get Daily Indices` API is an HTTP `GET` request returns index values
-     * that provide guidance to help when
-     * planning future activities. For example, a health mobile application can
-     * notify users that today is good weather
-     * for running or for other outdoors activities like playing golf or flying a
-     * kite. Retail stores can optimize their
-     * digital marketing campaigns based on predicted index values. The service
-     * returns in daily indices values for
+     * Use when you want to know if the weather conditions are optimal for a specific activity such as outdoor sporting
+     * activities, construction, or farming (results includes soil moisture information).
+     * 
+     * 
+     * 
+     * The `Get Daily Indices` API is an HTTP `GET` request returns index values that provide guidance to help when
+     * planning future activities. For example, a health mobile application can notify users that today is good weather
+     * for running or for other outdoors activities like playing golf or flying a kite. Retail stores can optimize their
+     * digital marketing campaigns based on predicted index values. The service returns in daily indices values for
      * current and next 5, 10 and 15 days starting from current day.
-     *
-     * @param format       Desired format of the response. Only `json` format is
-     *                     supported.
-     * @param coordinates  The applicable query specified as a comma separated
-     *                     string composed by latitude followed by
-     *                     longitude e.g. "47.641268,-122.125679".
-     *
-     *                     Weather information is generally available for locations
-     *                     on land, bodies of water surrounded by land, and areas
-     *                     of the ocean that are within approximately 50 nautical
-     *                     miles of a coastline.
-     * @param language     Language in which search results should be returned.
-     *                     Should be one of supported IETF language
-     *                     tags, case insensitive. When data in specified language
-     *                     is not available for a specific field, default language
-     *                     is used.
-     *
-     *                     Please refer to [Supported
-     *                     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                     for
-     *                     details.
-     * @param duration     Specifies for how many days the daily indices are
-     *                     returned. By default, the indices data for the
-     *                     current day will be returned. When requesting future
-     *                     indices data, the current day is included in the response
-     *                     as
-     *                     day 1. Available values are
-     *                     * `1` - Return daily index data for the current day.
-     *                     Default value.
-     *                     * `5` - Return 5 days of daily index data starting from
-     *                     the current day.
-     *                     * `10` - Return 10 days of daily index data starting from
-     *                     the current day.
-     *                     * `15` - Return 15 days of daily index data starting from
-     *                     the current day.
-     * @param indexId      Numeric index identifier that can be used for restricting
-     *                     returned results to the corresponding
-     *                     index type. Cannot be paired with `indexGroupId`. Please
-     *                     refer to [Weather services in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see the
-     *                     supported indices.
-     * @param indexGroupId Numeric index group identifier that can be used for
-     *                     restricting returned results to the
-     *                     corresponding subset of indices (index group). Cannot be
-     *                     paired with `indexId`. Please refer to [Weather services
-     *                     in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see
-     *                     the supported index groups.
-     * @param context      The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days the daily indices are returned. By default, the indices data for the
+     * current day will be returned. When requesting future indices data, the current day is included in the response as
+     * day 1. Available values are
+     * * `1` - Return daily index data for the current day. Default value.
+     * * `5` - Return 5 days of daily index data starting from the current day.
+     * * `10` - Return 10 days of daily index data starting from the current day.
+     * * `15` - Return 15 days of daily index data starting from the current day.
+     * @param indexId Numeric index identifier that can be used for restricting returned results to the corresponding
+     * index type. Cannot be paired with `indexGroupId`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see the
+     * supported indices.
+     * @param indexGroupId Numeric index group identifier that can be used for restricting returned results to the
+     * corresponding subset of indices (index group). Cannot be paired with `indexId`. Please refer to [Weather services
+     * in Azure Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see
+     * the supported index groups.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Indices call
-     *         along with {@link Response} on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Indices call along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyIndicesResult>> getDailyIndicesWithResponseAsync(JsonFormat format,
@@ -3380,79 +2402,49 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use when you want to know if the weather conditions are optimal for a
-     * specific activity such as outdoor sporting
-     * activities, construction, or farming (results includes soil moisture
-     * information).
-     *
-     *
-     *
-     * The `Get Daily Indices` API is an HTTP `GET` request returns index values
-     * that provide guidance to help when
-     * planning future activities. For example, a health mobile application can
-     * notify users that today is good weather
-     * for running or for other outdoors activities like playing golf or flying a
-     * kite. Retail stores can optimize their
-     * digital marketing campaigns based on predicted index values. The service
-     * returns in daily indices values for
+     * Use when you want to know if the weather conditions are optimal for a specific activity such as outdoor sporting
+     * activities, construction, or farming (results includes soil moisture information).
+     * 
+     * 
+     * 
+     * The `Get Daily Indices` API is an HTTP `GET` request returns index values that provide guidance to help when
+     * planning future activities. For example, a health mobile application can notify users that today is good weather
+     * for running or for other outdoors activities like playing golf or flying a kite. Retail stores can optimize their
+     * digital marketing campaigns based on predicted index values. The service returns in daily indices values for
      * current and next 5, 10 and 15 days starting from current day.
-     *
-     * @param format       Desired format of the response. Only `json` format is
-     *                     supported.
-     * @param coordinates  The applicable query specified as a comma separated
-     *                     string composed by latitude followed by
-     *                     longitude e.g. "47.641268,-122.125679".
-     *
-     *                     Weather information is generally available for locations
-     *                     on land, bodies of water surrounded by land, and areas
-     *                     of the ocean that are within approximately 50 nautical
-     *                     miles of a coastline.
-     * @param language     Language in which search results should be returned.
-     *                     Should be one of supported IETF language
-     *                     tags, case insensitive. When data in specified language
-     *                     is not available for a specific field, default language
-     *                     is used.
-     *
-     *                     Please refer to [Supported
-     *                     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                     for
-     *                     details.
-     * @param duration     Specifies for how many days the daily indices are
-     *                     returned. By default, the indices data for the
-     *                     current day will be returned. When requesting future
-     *                     indices data, the current day is included in the response
-     *                     as
-     *                     day 1. Available values are
-     *                     * `1` - Return daily index data for the current day.
-     *                     Default value.
-     *                     * `5` - Return 5 days of daily index data starting from
-     *                     the current day.
-     *                     * `10` - Return 10 days of daily index data starting from
-     *                     the current day.
-     *                     * `15` - Return 15 days of daily index data starting from
-     *                     the current day.
-     * @param indexId      Numeric index identifier that can be used for restricting
-     *                     returned results to the corresponding
-     *                     index type. Cannot be paired with `indexGroupId`. Please
-     *                     refer to [Weather services in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see the
-     *                     supported indices.
-     * @param indexGroupId Numeric index group identifier that can be used for
-     *                     restricting returned results to the
-     *                     corresponding subset of indices (index group). Cannot be
-     *                     paired with `indexId`. Please refer to [Weather services
-     *                     in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see
-     *                     the supported index groups.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days the daily indices are returned. By default, the indices data for the
+     * current day will be returned. When requesting future indices data, the current day is included in the response as
+     * day 1. Available values are
+     * * `1` - Return daily index data for the current day. Default value.
+     * * `5` - Return 5 days of daily index data starting from the current day.
+     * * `10` - Return 10 days of daily index data starting from the current day.
+     * * `15` - Return 15 days of daily index data starting from the current day.
+     * @param indexId Numeric index identifier that can be used for restricting returned results to the corresponding
+     * index type. Cannot be paired with `indexGroupId`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see the
+     * supported indices.
+     * @param indexGroupId Numeric index group identifier that can be used for restricting returned results to the
+     * corresponding subset of indices (index group). Cannot be paired with `indexId`. Please refer to [Weather services
+     * in Azure Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see
+     * the supported index groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Indices call on
-     *         successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Indices call on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DailyIndicesResult> getDailyIndicesAsync(JsonFormat format, List<Double> coordinates, String language,
@@ -3462,80 +2454,50 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use when you want to know if the weather conditions are optimal for a
-     * specific activity such as outdoor sporting
-     * activities, construction, or farming (results includes soil moisture
-     * information).
-     *
-     *
-     *
-     * The `Get Daily Indices` API is an HTTP `GET` request returns index values
-     * that provide guidance to help when
-     * planning future activities. For example, a health mobile application can
-     * notify users that today is good weather
-     * for running or for other outdoors activities like playing golf or flying a
-     * kite. Retail stores can optimize their
-     * digital marketing campaigns based on predicted index values. The service
-     * returns in daily indices values for
+     * Use when you want to know if the weather conditions are optimal for a specific activity such as outdoor sporting
+     * activities, construction, or farming (results includes soil moisture information).
+     * 
+     * 
+     * 
+     * The `Get Daily Indices` API is an HTTP `GET` request returns index values that provide guidance to help when
+     * planning future activities. For example, a health mobile application can notify users that today is good weather
+     * for running or for other outdoors activities like playing golf or flying a kite. Retail stores can optimize their
+     * digital marketing campaigns based on predicted index values. The service returns in daily indices values for
      * current and next 5, 10 and 15 days starting from current day.
-     *
-     * @param format       Desired format of the response. Only `json` format is
-     *                     supported.
-     * @param coordinates  The applicable query specified as a comma separated
-     *                     string composed by latitude followed by
-     *                     longitude e.g. "47.641268,-122.125679".
-     *
-     *                     Weather information is generally available for locations
-     *                     on land, bodies of water surrounded by land, and areas
-     *                     of the ocean that are within approximately 50 nautical
-     *                     miles of a coastline.
-     * @param language     Language in which search results should be returned.
-     *                     Should be one of supported IETF language
-     *                     tags, case insensitive. When data in specified language
-     *                     is not available for a specific field, default language
-     *                     is used.
-     *
-     *                     Please refer to [Supported
-     *                     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                     for
-     *                     details.
-     * @param duration     Specifies for how many days the daily indices are
-     *                     returned. By default, the indices data for the
-     *                     current day will be returned. When requesting future
-     *                     indices data, the current day is included in the response
-     *                     as
-     *                     day 1. Available values are
-     *                     * `1` - Return daily index data for the current day.
-     *                     Default value.
-     *                     * `5` - Return 5 days of daily index data starting from
-     *                     the current day.
-     *                     * `10` - Return 10 days of daily index data starting from
-     *                     the current day.
-     *                     * `15` - Return 15 days of daily index data starting from
-     *                     the current day.
-     * @param indexId      Numeric index identifier that can be used for restricting
-     *                     returned results to the corresponding
-     *                     index type. Cannot be paired with `indexGroupId`. Please
-     *                     refer to [Weather services in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see the
-     *                     supported indices.
-     * @param indexGroupId Numeric index group identifier that can be used for
-     *                     restricting returned results to the
-     *                     corresponding subset of indices (index group). Cannot be
-     *                     paired with `indexId`. Please refer to [Weather services
-     *                     in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see
-     *                     the supported index groups.
-     * @param context      The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days the daily indices are returned. By default, the indices data for the
+     * current day will be returned. When requesting future indices data, the current day is included in the response as
+     * day 1. Available values are
+     * * `1` - Return daily index data for the current day. Default value.
+     * * `5` - Return 5 days of daily index data starting from the current day.
+     * * `10` - Return 10 days of daily index data starting from the current day.
+     * * `15` - Return 15 days of daily index data starting from the current day.
+     * @param indexId Numeric index identifier that can be used for restricting returned results to the corresponding
+     * index type. Cannot be paired with `indexGroupId`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see the
+     * supported indices.
+     * @param indexGroupId Numeric index group identifier that can be used for restricting returned results to the
+     * corresponding subset of indices (index group). Cannot be paired with `indexId`. Please refer to [Weather services
+     * in Azure Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see
+     * the supported index groups.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Indices call on
-     *         successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Indices call on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DailyIndicesResult> getDailyIndicesAsync(JsonFormat format, List<Double> coordinates, String language,
@@ -3545,79 +2507,49 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use when you want to know if the weather conditions are optimal for a
-     * specific activity such as outdoor sporting
-     * activities, construction, or farming (results includes soil moisture
-     * information).
-     *
-     *
-     *
-     * The `Get Daily Indices` API is an HTTP `GET` request returns index values
-     * that provide guidance to help when
-     * planning future activities. For example, a health mobile application can
-     * notify users that today is good weather
-     * for running or for other outdoors activities like playing golf or flying a
-     * kite. Retail stores can optimize their
-     * digital marketing campaigns based on predicted index values. The service
-     * returns in daily indices values for
+     * Use when you want to know if the weather conditions are optimal for a specific activity such as outdoor sporting
+     * activities, construction, or farming (results includes soil moisture information).
+     * 
+     * 
+     * 
+     * The `Get Daily Indices` API is an HTTP `GET` request returns index values that provide guidance to help when
+     * planning future activities. For example, a health mobile application can notify users that today is good weather
+     * for running or for other outdoors activities like playing golf or flying a kite. Retail stores can optimize their
+     * digital marketing campaigns based on predicted index values. The service returns in daily indices values for
      * current and next 5, 10 and 15 days starting from current day.
-     *
-     * @param format       Desired format of the response. Only `json` format is
-     *                     supported.
-     * @param coordinates  The applicable query specified as a comma separated
-     *                     string composed by latitude followed by
-     *                     longitude e.g. "47.641268,-122.125679".
-     *
-     *                     Weather information is generally available for locations
-     *                     on land, bodies of water surrounded by land, and areas
-     *                     of the ocean that are within approximately 50 nautical
-     *                     miles of a coastline.
-     * @param language     Language in which search results should be returned.
-     *                     Should be one of supported IETF language
-     *                     tags, case insensitive. When data in specified language
-     *                     is not available for a specific field, default language
-     *                     is used.
-     *
-     *                     Please refer to [Supported
-     *                     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                     for
-     *                     details.
-     * @param duration     Specifies for how many days the daily indices are
-     *                     returned. By default, the indices data for the
-     *                     current day will be returned. When requesting future
-     *                     indices data, the current day is included in the response
-     *                     as
-     *                     day 1. Available values are
-     *                     * `1` - Return daily index data for the current day.
-     *                     Default value.
-     *                     * `5` - Return 5 days of daily index data starting from
-     *                     the current day.
-     *                     * `10` - Return 10 days of daily index data starting from
-     *                     the current day.
-     *                     * `15` - Return 15 days of daily index data starting from
-     *                     the current day.
-     * @param indexId      Numeric index identifier that can be used for restricting
-     *                     returned results to the corresponding
-     *                     index type. Cannot be paired with `indexGroupId`. Please
-     *                     refer to [Weather services in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see the
-     *                     supported indices.
-     * @param indexGroupId Numeric index group identifier that can be used for
-     *                     restricting returned results to the
-     *                     corresponding subset of indices (index group). Cannot be
-     *                     paired with `indexId`. Please refer to [Weather services
-     *                     in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see
-     *                     the supported index groups.
-     * @param context      The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days the daily indices are returned. By default, the indices data for the
+     * current day will be returned. When requesting future indices data, the current day is included in the response as
+     * day 1. Available values are
+     * * `1` - Return daily index data for the current day. Default value.
+     * * `5` - Return 5 days of daily index data starting from the current day.
+     * * `10` - Return 10 days of daily index data starting from the current day.
+     * * `15` - Return 15 days of daily index data starting from the current day.
+     * @param indexId Numeric index identifier that can be used for restricting returned results to the corresponding
+     * index type. Cannot be paired with `indexGroupId`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see the
+     * supported indices.
+     * @param indexGroupId Numeric index group identifier that can be used for restricting returned results to the
+     * corresponding subset of indices (index group). Cannot be paired with `indexId`. Please refer to [Weather services
+     * in Azure Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see
+     * the supported index groups.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Indices call
-     *         along with {@link Response}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Indices call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DailyIndicesResult> getDailyIndicesWithResponse(JsonFormat format, List<Double> coordinates,
@@ -3627,76 +2559,47 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use when you want to know if the weather conditions are optimal for a
-     * specific activity such as outdoor sporting
-     * activities, construction, or farming (results includes soil moisture
-     * information).
-     *
-     *
-     *
-     * The `Get Daily Indices` API is an HTTP `GET` request returns index values
-     * that provide guidance to help when
-     * planning future activities. For example, a health mobile application can
-     * notify users that today is good weather
-     * for running or for other outdoors activities like playing golf or flying a
-     * kite. Retail stores can optimize their
-     * digital marketing campaigns based on predicted index values. The service
-     * returns in daily indices values for
+     * Use when you want to know if the weather conditions are optimal for a specific activity such as outdoor sporting
+     * activities, construction, or farming (results includes soil moisture information).
+     * 
+     * 
+     * 
+     * The `Get Daily Indices` API is an HTTP `GET` request returns index values that provide guidance to help when
+     * planning future activities. For example, a health mobile application can notify users that today is good weather
+     * for running or for other outdoors activities like playing golf or flying a kite. Retail stores can optimize their
+     * digital marketing campaigns based on predicted index values. The service returns in daily indices values for
      * current and next 5, 10 and 15 days starting from current day.
-     *
-     * @param format       Desired format of the response. Only `json` format is
-     *                     supported.
-     * @param coordinates  The applicable query specified as a comma separated
-     *                     string composed by latitude followed by
-     *                     longitude e.g. "47.641268,-122.125679".
-     *
-     *                     Weather information is generally available for locations
-     *                     on land, bodies of water surrounded by land, and areas
-     *                     of the ocean that are within approximately 50 nautical
-     *                     miles of a coastline.
-     * @param language     Language in which search results should be returned.
-     *                     Should be one of supported IETF language
-     *                     tags, case insensitive. When data in specified language
-     *                     is not available for a specific field, default language
-     *                     is used.
-     *
-     *                     Please refer to [Supported
-     *                     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                     for
-     *                     details.
-     * @param duration     Specifies for how many days the daily indices are
-     *                     returned. By default, the indices data for the
-     *                     current day will be returned. When requesting future
-     *                     indices data, the current day is included in the response
-     *                     as
-     *                     day 1. Available values are
-     *                     * `1` - Return daily index data for the current day.
-     *                     Default value.
-     *                     * `5` - Return 5 days of daily index data starting from
-     *                     the current day.
-     *                     * `10` - Return 10 days of daily index data starting from
-     *                     the current day.
-     *                     * `15` - Return 15 days of daily index data starting from
-     *                     the current day.
-     * @param indexId      Numeric index identifier that can be used for restricting
-     *                     returned results to the corresponding
-     *                     index type. Cannot be paired with `indexGroupId`. Please
-     *                     refer to [Weather services in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see the
-     *                     supported indices.
-     * @param indexGroupId Numeric index group identifier that can be used for
-     *                     restricting returned results to the
-     *                     corresponding subset of indices (index group). Cannot be
-     *                     paired with `indexId`. Please refer to [Weather services
-     *                     in Azure
-     *                     Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids)
-     *                     for details and to see
-     *                     the supported index groups.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days the daily indices are returned. By default, the indices data for the
+     * current day will be returned. When requesting future indices data, the current day is included in the response as
+     * day 1. Available values are
+     * * `1` - Return daily index data for the current day. Default value.
+     * * `5` - Return 5 days of daily index data starting from the current day.
+     * * `10` - Return 10 days of daily index data starting from the current day.
+     * * `15` - Return 15 days of daily index data starting from the current day.
+     * @param indexId Numeric index identifier that can be used for restricting returned results to the corresponding
+     * index type. Cannot be paired with `indexGroupId`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see the
+     * supported indices.
+     * @param indexGroupId Numeric index group identifier that can be used for restricting returned results to the
+     * corresponding subset of indices (index group). Cannot be paired with `indexId`. Please refer to [Weather services
+     * in Azure Maps](/azure/azure-maps/weather-services-concepts#index-ids-and-index-groups-ids) for details and to see
+     * the supported index groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Daily Indices call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3707,25 +2610,19 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of the active tropical storms issued by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a
-     * list of all government-issued active
-     * tropical storms. Information about the tropical storms includes, government
-     * ID, basin ID, year of origin, name
+     * Use to get a list of the active tropical storms issued by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a list of all government-issued active
+     * tropical storms. Information about the tropical storms includes, government ID, basin ID, year of origin, name
      * and if it is subtropical.
-     *
-     * @param format Desired format of the response. Only `json` format is
-     *               supported.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return all government-issued active storms along with {@link Response} on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all government-issued active storms along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActiveStormResult>> getTropicalStormActiveWithResponseAsync(JsonFormat format) {
@@ -3735,26 +2632,20 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of the active tropical storms issued by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a
-     * list of all government-issued active
-     * tropical storms. Information about the tropical storms includes, government
-     * ID, basin ID, year of origin, name
+     * Use to get a list of the active tropical storms issued by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a list of all government-issued active
+     * tropical storms. Information about the tropical storms includes, government ID, basin ID, year of origin, name
      * and if it is subtropical.
-     *
-     * @param format  Desired format of the response. Only `json` format is
-     *                supported.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return all government-issued active storms along with {@link Response} on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all government-issued active storms along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActiveStormResult>> getTropicalStormActiveWithResponseAsync(JsonFormat format,
@@ -3765,25 +2656,19 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of the active tropical storms issued by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a
-     * list of all government-issued active
-     * tropical storms. Information about the tropical storms includes, government
-     * ID, basin ID, year of origin, name
+     * Use to get a list of the active tropical storms issued by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a list of all government-issued active
+     * tropical storms. Information about the tropical storms includes, government ID, basin ID, year of origin, name
      * and if it is subtropical.
-     *
-     * @param format Desired format of the response. Only `json` format is
-     *               supported.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return all government-issued active storms on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all government-issued active storms on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActiveStormResult> getTropicalStormActiveAsync(JsonFormat format) {
@@ -3791,26 +2676,20 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of the active tropical storms issued by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a
-     * list of all government-issued active
-     * tropical storms. Information about the tropical storms includes, government
-     * ID, basin ID, year of origin, name
+     * Use to get a list of the active tropical storms issued by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a list of all government-issued active
+     * tropical storms. Information about the tropical storms includes, government ID, basin ID, year of origin, name
      * and if it is subtropical.
-     *
-     * @param format  Desired format of the response. Only `json` format is
-     *                supported.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return all government-issued active storms on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all government-issued active storms on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActiveStormResult> getTropicalStormActiveAsync(JsonFormat format, Context context) {
@@ -3819,24 +2698,19 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of the active tropical storms issued by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a
-     * list of all government-issued active
-     * tropical storms. Information about the tropical storms includes, government
-     * ID, basin ID, year of origin, name
+     * Use to get a list of the active tropical storms issued by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a list of all government-issued active
+     * tropical storms. Information about the tropical storms includes, government ID, basin ID, year of origin, name
      * and if it is subtropical.
-     *
-     * @param format  Desired format of the response. Only `json` format is
-     *                supported.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all government-issued active storms along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3845,23 +2719,18 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of the active tropical storms issued by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a
-     * list of all government-issued active
-     * tropical storms. Information about the tropical storms includes, government
-     * ID, basin ID, year of origin, name
+     * Use to get a list of the active tropical storms issued by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Active` API is an HTTP `GET` request that returns a list of all government-issued active
+     * tropical storms. Information about the tropical storms includes, government ID, basin ID, year of origin, name
      * and if it is subtropical.
-     *
-     * @param format Desired format of the response. Only `json` format is
-     *               supported.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all government-issued active storms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3871,26 +2740,21 @@ public final class WeathersImpl {
 
     /**
      * Use to get a list of storms issued by national weather forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a
-     * list of government-issued tropical
-     * storms by year, basin ID, and government ID. Information about the tropical
-     * storms includes, government ID, basin
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a list of government-issued tropical
+     * storms by year, basin ID, and government ID. Information about the tropical storms includes, government ID, basin
      * ID, status, year, name and if it is subtropical.
-     *
-     * @param format            Desired format of the response. Only `json` format
-     *                          is supported.
-     * @param year              Year of the cyclone(s).
-     * @param basinId           Basin identifier.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return search government-issued storms along with {@link Response} on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return search government-issued storms along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StormSearchResult>> searchTropicalStormWithResponseAsync(JsonFormat format, int year,
@@ -3903,27 +2767,22 @@ public final class WeathersImpl {
 
     /**
      * Use to get a list of storms issued by national weather forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a
-     * list of government-issued tropical
-     * storms by year, basin ID, and government ID. Information about the tropical
-     * storms includes, government ID, basin
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a list of government-issued tropical
+     * storms by year, basin ID, and government ID. Information about the tropical storms includes, government ID, basin
      * ID, status, year, name and if it is subtropical.
-     *
-     * @param format            Desired format of the response. Only `json` format
-     *                          is supported.
-     * @param year              Year of the cyclone(s).
-     * @param basinId           Basin identifier.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
-     * @param context           The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return search government-issued storms along with {@link Response} on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return search government-issued storms along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StormSearchResult>> searchTropicalStormWithResponseAsync(JsonFormat format, int year,
@@ -3935,26 +2794,21 @@ public final class WeathersImpl {
 
     /**
      * Use to get a list of storms issued by national weather forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a
-     * list of government-issued tropical
-     * storms by year, basin ID, and government ID. Information about the tropical
-     * storms includes, government ID, basin
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a list of government-issued tropical
+     * storms by year, basin ID, and government ID. Information about the tropical storms includes, government ID, basin
      * ID, status, year, name and if it is subtropical.
-     *
-     * @param format            Desired format of the response. Only `json` format
-     *                          is supported.
-     * @param year              Year of the cyclone(s).
-     * @param basinId           Basin identifier.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return search government-issued storms on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return search government-issued storms on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StormSearchResult> searchTropicalStormAsync(JsonFormat format, int year, BasinId basinId,
@@ -3965,27 +2819,22 @@ public final class WeathersImpl {
 
     /**
      * Use to get a list of storms issued by national weather forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a
-     * list of government-issued tropical
-     * storms by year, basin ID, and government ID. Information about the tropical
-     * storms includes, government ID, basin
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a list of government-issued tropical
+     * storms by year, basin ID, and government ID. Information about the tropical storms includes, government ID, basin
      * ID, status, year, name and if it is subtropical.
-     *
-     * @param format            Desired format of the response. Only `json` format
-     *                          is supported.
-     * @param year              Year of the cyclone(s).
-     * @param basinId           Basin identifier.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
-     * @param context           The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return search government-issued storms on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return search government-issued storms on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StormSearchResult> searchTropicalStormAsync(JsonFormat format, int year, BasinId basinId,
@@ -3996,25 +2845,21 @@ public final class WeathersImpl {
 
     /**
      * Use to get a list of storms issued by national weather forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a
-     * list of government-issued tropical
-     * storms by year, basin ID, and government ID. Information about the tropical
-     * storms includes, government ID, basin
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a list of government-issued tropical
+     * storms by year, basin ID, and government ID. Information about the tropical storms includes, government ID, basin
      * ID, status, year, name and if it is subtropical.
-     *
-     * @param format            Desired format of the response. Only `json` format
-     *                          is supported.
-     * @param year              Year of the cyclone(s).
-     * @param basinId           Basin identifier.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
-     * @param context           The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return search government-issued storms along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4025,24 +2870,20 @@ public final class WeathersImpl {
 
     /**
      * Use to get a list of storms issued by national weather forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a
-     * list of government-issued tropical
-     * storms by year, basin ID, and government ID. Information about the tropical
-     * storms includes, government ID, basin
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Search` API is an HTTP `GET` request that returns a list of government-issued tropical
+     * storms by year, basin ID, and government ID. Information about the tropical storms includes, government ID, basin
      * ID, status, year, name and if it is subtropical.
-     *
-     * @param format            Desired format of the response. Only `json` format
-     *                          is supported.
-     * @param year              Year of the cyclone(s).
-     * @param basinId           Basin identifier.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return search government-issued storms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4052,39 +2893,28 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of tropical storms forecasted by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns
-     * individual government-issued
-     * tropical storm forecasts. Information about the forecasted tropical storms
-     * includes, location, status, date the
+     * Use to get a list of tropical storms forecasted by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns individual government-issued
+     * tropical storm forecasts. Information about the forecasted tropical storms includes, location, status, date the
      * forecast was created, window, wind speed and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param includeWindowGeometry   When true, window geometry data (geoJSON) is
-     *                                included in the response.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param includeWindowGeometry When true, window geometry data (geoJSON) is included in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the list of Government-issued forecasts along with {@link Response}
-     *         on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Government-issued forecasts along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StormForecastResult>> getTropicalStormForecastWithResponseAsync(JsonFormat format, int year,
@@ -4097,40 +2927,29 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of tropical storms forecasted by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns
-     * individual government-issued
-     * tropical storm forecasts. Information about the forecasted tropical storms
-     * includes, location, status, date the
+     * Use to get a list of tropical storms forecasted by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns individual government-issued
+     * tropical storm forecasts. Information about the forecasted tropical storms includes, location, status, date the
      * forecast was created, window, wind speed and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param includeWindowGeometry   When true, window geometry data (geoJSON) is
-     *                                included in the response.
-     * @param context                 The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param includeWindowGeometry When true, window geometry data (geoJSON) is included in the response.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the list of Government-issued forecasts along with {@link Response}
-     *         on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Government-issued forecasts along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StormForecastResult>> getTropicalStormForecastWithResponseAsync(JsonFormat format, int year,
@@ -4143,38 +2962,27 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of tropical storms forecasted by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns
-     * individual government-issued
-     * tropical storm forecasts. Information about the forecasted tropical storms
-     * includes, location, status, date the
+     * Use to get a list of tropical storms forecasted by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns individual government-issued
+     * tropical storm forecasts. Information about the forecasted tropical storms includes, location, status, date the
      * forecast was created, window, wind speed and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param includeWindowGeometry   When true, window geometry data (geoJSON) is
-     *                                included in the response.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param includeWindowGeometry When true, window geometry data (geoJSON) is included in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the list of Government-issued forecasts on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Government-issued forecasts on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StormForecastResult> getTropicalStormForecastAsync(JsonFormat format, int year, BasinId basinId,
@@ -4185,39 +2993,28 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of tropical storms forecasted by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns
-     * individual government-issued
-     * tropical storm forecasts. Information about the forecasted tropical storms
-     * includes, location, status, date the
+     * Use to get a list of tropical storms forecasted by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns individual government-issued
+     * tropical storm forecasts. Information about the forecasted tropical storms includes, location, status, date the
      * forecast was created, window, wind speed and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param includeWindowGeometry   When true, window geometry data (geoJSON) is
-     *                                included in the response.
-     * @param context                 The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param includeWindowGeometry When true, window geometry data (geoJSON) is included in the response.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the list of Government-issued forecasts on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Government-issued forecasts on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StormForecastResult> getTropicalStormForecastAsync(JsonFormat format, int year, BasinId basinId,
@@ -4228,37 +3025,27 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of tropical storms forecasted by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns
-     * individual government-issued
-     * tropical storm forecasts. Information about the forecasted tropical storms
-     * includes, location, status, date the
+     * Use to get a list of tropical storms forecasted by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns individual government-issued
+     * tropical storm forecasts. Information about the forecasted tropical storms includes, location, status, date the
      * forecast was created, window, wind speed and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param includeWindowGeometry   When true, window geometry data (geoJSON) is
-     *                                included in the response.
-     * @param context                 The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param includeWindowGeometry When true, window geometry data (geoJSON) is included in the response.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Government-issued forecasts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4270,36 +3057,26 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get a list of tropical storms forecasted by national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns
-     * individual government-issued
-     * tropical storm forecasts. Information about the forecasted tropical storms
-     * includes, location, status, date the
+     * Use to get a list of tropical storms forecasted by national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Forecasts` API is an HTTP `GET` request that returns individual government-issued
+     * tropical storm forecasts. Information about the forecasted tropical storms includes, location, status, date the
      * forecast was created, window, wind speed and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param includeWindowGeometry   When true, window geometry data (geoJSON) is
-     *                                included in the response.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param includeWindowGeometry When true, window geometry data (geoJSON) is included in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Government-issued forecasts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4311,38 +3088,28 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get the location of tropical storms from individual national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns
-     * the location of individual
-     * government-issued tropical storms. Information about the tropical storms
-     * includes, location coordinates,
+     * Use to get the location of tropical storms from individual national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns the location of individual
+     * government-issued tropical storms. Information about the tropical storms includes, location coordinates,
      * geometry, basin ID, date, wind details and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeCurrentStorm     When true, return the current storm location.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeCurrentStorm When true, return the current storm location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return locations for an individual government-issued storm along with
-     *         {@link Response} on successful completion
-     *         of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return locations for an individual government-issued storm along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StormLocationsResult>> getTropicalStormLocationsWithResponseAsync(JsonFormat format, int year,
@@ -4355,39 +3122,29 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get the location of tropical storms from individual national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns
-     * the location of individual
-     * government-issued tropical storms. Information about the tropical storms
-     * includes, location coordinates,
+     * Use to get the location of tropical storms from individual national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns the location of individual
+     * government-issued tropical storms. Information about the tropical storms includes, location coordinates,
      * geometry, basin ID, date, wind details and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeCurrentStorm     When true, return the current storm location.
-     * @param context                 The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeCurrentStorm When true, return the current storm location.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return locations for an individual government-issued storm along with
-     *         {@link Response} on successful completion
-     *         of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return locations for an individual government-issued storm along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StormLocationsResult>> getTropicalStormLocationsWithResponseAsync(JsonFormat format, int year,
@@ -4400,37 +3157,27 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get the location of tropical storms from individual national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns
-     * the location of individual
-     * government-issued tropical storms. Information about the tropical storms
-     * includes, location coordinates,
+     * Use to get the location of tropical storms from individual national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns the location of individual
+     * government-issued tropical storms. Information about the tropical storms includes, location coordinates,
      * geometry, basin ID, date, wind details and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeCurrentStorm     When true, return the current storm location.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeCurrentStorm When true, return the current storm location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return locations for an individual government-issued storm on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return locations for an individual government-issued storm on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StormLocationsResult> getTropicalStormLocationsAsync(JsonFormat format, int year, BasinId basinId,
@@ -4441,38 +3188,28 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get the location of tropical storms from individual national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns
-     * the location of individual
-     * government-issued tropical storms. Information about the tropical storms
-     * includes, location coordinates,
+     * Use to get the location of tropical storms from individual national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns the location of individual
+     * government-issued tropical storms. Information about the tropical storms includes, location coordinates,
      * geometry, basin ID, date, wind details and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeCurrentStorm     When true, return the current storm location.
-     * @param context                 The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeCurrentStorm When true, return the current storm location.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return locations for an individual government-issued storm on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return locations for an individual government-issued storm on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StormLocationsResult> getTropicalStormLocationsAsync(JsonFormat format, int year, BasinId basinId,
@@ -4484,38 +3221,28 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get the location of tropical storms from individual national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns
-     * the location of individual
-     * government-issued tropical storms. Information about the tropical storms
-     * includes, location coordinates,
+     * Use to get the location of tropical storms from individual national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns the location of individual
+     * government-issued tropical storms. Information about the tropical storms includes, location coordinates,
      * geometry, basin ID, date, wind details and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeCurrentStorm     When true, return the current storm location.
-     * @param context                 The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeCurrentStorm When true, return the current storm location.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return locations for an individual government-issued storm along with
-     *         {@link Response}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return locations for an individual government-issued storm along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StormLocationsResult> getTropicalStormLocationsWithResponse(JsonFormat format, int year,
@@ -4526,35 +3253,26 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get the location of tropical storms from individual national weather
-     * forecasting agencies.
-     *
-     *
-     *
-     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns
-     * the location of individual
-     * government-issued tropical storms. Information about the tropical storms
-     * includes, location coordinates,
+     * Use to get the location of tropical storms from individual national weather forecasting agencies.
+     * 
+     * 
+     * 
+     * The `Get Tropical Storm Locations` API is an HTTP `GET` request that returns the location of individual
+     * government-issued tropical storms. Information about the tropical storms includes, location coordinates,
      * geometry, basin ID, date, wind details and wind radii.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param year                    Year of the cyclone(s).
-     * @param basinId                 Basin identifier.
-     * @param governmentStormId       Government storm Id.
-     * @param includeDetails          When true, wind radii summary data is included
-     *                                in the response.
-     * @param includeGeometricDetails When true, wind radii summary data and geoJSON
-     *                                details are included in the
-     *                                response.
-     * @param unit                    Specifies to return the data in either metric
-     *                                units or imperial units. Default value is
-     *                                metric.
-     * @param includeCurrentStorm     When true, return the current storm location.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param year Year of the cyclone(s).
+     * @param basinId Basin identifier.
+     * @param governmentStormId Government storm Id.
+     * @param includeDetails When true, wind radii summary data is included in the response.
+     * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
+     * response.
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param includeCurrentStorm When true, return the current storm location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return locations for an individual government-issued storm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4566,52 +3284,33 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get current air quality information that includes potential risks and
-     * suggested precautions.
-     *
-     *
-     *
-     * The `Get Current Air Quality` API is an HTTP `GET` request that returns
-     * detailed information about the
-     * concentration of pollutants and overall status for current air quality,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
+     * Use to get current air quality information that includes potential risks and suggested precautions.
+     * 
+     * 
+     * 
+     * The `Get Current Air Quality` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for current air quality, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call along
-     *         with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AirQualityResult>> getCurrentAirQualityWithResponseAsync(JsonFormat format,
@@ -4625,53 +3324,34 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get current air quality information that includes potential risks and
-     * suggested precautions.
-     *
-     *
-     *
-     * The `Get Current Air Quality` API is an HTTP `GET` request that returns
-     * detailed information about the
-     * concentration of pollutants and overall status for current air quality,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
-     * @param context                 The context to associate with this operation.
+     * Use to get current air quality information that includes potential risks and suggested precautions.
+     * 
+     * 
+     * 
+     * The `Get Current Air Quality` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for current air quality, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call along
-     *         with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AirQualityResult>> getCurrentAirQualityWithResponseAsync(JsonFormat format,
@@ -4685,51 +3365,32 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get current air quality information that includes potential risks and
-     * suggested precautions.
-     *
-     *
-     *
-     * The `Get Current Air Quality` API is an HTTP `GET` request that returns
-     * detailed information about the
-     * concentration of pollutants and overall status for current air quality,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
+     * Use to get current air quality information that includes potential risks and suggested precautions.
+     * 
+     * 
+     * 
+     * The `Get Current Air Quality` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for current air quality, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AirQualityResult> getCurrentAirQualityAsync(JsonFormat format, List<Double> coordinates,
@@ -4739,52 +3400,33 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get current air quality information that includes potential risks and
-     * suggested precautions.
-     *
-     *
-     *
-     * The `Get Current Air Quality` API is an HTTP `GET` request that returns
-     * detailed information about the
-     * concentration of pollutants and overall status for current air quality,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
-     * @param context                 The context to associate with this operation.
+     * Use to get current air quality information that includes potential risks and suggested precautions.
+     * 
+     * 
+     * 
+     * The `Get Current Air Quality` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for current air quality, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AirQualityResult> getCurrentAirQualityAsync(JsonFormat format, List<Double> coordinates,
@@ -4794,52 +3436,33 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get current air quality information that includes potential risks and
-     * suggested precautions.
-     *
-     *
-     *
-     * The `Get Current Air Quality` API is an HTTP `GET` request that returns
-     * detailed information about the
-     * concentration of pollutants and overall status for current air quality,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
-     * @param context                 The context to associate with this operation.
+     * Use to get current air quality information that includes potential risks and suggested precautions.
+     * 
+     * 
+     * 
+     * The `Get Current Air Quality` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for current air quality, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call along
-     *         with {@link Response}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AirQualityResult> getCurrentAirQualityWithResponse(JsonFormat format, List<Double> coordinates,
@@ -4849,49 +3472,31 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get current air quality information that includes potential risks and
-     * suggested precautions.
-     *
-     *
-     *
-     * The `Get Current Air Quality` API is an HTTP `GET` request that returns
-     * detailed information about the
-     * concentration of pollutants and overall status for current air quality,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
+     * Use to get current air quality information that includes potential risks and suggested precautions.
+     * 
+     * 
+     * 
+     * The `Get Current Air Quality` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for current air quality, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Air Quality call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4902,767 +3507,525 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get daily air quality forecasts for the next one to seven days that
-     * include pollutant levels, potential
+     * Use to get daily air quality forecasts for the next one to seven days that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status of forecasted daily air
-     * quality. The service can provide
-     * forecasted daily air quality information for the upcoming 1 to 7 days,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param duration    Specifies for how many days from now we would like to know
-     *                    about the air quality. Available
-     *                    values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
+     * 
+     * 
+     * 
+     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status of forecasted daily air quality. The service can provide
+     * forecasted daily air quality information for the upcoming 1 to 7 days, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days from now we would like to know about the air quality. Available
+     * values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Air Quality
-     *         Forecast call along with {@link Response}
-     *         on successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Air Quality Forecast call along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DailyAirQualityForecastResult>> getDailyAirQualityForecastWithResponseAsync(JsonFormat format,
+    public Mono<Response<DailyAirQualityForecastResult>> getAirQualityDailyForecastsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String language, DailyDuration duration) {
         final String accept = "application/json";
         String coordinatesConverted
             = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(context -> service.getDailyAirQualityForecast(this.client.getHost(), this.client.getClientId(),
+        return FluxUtil.withContext(
+            context -> service.getAirQualityDailyForecasts(this.client.getHost(), this.client.getClientId(),
                 this.client.getApiVersion(), format, language, coordinatesConverted, duration, accept, context));
     }
 
     /**
-     * Use to get daily air quality forecasts for the next one to seven days that
-     * include pollutant levels, potential
+     * Use to get daily air quality forecasts for the next one to seven days that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status of forecasted daily air
-     * quality. The service can provide
-     * forecasted daily air quality information for the upcoming 1 to 7 days,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param duration    Specifies for how many days from now we would like to know
-     *                    about the air quality. Available
-     *                    values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
-     * @param context     The context to associate with this operation.
+     * 
+     * 
+     * 
+     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status of forecasted daily air quality. The service can provide
+     * forecasted daily air quality information for the upcoming 1 to 7 days, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days from now we would like to know about the air quality. Available
+     * values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Air Quality
-     *         Forecast call along with {@link Response}
-     *         on successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Air Quality Forecast call along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DailyAirQualityForecastResult>> getDailyAirQualityForecastWithResponseAsync(JsonFormat format,
+    public Mono<Response<DailyAirQualityForecastResult>> getAirQualityDailyForecastsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String language, DailyDuration duration, Context context) {
         final String accept = "application/json";
         String coordinatesConverted
             = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return service.getDailyAirQualityForecast(this.client.getHost(), this.client.getClientId(),
+        return service.getAirQualityDailyForecasts(this.client.getHost(), this.client.getClientId(),
             this.client.getApiVersion(), format, language, coordinatesConverted, duration, accept, context);
     }
 
     /**
-     * Use to get daily air quality forecasts for the next one to seven days that
-     * include pollutant levels, potential
+     * Use to get daily air quality forecasts for the next one to seven days that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status of forecasted daily air
-     * quality. The service can provide
-     * forecasted daily air quality information for the upcoming 1 to 7 days,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param duration    Specifies for how many days from now we would like to know
-     *                    about the air quality. Available
-     *                    values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
+     * 
+     * 
+     * 
+     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status of forecasted daily air quality. The service can provide
+     * forecasted daily air quality information for the upcoming 1 to 7 days, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days from now we would like to know about the air quality. Available
+     * values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Air Quality
-     *         Forecast call on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Air Quality Forecast call on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DailyAirQualityForecastResult> getDailyAirQualityForecastAsync(JsonFormat format,
+    public Mono<DailyAirQualityForecastResult> getAirQualityDailyForecastsAsync(JsonFormat format,
         List<Double> coordinates, String language, DailyDuration duration) {
-        return getDailyAirQualityForecastWithResponseAsync(format, coordinates, language, duration)
+        return getAirQualityDailyForecastsWithResponseAsync(format, coordinates, language, duration)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Use to get daily air quality forecasts for the next one to seven days that
-     * include pollutant levels, potential
+     * Use to get daily air quality forecasts for the next one to seven days that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status of forecasted daily air
-     * quality. The service can provide
-     * forecasted daily air quality information for the upcoming 1 to 7 days,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param duration    Specifies for how many days from now we would like to know
-     *                    about the air quality. Available
-     *                    values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
-     * @param context     The context to associate with this operation.
+     * 
+     * 
+     * 
+     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status of forecasted daily air quality. The service can provide
+     * forecasted daily air quality information for the upcoming 1 to 7 days, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days from now we would like to know about the air quality. Available
+     * values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Air Quality
-     *         Forecast call on successful completion of
-     *         {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Air Quality Forecast call on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DailyAirQualityForecastResult> getDailyAirQualityForecastAsync(JsonFormat format,
+    public Mono<DailyAirQualityForecastResult> getAirQualityDailyForecastsAsync(JsonFormat format,
         List<Double> coordinates, String language, DailyDuration duration, Context context) {
-        return getDailyAirQualityForecastWithResponseAsync(format, coordinates, language, duration, context)
+        return getAirQualityDailyForecastsWithResponseAsync(format, coordinates, language, duration, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Use to get daily air quality forecasts for the next one to seven days that
-     * include pollutant levels, potential
+     * Use to get daily air quality forecasts for the next one to seven days that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status of forecasted daily air
-     * quality. The service can provide
-     * forecasted daily air quality information for the upcoming 1 to 7 days,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param duration    Specifies for how many days from now we would like to know
-     *                    about the air quality. Available
-     *                    values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
-     * @param context     The context to associate with this operation.
+     * 
+     * 
+     * 
+     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status of forecasted daily air quality. The service can provide
+     * forecasted daily air quality information for the upcoming 1 to 7 days, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days from now we would like to know about the air quality. Available
+     * values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Air Quality
-     *         Forecast call along with
-     *         {@link Response}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Air Quality Forecast call along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DailyAirQualityForecastResult> getDailyAirQualityForecastWithResponse(JsonFormat format,
+    public Response<DailyAirQualityForecastResult> getAirQualityDailyForecastsWithResponse(JsonFormat format,
         List<Double> coordinates, String language, DailyDuration duration, Context context) {
-        return getDailyAirQualityForecastWithResponseAsync(format, coordinates, language, duration, context).block();
+        return getAirQualityDailyForecastsWithResponseAsync(format, coordinates, language, duration, context).block();
     }
 
     /**
-     * Use to get daily air quality forecasts for the next one to seven days that
-     * include pollutant levels, potential
+     * Use to get daily air quality forecasts for the next one to seven days that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status of forecasted daily air
-     * quality. The service can provide
-     * forecasted daily air quality information for the upcoming 1 to 7 days,
-     * including pollution levels, air quality
-     * index values, the dominant pollutant, and a brief statement summarizing risk
-     * level and suggested precautions.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param language    Language in which search results should be returned.
-     *                    Should be one of supported IETF language
-     *                    tags, case insensitive. When data in specified language is
-     *                    not available for a specific field, default language
-     *                    is used.
-     *
-     *                    Please refer to [Supported
-     *                    Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                    for
-     *                    details.
-     * @param duration    Specifies for how many days from now we would like to know
-     *                    about the air quality. Available
-     *                    values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
+     * 
+     * 
+     * 
+     * The `Get Air Quality Daily Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status of forecasted daily air quality. The service can provide
+     * forecasted daily air quality information for the upcoming 1 to 7 days, including pollution levels, air quality
+     * index values, the dominant pollutant, and a brief statement summarizing risk level and suggested precautions.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many days from now we would like to know about the air quality. Available
+     * values are 1, 2, 3, 4, 5, 6, and 7. Default value is 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Daily Air Quality
-     *         Forecast call.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Daily Air Quality Forecast call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DailyAirQualityForecastResult getDailyAirQualityForecast(JsonFormat format, List<Double> coordinates,
+    public DailyAirQualityForecastResult getAirQualityDailyForecasts(JsonFormat format, List<Double> coordinates,
         String language, DailyDuration duration) {
-        return getDailyAirQualityForecastWithResponse(format, coordinates, language, duration, Context.NONE).getValue();
+        return getAirQualityDailyForecastsWithResponse(format, coordinates, language, duration, Context.NONE)
+            .getValue();
     }
 
     /**
-     * Use to get hourly air quality forecasts for the next one to 96 hours that
-     * include pollutant levels, potential
+     * Use to get hourly air quality forecasts for the next one to 96 hours that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status for forecasted upcoming hourly
-     * air quality. The service can
-     * provide forecasted hourly air quality information for the upcoming time spans
-     * of 1, 12, 24, 48, 72, and 96 hours,
-     * including pollution levels, air quality index values, the dominant pollutant,
-     * and a brief statement summarizing
+     * 
+     * 
+     * 
+     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for forecasted upcoming hourly air quality. The service can
+     * provide forecasted hourly air quality information for the upcoming time spans of 1, 12, 24, 48, 72, and 96 hours,
+     * including pollution levels, air quality index values, the dominant pollutant, and a brief statement summarizing
      * risk level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param duration                Specifies for how many hours from now we would
-     *                                like to know about the air quality. Available
-     *                                values are 1, 12, 24, 48, 72, 96. Default
-     *                                value is 1 hour.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many hours from now we would like to know about the air quality. Available
+     * values are 1, 12, 24, 48, 72, 96. Default value is 1 hour.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call along
-     *         with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AirQualityResult>> getHourlyAirQualityForecastWithResponseAsync(JsonFormat format,
+    public Mono<Response<AirQualityResult>> getAirQualityHourlyForecastsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String language, HourlyDuration duration, Boolean includePollutantDetails) {
         final String accept = "application/json";
         String coordinatesConverted
             = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getHourlyAirQualityForecast(this.client.getHost(),
+        return FluxUtil.withContext(context -> service.getAirQualityHourlyForecasts(this.client.getHost(),
             this.client.getClientId(), this.client.getApiVersion(), format, language, coordinatesConverted, duration,
             includePollutantDetails, accept, context));
     }
 
     /**
-     * Use to get hourly air quality forecasts for the next one to 96 hours that
-     * include pollutant levels, potential
+     * Use to get hourly air quality forecasts for the next one to 96 hours that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status for forecasted upcoming hourly
-     * air quality. The service can
-     * provide forecasted hourly air quality information for the upcoming time spans
-     * of 1, 12, 24, 48, 72, and 96 hours,
-     * including pollution levels, air quality index values, the dominant pollutant,
-     * and a brief statement summarizing
+     * 
+     * 
+     * 
+     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for forecasted upcoming hourly air quality. The service can
+     * provide forecasted hourly air quality information for the upcoming time spans of 1, 12, 24, 48, 72, and 96 hours,
+     * including pollution levels, air quality index values, the dominant pollutant, and a brief statement summarizing
      * risk level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param duration                Specifies for how many hours from now we would
-     *                                like to know about the air quality. Available
-     *                                values are 1, 12, 24, 48, 72, 96. Default
-     *                                value is 1 hour.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
-     * @param context                 The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many hours from now we would like to know about the air quality. Available
+     * values are 1, 12, 24, 48, 72, 96. Default value is 1 hour.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call along
-     *         with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AirQualityResult>> getHourlyAirQualityForecastWithResponseAsync(JsonFormat format,
+    public Mono<Response<AirQualityResult>> getAirQualityHourlyForecastsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String language, HourlyDuration duration, Boolean includePollutantDetails,
         Context context) {
         final String accept = "application/json";
         String coordinatesConverted
             = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return service.getHourlyAirQualityForecast(this.client.getHost(), this.client.getClientId(),
+        return service.getAirQualityHourlyForecasts(this.client.getHost(), this.client.getClientId(),
             this.client.getApiVersion(), format, language, coordinatesConverted, duration, includePollutantDetails,
             accept, context);
     }
 
     /**
-     * Use to get hourly air quality forecasts for the next one to 96 hours that
-     * include pollutant levels, potential
+     * Use to get hourly air quality forecasts for the next one to 96 hours that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status for forecasted upcoming hourly
-     * air quality. The service can
-     * provide forecasted hourly air quality information for the upcoming time spans
-     * of 1, 12, 24, 48, 72, and 96 hours,
-     * including pollution levels, air quality index values, the dominant pollutant,
-     * and a brief statement summarizing
+     * 
+     * 
+     * 
+     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for forecasted upcoming hourly air quality. The service can
+     * provide forecasted hourly air quality information for the upcoming time spans of 1, 12, 24, 48, 72, and 96 hours,
+     * including pollution levels, air quality index values, the dominant pollutant, and a brief statement summarizing
      * risk level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param duration                Specifies for how many hours from now we would
-     *                                like to know about the air quality. Available
-     *                                values are 1, 12, 24, 48, 72, 96. Default
-     *                                value is 1 hour.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many hours from now we would like to know about the air quality. Available
+     * values are 1, 12, 24, 48, 72, 96. Default value is 1 hour.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AirQualityResult> getHourlyAirQualityForecastAsync(JsonFormat format, List<Double> coordinates,
+    public Mono<AirQualityResult> getAirQualityHourlyForecastsAsync(JsonFormat format, List<Double> coordinates,
         String language, HourlyDuration duration, Boolean includePollutantDetails) {
-        return getHourlyAirQualityForecastWithResponseAsync(format, coordinates, language, duration,
+        return getAirQualityHourlyForecastsWithResponseAsync(format, coordinates, language, duration,
             includePollutantDetails).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Use to get hourly air quality forecasts for the next one to 96 hours that
-     * include pollutant levels, potential
+     * Use to get hourly air quality forecasts for the next one to 96 hours that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status for forecasted upcoming hourly
-     * air quality. The service can
-     * provide forecasted hourly air quality information for the upcoming time spans
-     * of 1, 12, 24, 48, 72, and 96 hours,
-     * including pollution levels, air quality index values, the dominant pollutant,
-     * and a brief statement summarizing
+     * 
+     * 
+     * 
+     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for forecasted upcoming hourly air quality. The service can
+     * provide forecasted hourly air quality information for the upcoming time spans of 1, 12, 24, 48, 72, and 96 hours,
+     * including pollution levels, air quality index values, the dominant pollutant, and a brief statement summarizing
      * risk level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param duration                Specifies for how many hours from now we would
-     *                                like to know about the air quality. Available
-     *                                values are 1, 12, 24, 48, 72, 96. Default
-     *                                value is 1 hour.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
-     * @param context                 The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many hours from now we would like to know about the air quality. Available
+     * values are 1, 12, 24, 48, 72, 96. Default value is 1 hour.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call on
-     *         successful completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AirQualityResult> getHourlyAirQualityForecastAsync(JsonFormat format, List<Double> coordinates,
+    public Mono<AirQualityResult> getAirQualityHourlyForecastsAsync(JsonFormat format, List<Double> coordinates,
         String language, HourlyDuration duration, Boolean includePollutantDetails, Context context) {
-        return getHourlyAirQualityForecastWithResponseAsync(format, coordinates, language, duration,
+        return getAirQualityHourlyForecastsWithResponseAsync(format, coordinates, language, duration,
             includePollutantDetails, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Use to get hourly air quality forecasts for the next one to 96 hours that
-     * include pollutant levels, potential
+     * Use to get hourly air quality forecasts for the next one to 96 hours that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status for forecasted upcoming hourly
-     * air quality. The service can
-     * provide forecasted hourly air quality information for the upcoming time spans
-     * of 1, 12, 24, 48, 72, and 96 hours,
-     * including pollution levels, air quality index values, the dominant pollutant,
-     * and a brief statement summarizing
+     * 
+     * 
+     * 
+     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for forecasted upcoming hourly air quality. The service can
+     * provide forecasted hourly air quality information for the upcoming time spans of 1, 12, 24, 48, 72, and 96 hours,
+     * including pollution levels, air quality index values, the dominant pollutant, and a brief statement summarizing
      * risk level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param duration                Specifies for how many hours from now we would
-     *                                like to know about the air quality. Available
-     *                                values are 1, 12, 24, 48, 72, 96. Default
-     *                                value is 1 hour.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
-     * @param context                 The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many hours from now we would like to know about the air quality. Available
+     * values are 1, 12, 24, 48, 72, 96. Default value is 1 hour.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return this object is returned from a successful Get Air Quality call along
-     *         with {@link Response}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Get Air Quality call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AirQualityResult> getHourlyAirQualityForecastWithResponse(JsonFormat format,
+    public Response<AirQualityResult> getAirQualityHourlyForecastsWithResponse(JsonFormat format,
         List<Double> coordinates, String language, HourlyDuration duration, Boolean includePollutantDetails,
         Context context) {
-        return getHourlyAirQualityForecastWithResponseAsync(format, coordinates, language, duration,
+        return getAirQualityHourlyForecastsWithResponseAsync(format, coordinates, language, duration,
             includePollutantDetails, context).block();
     }
 
     /**
-     * Use to get hourly air quality forecasts for the next one to 96 hours that
-     * include pollutant levels, potential
+     * Use to get hourly air quality forecasts for the next one to 96 hours that include pollutant levels, potential
      * risks and suggested precautions.
-     *
-     *
-     *
-     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that
-     * returns detailed information about the
-     * concentration of pollutants and overall status for forecasted upcoming hourly
-     * air quality. The service can
-     * provide forecasted hourly air quality information for the upcoming time spans
-     * of 1, 12, 24, 48, 72, and 96 hours,
-     * including pollution levels, air quality index values, the dominant pollutant,
-     * and a brief statement summarizing
+     * 
+     * 
+     * 
+     * The `Get Air Quality Hourly Forecasts` API is an HTTP `GET` request that returns detailed information about the
+     * concentration of pollutants and overall status for forecasted upcoming hourly air quality. The service can
+     * provide forecasted hourly air quality information for the upcoming time spans of 1, 12, 24, 48, 72, and 96 hours,
+     * including pollution levels, air quality index values, the dominant pollutant, and a brief statement summarizing
      * risk level and suggested precautions.
-     *
-     * @param format                  Desired format of the response. Only `json`
-     *                                format is supported.
-     * @param coordinates             The applicable query specified as a comma
-     *                                separated string composed by latitude followed
-     *                                by
-     *                                longitude e.g. "47.641268,-122.125679".
-     *
-     *                                Weather information is generally available for
-     *                                locations on land, bodies of water surrounded
-     *                                by land, and areas
-     *                                of the ocean that are within approximately 50
-     *                                nautical miles of a coastline.
-     * @param language                Language in which search results should be
-     *                                returned. Should be one of supported IETF
-     *                                language
-     *                                tags, case insensitive. When data in specified
-     *                                language is not available for a specific
-     *                                field, default language
-     *                                is used.
-     *
-     *                                Please refer to [Supported
-     *                                Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                                for
-     *                                details.
-     * @param duration                Specifies for how many hours from now we would
-     *                                like to know about the air quality. Available
-     *                                values are 1, 12, 24, 48, 72, 96. Default
-     *                                value is 1 hour.
-     * @param includePollutantDetails Boolean value that returns detailed
-     *                                information about each pollutant. By default
-     *                                is True.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     * tags, case insensitive. When data in specified language is not available for a specific field, default language
+     * is used.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details.
+     * @param duration Specifies for how many hours from now we would like to know about the air quality. Available
+     * values are 1, 12, 24, 48, 72, 96. Default value is 1 hour.
+     * @param includePollutantDetails Boolean value that returns detailed information about each pollutant. By default
+     * is True.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Air Quality call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AirQualityResult getHourlyAirQualityForecast(JsonFormat format, List<Double> coordinates, String language,
+    public AirQualityResult getAirQualityHourlyForecasts(JsonFormat format, List<Double> coordinates, String language,
         HourlyDuration duration, Boolean includePollutantDetails) {
-        return getHourlyAirQualityForecastWithResponse(format, coordinates, language, duration, includePollutantDetails,
-            Context.NONE).getValue();
+        return getAirQualityHourlyForecastsWithResponse(format, coordinates, language, duration,
+            includePollutantDetails, Context.NONE).getValue();
     }
 
     /**
-     * Use to get climatology data such as past daily actual observed temperatures,
-     * precipitation, snowfall and snow
+     * Use to get climatology data such as past daily actual observed temperatures, precipitation, snowfall and snow
      * depth.
-     *
-     *
-     *
-     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * actual observed temperatures, precipitation, snowfall, snow depth and
-     * cooling/heating degree day information, for
-     * the day at a given coordinate location. The data is requested for a specified
-     * date range, up to 31 days in a
-     * single API request. Generally, historical data may be available as far back
-     * as the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * actual observed temperatures, precipitation, snowfall, snow depth and cooling/heating degree day information, for
+     * the day at a given coordinate location. The data is requested for a specified date range, up to 31 days in a
+     * single API request. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyHistoricalActualsResult>> getDailyHistoricalActualsWithResponseAsync(JsonFormat format,
@@ -5676,51 +4039,35 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily actual observed temperatures,
-     * precipitation, snowfall and snow
+     * Use to get climatology data such as past daily actual observed temperatures, precipitation, snowfall and snow
      * depth.
-     *
-     *
-     *
-     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * actual observed temperatures, precipitation, snowfall, snow depth and
-     * cooling/heating degree day information, for
-     * the day at a given coordinate location. The data is requested for a specified
-     * date range, up to 31 days in a
-     * single API request. Generally, historical data may be available as far back
-     * as the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * actual observed temperatures, precipitation, snowfall, snow depth and cooling/heating degree day information, for
+     * the day at a given coordinate location. The data is requested for a specified date range, up to 31 days in a
+     * single API request. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyHistoricalActualsResult>> getDailyHistoricalActualsWithResponseAsync(JsonFormat format,
@@ -5733,48 +4080,33 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily actual observed temperatures,
-     * precipitation, snowfall and snow
+     * Use to get climatology data such as past daily actual observed temperatures, precipitation, snowfall and snow
      * depth.
-     *
-     *
-     *
-     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * actual observed temperatures, precipitation, snowfall, snow depth and
-     * cooling/heating degree day information, for
-     * the day at a given coordinate location. The data is requested for a specified
-     * date range, up to 31 days in a
-     * single API request. Generally, historical data may be available as far back
-     * as the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * actual observed temperatures, precipitation, snowfall, snow depth and cooling/heating degree day information, for
+     * the day at a given coordinate location. The data is requested for a specified date range, up to 31 days in a
+     * single API request. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5785,49 +4117,34 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily actual observed temperatures,
-     * precipitation, snowfall and snow
+     * Use to get climatology data such as past daily actual observed temperatures, precipitation, snowfall and snow
      * depth.
-     *
-     *
-     *
-     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * actual observed temperatures, precipitation, snowfall, snow depth and
-     * cooling/heating degree day information, for
-     * the day at a given coordinate location. The data is requested for a specified
-     * date range, up to 31 days in a
-     * single API request. Generally, historical data may be available as far back
-     * as the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * actual observed temperatures, precipitation, snowfall, snow depth and cooling/heating degree day information, for
+     * the day at a given coordinate location. The data is requested for a specified date range, up to 31 days in a
+     * single API request. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5838,49 +4155,34 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily actual observed temperatures,
-     * precipitation, snowfall and snow
+     * Use to get climatology data such as past daily actual observed temperatures, precipitation, snowfall and snow
      * depth.
-     *
-     *
-     *
-     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * actual observed temperatures, precipitation, snowfall, snow depth and
-     * cooling/heating degree day information, for
-     * the day at a given coordinate location. The data is requested for a specified
-     * date range, up to 31 days in a
-     * single API request. Generally, historical data may be available as far back
-     * as the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * actual observed temperatures, precipitation, snowfall, snow depth and cooling/heating degree day information, for
+     * the day at a given coordinate location. The data is requested for a specified date range, up to 31 days in a
+     * single API request. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5891,48 +4193,33 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily actual observed temperatures,
-     * precipitation, snowfall and snow
+     * Use to get climatology data such as past daily actual observed temperatures, precipitation, snowfall and snow
      * depth.
-     *
-     *
-     *
-     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * actual observed temperatures, precipitation, snowfall, snow depth and
-     * cooling/heating degree day information, for
-     * the day at a given coordinate location. The data is requested for a specified
-     * date range, up to 31 days in a
-     * single API request. Generally, historical data may be available as far back
-     * as the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Actuals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * actual observed temperatures, precipitation, snowfall, snow depth and cooling/heating degree day information, for
+     * the day at a given coordinate location. The data is requested for a specified date range, up to 31 days in a
+     * single API request. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5943,48 +4230,33 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily record temperatures,
-     * precipitation and snowfall at a given
+     * Use to get climatology data such as past daily record temperatures, precipitation and snowfall at a given
      * location.
-     *
-     *
-     *
-     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * record temperatures, precipitation and snowfall at a given coordinate
-     * location. Availability of records data will
-     * vary by location. Generally, historical data may be available as far back as
-     * the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns climatology data such as past daily
+     * record temperatures, precipitation and snowfall at a given coordinate location. Availability of records data will
+     * vary by location. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyHistoricalRecordsResult>> getDailyHistoricalRecordsWithResponseAsync(JsonFormat format,
@@ -5998,49 +4270,34 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily record temperatures,
-     * precipitation and snowfall at a given
+     * Use to get climatology data such as past daily record temperatures, precipitation and snowfall at a given
      * location.
-     *
-     *
-     *
-     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * record temperatures, precipitation and snowfall at a given coordinate
-     * location. Availability of records data will
-     * vary by location. Generally, historical data may be available as far back as
-     * the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns climatology data such as past daily
+     * record temperatures, precipitation and snowfall at a given coordinate location. Availability of records data will
+     * vary by location. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyHistoricalRecordsResult>> getDailyHistoricalRecordsWithResponseAsync(JsonFormat format,
@@ -6053,46 +4310,32 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily record temperatures,
-     * precipitation and snowfall at a given
+     * Use to get climatology data such as past daily record temperatures, precipitation and snowfall at a given
      * location.
-     *
-     *
-     *
-     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * record temperatures, precipitation and snowfall at a given coordinate
-     * location. Availability of records data will
-     * vary by location. Generally, historical data may be available as far back as
-     * the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns climatology data such as past daily
+     * record temperatures, precipitation and snowfall at a given coordinate location. Availability of records data will
+     * vary by location. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6103,47 +4346,33 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily record temperatures,
-     * precipitation and snowfall at a given
+     * Use to get climatology data such as past daily record temperatures, precipitation and snowfall at a given
      * location.
-     *
-     *
-     *
-     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * record temperatures, precipitation and snowfall at a given coordinate
-     * location. Availability of records data will
-     * vary by location. Generally, historical data may be available as far back as
-     * the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns climatology data such as past daily
+     * record temperatures, precipitation and snowfall at a given coordinate location. Availability of records data will
+     * vary by location. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6154,47 +4383,33 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily record temperatures,
-     * precipitation and snowfall at a given
+     * Use to get climatology data such as past daily record temperatures, precipitation and snowfall at a given
      * location.
-     *
-     *
-     *
-     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * record temperatures, precipitation and snowfall at a given coordinate
-     * location. Availability of records data will
-     * vary by location. Generally, historical data may be available as far back as
-     * the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns climatology data such as past daily
+     * record temperatures, precipitation and snowfall at a given coordinate location. Availability of records data will
+     * vary by location. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6205,46 +4420,32 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily record temperatures,
-     * precipitation and snowfall at a given
+     * Use to get climatology data such as past daily record temperatures, precipitation and snowfall at a given
      * location.
-     *
-     *
-     *
-     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * record temperatures, precipitation and snowfall at a given coordinate
-     * location. Availability of records data will
-     * vary by location. Generally, historical data may be available as far back as
-     * the last 5 to 40+ years, depending
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Records` API is an HTTP `GET` request that returns climatology data such as past daily
+     * record temperatures, precipitation and snowfall at a given coordinate location. Availability of records data will
+     * vary by location. Generally, historical data may be available as far back as the last 5 to 40+ years, depending
      * on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6255,52 +4456,35 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily normal temperatures,
-     * precipitation and cooling/heating degree day
+     * Use to get climatology data such as past daily normal temperatures, precipitation and cooling/heating degree day
      * information for a given location.
-     *
-     *
-     *
-     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * normal temperatures, precipitation and cooling/heating degree day information
-     * for the day at a given coordinate
-     * location. The historical normals are a 30-year average for temperatures and
-     * precipitation for a specific
-     * location. As is standard practice in climatology, the 30-year average covers
-     * years 1991-2020, this data will be
-     * used for one decade and then will reset in the year 2030. Generally,
-     * historical data may be available as far back
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * normal temperatures, precipitation and cooling/heating degree day information for the day at a given coordinate
+     * location. The historical normals are a 30-year average for temperatures and precipitation for a specific
+     * location. As is standard practice in climatology, the 30-year average covers years 1991-2020, this data will be
+     * used for one decade and then will reset in the year 2030. Generally, historical data may be available as far back
      * as the last 5 to 40+ years, depending on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyHistoricalNormalsResult>> getDailyHistoricalNormalsWithResponseAsync(JsonFormat format,
@@ -6314,53 +4498,36 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily normal temperatures,
-     * precipitation and cooling/heating degree day
+     * Use to get climatology data such as past daily normal temperatures, precipitation and cooling/heating degree day
      * information for a given location.
-     *
-     *
-     *
-     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * normal temperatures, precipitation and cooling/heating degree day information
-     * for the day at a given coordinate
-     * location. The historical normals are a 30-year average for temperatures and
-     * precipitation for a specific
-     * location. As is standard practice in climatology, the 30-year average covers
-     * years 1991-2020, this data will be
-     * used for one decade and then will reset in the year 2030. Generally,
-     * historical data may be available as far back
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * normal temperatures, precipitation and cooling/heating degree day information for the day at a given coordinate
+     * location. The historical normals are a 30-year average for temperatures and precipitation for a specific
+     * location. As is standard practice in climatology, the 30-year average covers years 1991-2020, this data will be
+     * used for one decade and then will reset in the year 2030. Generally, historical data may be available as far back
      * as the last 5 to 40+ years, depending on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
-     * @return the response body along with {@link Response} on successful
-     *         completion of {@link Mono}.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyHistoricalNormalsResult>> getDailyHistoricalNormalsWithResponseAsync(JsonFormat format,
@@ -6373,50 +4540,34 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily normal temperatures,
-     * precipitation and cooling/heating degree day
+     * Use to get climatology data such as past daily normal temperatures, precipitation and cooling/heating degree day
      * information for a given location.
-     *
-     *
-     *
-     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * normal temperatures, precipitation and cooling/heating degree day information
-     * for the day at a given coordinate
-     * location. The historical normals are a 30-year average for temperatures and
-     * precipitation for a specific
-     * location. As is standard practice in climatology, the 30-year average covers
-     * years 1991-2020, this data will be
-     * used for one decade and then will reset in the year 2030. Generally,
-     * historical data may be available as far back
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * normal temperatures, precipitation and cooling/heating degree day information for the day at a given coordinate
+     * location. The historical normals are a 30-year average for temperatures and precipitation for a specific
+     * location. As is standard practice in climatology, the 30-year average covers years 1991-2020, this data will be
+     * used for one decade and then will reset in the year 2030. Generally, historical data may be available as far back
      * as the last 5 to 40+ years, depending on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6427,51 +4578,35 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily normal temperatures,
-     * precipitation and cooling/heating degree day
+     * Use to get climatology data such as past daily normal temperatures, precipitation and cooling/heating degree day
      * information for a given location.
-     *
-     *
-     *
-     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * normal temperatures, precipitation and cooling/heating degree day information
-     * for the day at a given coordinate
-     * location. The historical normals are a 30-year average for temperatures and
-     * precipitation for a specific
-     * location. As is standard practice in climatology, the 30-year average covers
-     * years 1991-2020, this data will be
-     * used for one decade and then will reset in the year 2030. Generally,
-     * historical data may be available as far back
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * normal temperatures, precipitation and cooling/heating degree day information for the day at a given coordinate
+     * location. The historical normals are a 30-year average for temperatures and precipitation for a specific
+     * location. As is standard practice in climatology, the 30-year average covers years 1991-2020, this data will be
+     * used for one decade and then will reset in the year 2030. Generally, historical data may be available as far back
      * as the last 5 to 40+ years, depending on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6482,51 +4617,35 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily normal temperatures,
-     * precipitation and cooling/heating degree day
+     * Use to get climatology data such as past daily normal temperatures, precipitation and cooling/heating degree day
      * information for a given location.
-     *
-     *
-     *
-     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * normal temperatures, precipitation and cooling/heating degree day information
-     * for the day at a given coordinate
-     * location. The historical normals are a 30-year average for temperatures and
-     * precipitation for a specific
-     * location. As is standard practice in climatology, the 30-year average covers
-     * years 1991-2020, this data will be
-     * used for one decade and then will reset in the year 2030. Generally,
-     * historical data may be available as far back
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * normal temperatures, precipitation and cooling/heating degree day information for the day at a given coordinate
+     * location. The historical normals are a 30-year average for temperatures and precipitation for a specific
+     * location. As is standard practice in climatology, the 30-year average covers years 1991-2020, this data will be
+     * used for one decade and then will reset in the year 2030. Generally, historical data may be available as far back
      * as the last 5 to 40+ years, depending on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
-     * @param context     The context to associate with this operation.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6537,50 +4656,34 @@ public final class WeathersImpl {
     }
 
     /**
-     * Use to get climatology data such as past daily normal temperatures,
-     * precipitation and cooling/heating degree day
+     * Use to get climatology data such as past daily normal temperatures, precipitation and cooling/heating degree day
      * information for a given location.
-     *
-     *
-     *
-     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns
-     * climatology data such as past daily
-     * normal temperatures, precipitation and cooling/heating degree day information
-     * for the day at a given coordinate
-     * location. The historical normals are a 30-year average for temperatures and
-     * precipitation for a specific
-     * location. As is standard practice in climatology, the 30-year average covers
-     * years 1991-2020, this data will be
-     * used for one decade and then will reset in the year 2030. Generally,
-     * historical data may be available as far back
+     * 
+     * 
+     * 
+     * The `Get Daily Historical Normals` API is an HTTP `GET` request that returns climatology data such as past daily
+     * normal temperatures, precipitation and cooling/heating degree day information for the day at a given coordinate
+     * location. The historical normals are a 30-year average for temperatures and precipitation for a specific
+     * location. As is standard practice in climatology, the 30-year average covers years 1991-2020, this data will be
+     * used for one decade and then will reset in the year 2030. Generally, historical data may be available as far back
      * as the last 5 to 40+ years, depending on the location.
-     *
-     * @param format      Desired format of the response. Only `json` format is
-     *                    supported.
-     * @param coordinates The applicable query specified as a comma separated string
-     *                    composed by latitude followed by
-     *                    longitude e.g. "47.641268,-122.125679".
-     *
-     *                    Weather information is generally available for locations
-     *                    on land, bodies of water surrounded by land, and areas
-     *                    of the ocean that are within approximately 50 nautical
-     *                    miles of a coastline.
-     * @param startDate   Start date in ISO 8601 format, for example, 2019-10-27.
-     *                    The date range supported is 1 to 31
-     *                    calendar days, so be sure to specify a startDate and
-     *                    endDate that does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param endDate     End date in ISO 8601 format, for example, 2019-10-28. The
-     *                    date range supported is 1 to 31 calendar
-     *                    days, so be sure to specify a startDate and endDate that
-     *                    does not exceed a maximum of 31 days (i.e.:
-     *                    startDate=2012-01-01&amp;endDate=2012-01-31).
-     * @param unit        Specifies to return the data in either metric units or
-     *                    imperial units. Default value is metric.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
+     * longitude e.g. "47.641268,-122.125679".
+     * 
+     * Weather information is generally available for locations on land, bodies of water surrounded by land, and areas
+     * of the ocean that are within approximately 50 nautical miles of a coastline.
+     * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
+     * calendar days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param endDate End date in ISO 8601 format, for example, 2019-10-28. The date range supported is 1 to 31 calendar
+     * days, so be sure to specify a startDate and endDate that does not exceed a maximum of 31 days (i.e.:
+     * startDate=2012-01-01&amp;endDate=2012-01-31).
+     * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException   thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the
-     *                                  request fails to be sent.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

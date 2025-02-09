@@ -80,7 +80,7 @@ public class WeatherTestBase extends TestProxyTestBase {
         } else if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential()).weatherClientId("weatherClientId");
         } else {
-            builder.credential(new AzurePowerShellCredentialBuilder().build())
+            builder.credential(new DefaultAzureCredentialBuilder().build())
                 .weatherClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         }
 

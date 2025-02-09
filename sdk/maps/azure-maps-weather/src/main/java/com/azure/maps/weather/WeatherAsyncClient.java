@@ -55,19 +55,17 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Creating an async client using a
  * {@link com.azure.core.credential.AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.weather.async.builder.key.instantiation -->
- *
  * <pre>
  * &#47;&#47; Authenticates using subscription key
  * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
  *
  * &#47;&#47; Creates a client
  * WeatherAsyncClient asyncClient = new WeatherClientBuilder&#40;&#41;
- *         .credential&#40;keyCredential&#41;
- *         .weatherClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
- *         .buildAsyncClient&#40;&#41;;
+ *     .credential&#40;keyCredential&#41;
+ *     .weatherClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
  *
  * </pre>
- *
  * <!-- end com.azure.maps.weather.async.builder.key.instantiation -->
  */
 @ServiceClient(builder = WeatherClientBuilder.class, isAsync = true)
@@ -90,11 +88,9 @@ public final class WeatherAsyncClient {
      * **Get Hourly Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_hourly_forecast -->
-     *
      * <pre>
      * asyncClient.getHourlyForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 12, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_hourly_forecast -->
      *
      * <p>
@@ -155,11 +151,9 @@ public final class WeatherAsyncClient {
      * **Get Hourly Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_hourly_forecast -->
-     *
      * <pre>
      * asyncClient.getHourlyForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 12, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_hourly_forecast -->
      *
      * <p>
@@ -220,11 +214,9 @@ public final class WeatherAsyncClient {
      * **Get Hourly Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_hourly_forecast -->
-     *
      * <pre>
      * asyncClient.getHourlyForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 12, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_hourly_forecast -->
      *
      * <p>
@@ -288,11 +280,9 @@ public final class WeatherAsyncClient {
      * **Get Minute Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_minute_forecast -->
-     *
      * <pre>
      * asyncClient.getMinuteForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, 15, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_minute_forecast -->
      *
      * <p>
@@ -342,11 +332,9 @@ public final class WeatherAsyncClient {
      * **Get Minute Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_minute_forecast -->
-     *
      * <pre>
      * asyncClient.getMinuteForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, 15, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_minute_forecast -->
      *
      * <p>
@@ -397,11 +385,9 @@ public final class WeatherAsyncClient {
      * **Get Minute Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_minute_forecast -->
-     *
      * <pre>
      * asyncClient.getMinuteForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, 15, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_minute_forecast -->
      *
      * <p>
@@ -455,11 +441,9 @@ public final class WeatherAsyncClient {
      * **Get Quarter-Day Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_quarter_day_forecast -->
-     *
      * <pre>
      * asyncClient.getQuarterDayForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 1, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_quarter_day_forecast -->
      *
      * <p>
@@ -512,11 +496,9 @@ public final class WeatherAsyncClient {
      * **Get Quarter-Day Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_quarter_day_forecast -->
-     *
      * <pre>
      * asyncClient.getQuarterDayForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 1, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_quarter_day_forecast -->
      *
      * <p>
@@ -569,11 +551,9 @@ public final class WeatherAsyncClient {
      * **Get Quarter-Day Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_quarter_day_forecast -->
-     *
      * <pre>
      * asyncClient.getQuarterDayForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 1, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_quarter_day_forecast -->
      *
      * <p>
@@ -629,12 +609,10 @@ public final class WeatherAsyncClient {
      * **Get Current Conditions**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_current_conditions -->
-     *
      * <pre>
      * asyncClient.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
-     *         null, null, null, null&#41;;
+     *     null, null, null, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_current_conditions -->
      *
      * <p>
@@ -652,35 +630,44 @@ public final class WeatherAsyncClient {
      * temperature. Additional details such as RealFeel™ Temperature and UV index
      * are also returned.
      *
-     * @param position The applicable query specified as a comma separated string
-     *                 composed by longitude followed by
-     *                 latitude e.g. "-122.125679,47.641268".
-     * @param unit     Specifies to return the data in either metric units or
-     *                 imperial units. Default value is metric.
-     * @param details  Return full details for the current conditions. Available
-     *                 values are * `true` - Returns full
-     *                 details. By default, all details are returned. * `false` -
-     *                 Returns a truncated version of the current
-     *                 condition data, which includes observation date time, weather
-     *                 phrase, icon code, precipitation indicator
-     *                 flag, and temperature.
-     * @param duration Time frame of the returned weather conditions. By default,
-     *                 the most current weather conditions
-     *                 will be returned. Default value is 0. Supported values are: *
-     *                 `0` - Return the most current weather
-     *                 conditions. * `6` - Return weather conditions from past 6
-     *                 hours. * `24` - Return weather conditions from past
-     *                 24 hours.
-     * @param language Language in which search results should be returned. Should
-     *                 be one of supported IETF language
-     *                 tags, case-insensitive. When data in specified language is
-     *                 not available for a specific field, default
-     *                 language is used.
-     *                 <p>
-     *                 Please refer to [Supported
-     *                 Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
-     *                 for
-     *                 details.
+     * @param position       The applicable query specified as a comma separated
+     *                       string
+     *                       composed by longitude followed by
+     *                       latitude e.g. "-122.125679,47.641268".
+     * @param unit           Specifies to return the data in either metric units or
+     *                       imperial units. Default value is metric.
+     * @param includeDetails Return full details for the current conditions.
+     *                       Available
+     *                       values are * `True` - Returns full
+     *                       details. By default, all details are returned. *
+     *                       `False` -
+     *                       Returns a truncated version of the current
+     *                       condition data, which includes observation date time,
+     *                       weather
+     *                       phrase, icon code, precipitation indicator
+     *                       flag, and temperature.
+     * @param duration       Time frame of the returned weather conditions. By
+     *                       default,
+     *                       the most current weather conditions
+     *                       will be returned. Default value is 0. Supported values
+     *                       are: *
+     *                       `0` - Return the most current weather
+     *                       conditions. * `6` - Return weather conditions from past
+     *                       6
+     *                       hours. * `24` - Return weather conditions from past
+     *                       24 hours.
+     * @param language       Language in which search results should be returned.
+     *                       Should
+     *                       be one of supported IETF language
+     *                       tags, case-insensitive. When data in specified language
+     *                       is
+     *                       not available for a specific field, default
+     *                       language is used.
+     *                       <p>
+     *                       Please refer to [Supported
+     *                       Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages)
+     *                       for
+     *                       details.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException    thrown if the request is rejected by server.
@@ -699,12 +686,10 @@ public final class WeatherAsyncClient {
      * **Get Current Conditions**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_current_conditions -->
-     *
      * <pre>
      * asyncClient.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
-     *         null, null, null, null&#41;;
+     *     null, null, null, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_current_conditions -->
      *
      * <p>
@@ -778,12 +763,10 @@ public final class WeatherAsyncClient {
      * **Get Current Conditions**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_current_conditions -->
-     *
      * <pre>
      * asyncClient.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
-     *         null, null, null, null&#41;;
+     *     null, null, null, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_current_conditions -->
      *
      * <p>
@@ -860,11 +843,9 @@ public final class WeatherAsyncClient {
      * **Get Daily Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_forecast -->
-     *
      * <pre>
      * asyncClient.getDailyForecast&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, null, 5, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_forecast -->
      *
      * <p>
@@ -922,11 +903,9 @@ public final class WeatherAsyncClient {
      * **Get Daily Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_forecast -->
-     *
      * <pre>
      * asyncClient.getDailyForecast&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, null, 5, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_forecast -->
      *
      * <p>
@@ -984,11 +963,9 @@ public final class WeatherAsyncClient {
      * **Get Daily Forecast**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_forecast -->
-     *
      * <pre>
      * asyncClient.getDailyForecast&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, null, 5, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_forecast -->
      *
      * <p>
@@ -1049,19 +1026,18 @@ public final class WeatherAsyncClient {
      * **Get Weather along route**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_weather_along_route -->
-     *
      * <pre>
      * List&lt;Waypoint&gt; waypointList = Arrays.asList&#40;
-     *         new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;&#41;;
+     *     new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;
+     * &#41;;
      * asyncClient.getWeatherAlongRoute&#40;waypointList, &quot;en&quot;&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_weather_along_route -->
      *
      * <p>
@@ -1162,19 +1138,18 @@ public final class WeatherAsyncClient {
      * **Get Weather along route**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_weather_along_route -->
-     *
      * <pre>
      * List&lt;Waypoint&gt; waypointList = Arrays.asList&#40;
-     *         new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;&#41;;
+     *     new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;
+     * &#41;;
      * asyncClient.getWeatherAlongRoute&#40;waypointList, &quot;en&quot;&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_weather_along_route -->
      *
      * <p>
@@ -1276,19 +1251,18 @@ public final class WeatherAsyncClient {
      * **Get Weather along route**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_weather_along_route -->
-     *
      * <pre>
      * List&lt;Waypoint&gt; waypointList = Arrays.asList&#40;
-     *         new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
-     *         new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;&#41;;
+     *     new Waypoint&#40;new GeoPosition&#40;-77.037, 38.907&#41;, 0.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-77.009, 38.907&#41;, 10.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.928, 38.926&#41;, 20.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.852, 39.033&#41;, 30.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.732, 39.168&#41;, 40.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.634, 39.269&#41;, 50.0&#41;,
+     *     new Waypoint&#40;new GeoPosition&#40;-76.612, 39.287&#41;, 60.0&#41;
+     * &#41;;
      * asyncClient.getWeatherAlongRoute&#40;waypointList, &quot;en&quot;&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_weather_along_route -->
      *
      * <p>
@@ -1393,11 +1367,9 @@ public final class WeatherAsyncClient {
      * **Get Severe Weather Alerts**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_severe_weather_alerts -->
-     *
      * <pre>
      * asyncClient.getSevereWeatherAlerts&#40;new GeoPosition&#40;-85.06431274043842, 30.324604968788467&#41;, null, true&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_severe_weather_alerts -->
      *
      * <p>
@@ -1458,11 +1430,9 @@ public final class WeatherAsyncClient {
      * **Get Severe Weather Alerts**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_severe_weather_alerts -->
-     *
      * <pre>
      * asyncClient.getSevereWeatherAlerts&#40;new GeoPosition&#40;-85.06431274043842, 30.324604968788467&#41;, null, true&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_severe_weather_alerts -->
      *
      * <p>
@@ -1523,11 +1493,9 @@ public final class WeatherAsyncClient {
      * **Get Severe Weather Alerts**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_severe_weather_alerts -->
-     *
      * <pre>
      * asyncClient.getSevereWeatherAlerts&#40;new GeoPosition&#40;-85.06431274043842, 30.324604968788467&#41;, null, true&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_severe_weather_alerts -->
      *
      * <p>
@@ -1592,11 +1560,9 @@ public final class WeatherAsyncClient {
      * **Get Daily Indices**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_indices -->
-     *
      * <pre>
      * asyncClient.getDailyIndices&#40;new GeoPosition&#40;-79.37849, 43.84745&#41;, null, null, null, 11&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_indices -->
      *
      * <p>
@@ -1672,11 +1638,9 @@ public final class WeatherAsyncClient {
      * **Get Daily Indices**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_indices -->
-     *
      * <pre>
      * asyncClient.getDailyIndices&#40;new GeoPosition&#40;-79.37849, 43.84745&#41;, null, null, null, 11&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_indices -->
      *
      * <p>
@@ -1752,11 +1716,9 @@ public final class WeatherAsyncClient {
      * **Get Daily Indices**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_indices -->
-     *
      * <pre>
      * asyncClient.getDailyIndices&#40;new GeoPosition&#40;-79.37849, 43.84745&#41;, null, null, null, 11&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_indices -->
      *
      * <p>
@@ -1835,11 +1797,9 @@ public final class WeatherAsyncClient {
      * **Get Tropical Storm Active**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_tropical_storm_active -->
-     *
      * <pre>
      * asyncClient.getTropicalStormActive&#40;&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_tropical_storm_active -->
      *
      * <p>
@@ -1866,11 +1826,9 @@ public final class WeatherAsyncClient {
      * **Get Tropical Storm Active**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_tropical_storm_active -->
-     *
      * <pre>
      * asyncClient.getTropicalStormActive&#40;&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_tropical_storm_active -->
      *
      * <p>
@@ -1897,11 +1855,9 @@ public final class WeatherAsyncClient {
      * **Get Tropical Storm Active**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_tropical_storm_active -->
-     *
      * <pre>
      * asyncClient.getTropicalStormActive&#40;&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_tropical_storm_active -->
      *
      * <p>
@@ -2023,7 +1979,6 @@ public final class WeatherAsyncClient {
      * **Get Tropical Storm Forecasts**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_tropical_storm_forecast -->
-     *
      * <pre>
      * ActiveStormResult activeStormResult = client.getTropicalStormActive&#40;&#41;;
      * if &#40;activeStormResult.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
@@ -2034,7 +1989,6 @@ public final class WeatherAsyncClient {
      *     asyncClient.getTropicalStormForecast&#40;forecastOptions&#41;;
      * &#125;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_tropical_storm_forecast -->
      *
      * <p>
@@ -2063,7 +2017,6 @@ public final class WeatherAsyncClient {
      * **Get Tropical Storm Forecasts**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_tropical_storm_forecast -->
-     *
      * <pre>
      * ActiveStormResult activeStormResult = client.getTropicalStormActive&#40;&#41;;
      * if &#40;activeStormResult.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
@@ -2074,7 +2027,6 @@ public final class WeatherAsyncClient {
      *     asyncClient.getTropicalStormForecast&#40;forecastOptions&#41;;
      * &#125;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_tropical_storm_forecast -->
      *
      * <p>
@@ -2104,7 +2056,6 @@ public final class WeatherAsyncClient {
      * **Get Tropical Storm Forecasts**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_tropical_storm_forecast -->
-     *
      * <pre>
      * ActiveStormResult activeStormResult = client.getTropicalStormActive&#40;&#41;;
      * if &#40;activeStormResult.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
@@ -2115,7 +2066,6 @@ public final class WeatherAsyncClient {
      *     asyncClient.getTropicalStormForecast&#40;forecastOptions&#41;;
      * &#125;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_tropical_storm_forecast -->
      *
      * <p>
@@ -2148,7 +2098,6 @@ public final class WeatherAsyncClient {
      * **Get Tropical Storm Locations**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_tropical_storm_locations -->
-     *
      * <pre>
      * ActiveStormResult activeStormResult = client.getTropicalStormActive&#40;&#41;;
      * if &#40;activeStormResult.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
@@ -2158,7 +2107,6 @@ public final class WeatherAsyncClient {
      *     asyncClient.getTropicalStormLocations&#40;locationOptions&#41;;
      * &#125;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_tropical_storm_locations -->
      *
      * <p>
@@ -2186,7 +2134,6 @@ public final class WeatherAsyncClient {
      * **Get Tropical Storm Locations**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_tropical_storm_locations -->
-     *
      * <pre>
      * ActiveStormResult activeStormResult = client.getTropicalStormActive&#40;&#41;;
      * if &#40;activeStormResult.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
@@ -2196,7 +2143,6 @@ public final class WeatherAsyncClient {
      *     asyncClient.getTropicalStormLocations&#40;locationOptions&#41;;
      * &#125;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_tropical_storm_locations -->
      *
      * <p>
@@ -2225,7 +2171,6 @@ public final class WeatherAsyncClient {
      * **Get Tropical Storm Locations**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_tropical_storm_locations -->
-     *
      * <pre>
      * ActiveStormResult activeStormResult = client.getTropicalStormActive&#40;&#41;;
      * if &#40;activeStormResult.getActiveStorms&#40;&#41;.size&#40;&#41; &gt; 0&#41; &#123;
@@ -2235,7 +2180,6 @@ public final class WeatherAsyncClient {
      *     asyncClient.getTropicalStormLocations&#40;locationOptions&#41;;
      * &#125;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_tropical_storm_locations -->
      *
      * <p>
@@ -2267,12 +2211,10 @@ public final class WeatherAsyncClient {
      * **Get Current Air Quality**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_current_air_quality -->
-     *
      * <pre>
      * asyncClient.getCurrentAirQuality&#40;
      *         new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;es&quot;, false&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_current_air_quality -->
      *
      * <p>
@@ -2321,12 +2263,10 @@ public final class WeatherAsyncClient {
      * **Get Current Air Quality**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_current_air_quality -->
-     *
      * <pre>
      * asyncClient.getCurrentAirQuality&#40;
      *         new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;es&quot;, false&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_current_air_quality -->
      *
      * <p>
@@ -2376,12 +2316,10 @@ public final class WeatherAsyncClient {
      * **Get Current Air Quality**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_current_air_quality -->
-     *
      * <pre>
      * asyncClient.getCurrentAirQuality&#40;
      *         new GeoPosition&#40;-122.138874, 47.632346&#41;, &quot;es&quot;, false&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_current_air_quality -->
      *
      * <p>
@@ -2594,7 +2532,7 @@ public final class WeatherAsyncClient {
         String language, DailyDuration duration, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
         return this.serviceClient
-            .getDailyAirQualityForecastWithResponseAsync(JsonFormat.JSON, coordinates, language, duration, context)
+            .getAirQualityDailyForecastsWithResponseAsync(JsonFormat.JSON, coordinates, language, duration, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
 
@@ -2785,7 +2723,7 @@ public final class WeatherAsyncClient {
         HourlyDuration duration, Boolean includePollutantDetails, Context context) {
         List<Double> coordinates = Arrays.asList(position.getLatitude(), position.getLongitude());
         return this.serviceClient
-            .getHourlyAirQualityForecastWithResponseAsync(JsonFormat.JSON, coordinates, language, duration,
+            .getAirQualityHourlyForecastsWithResponseAsync(JsonFormat.JSON, coordinates, language, duration,
                 includePollutantDetails, context)
             .onErrorMap(WeatherAsyncClient::mapThrowable);
     }
@@ -2794,13 +2732,11 @@ public final class WeatherAsyncClient {
      * **Get Daily Historical Actuals**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_historical_actuals -->
-     *
      * <pre>
      * LocalDate beforeDate = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
      * LocalDate todayDate = LocalDate.now&#40;&#41;;
      * asyncClient.getDailyHistoricalActuals&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, beforeDate, todayDate, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_historical_actuals -->
      *
      * <p>
@@ -2848,13 +2784,11 @@ public final class WeatherAsyncClient {
      * **Get Daily Historical Actuals**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_historical_actuals -->
-     *
      * <pre>
      * LocalDate beforeDate = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
      * LocalDate todayDate = LocalDate.now&#40;&#41;;
      * asyncClient.getDailyHistoricalActuals&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, beforeDate, todayDate, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_historical_actuals -->
      *
      * <p>
@@ -2903,13 +2837,11 @@ public final class WeatherAsyncClient {
      * **Get Daily Historical Actuals**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_historical_actuals -->
-     *
      * <pre>
      * LocalDate beforeDate = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
      * LocalDate todayDate = LocalDate.now&#40;&#41;;
      * asyncClient.getDailyHistoricalActuals&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, beforeDate, todayDate, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_historical_actuals -->
      *
      * <p>
@@ -2960,13 +2892,11 @@ public final class WeatherAsyncClient {
      * **Get Daily Historical Records**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_historical_records -->
-     *
      * <pre>
      * LocalDate beforeDate = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
      * LocalDate todayDate = LocalDate.now&#40;&#41;;
      * asyncClient.getDailyHistoricalActuals&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, beforeDate, todayDate, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_historical_records -->
      *
      * <p>
@@ -3012,13 +2942,11 @@ public final class WeatherAsyncClient {
      * **Get Daily Historical Records**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_historical_records -->
-     *
      * <pre>
      * LocalDate beforeDate = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
      * LocalDate todayDate = LocalDate.now&#40;&#41;;
      * asyncClient.getDailyHistoricalActuals&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, beforeDate, todayDate, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_historical_records -->
      *
      * <p>
@@ -3065,13 +2993,11 @@ public final class WeatherAsyncClient {
      * **Get Daily Historical Records**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_historical_records -->
-     *
      * <pre>
      * LocalDate beforeDate = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
      * LocalDate todayDate = LocalDate.now&#40;&#41;;
      * asyncClient.getDailyHistoricalActuals&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, beforeDate, todayDate, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_historical_records -->
      *
      * <p>
@@ -3120,13 +3046,11 @@ public final class WeatherAsyncClient {
      * **Get Daily Historical Normals**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_historical_normals -->
-     *
      * <pre>
      * LocalDate beforeDate = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
      * LocalDate todayDate = LocalDate.now&#40;&#41;;
      * asyncClient.getDailyHistoricalNormals&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, beforeDate, todayDate, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_historical_normals -->
      *
      * <p>
@@ -3177,13 +3101,11 @@ public final class WeatherAsyncClient {
      * **Get Daily Historical Normals**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_historical_normals -->
-     *
      * <pre>
      * LocalDate beforeDate = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
      * LocalDate todayDate = LocalDate.now&#40;&#41;;
      * asyncClient.getDailyHistoricalNormals&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, beforeDate, todayDate, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_historical_normals -->
      *
      * <p>
@@ -3235,13 +3157,11 @@ public final class WeatherAsyncClient {
      * **Get Daily Historical Normals**
      *
      * <!-- src_embed com.azure.maps.weather.async.get_daily_historical_normals -->
-     *
      * <pre>
      * LocalDate beforeDate = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
      * LocalDate todayDate = LocalDate.now&#40;&#41;;
      * asyncClient.getDailyHistoricalNormals&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, beforeDate, todayDate, null&#41;;
      * </pre>
-     *
      * <!-- end com.azure.maps.weather.async.get_daily_historical_normals -->
      *
      * <p>

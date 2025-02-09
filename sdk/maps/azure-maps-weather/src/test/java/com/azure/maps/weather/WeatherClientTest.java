@@ -146,7 +146,7 @@ public class WeatherClientTest extends WeatherTestBase {
     public void testGetCurrentConditions(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         CurrentConditionsResult actualResult
-            = client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), null, null, null, null);
+            = client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), null, true, null, null);
         CurrentConditionsResult expectedResult = TestUtils.getExpectedCurrentConditions();
         validateGetCurrentConditions(expectedResult, actualResult);
     }
@@ -158,7 +158,7 @@ public class WeatherClientTest extends WeatherTestBase {
     public void testGetCurrentConditionsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         validateGetCurrentConditionsWithResponse(TestUtils.getExpectedCurrentConditions(), client
-            .getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), null, null, null, null, null));
+            .getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), null, true, null, null, null));
     }
 
     // Case 2: Response 400, incorrect input
