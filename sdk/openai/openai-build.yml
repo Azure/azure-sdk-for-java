@@ -51,6 +51,13 @@ steps:
       Write-Host "Updated the version in the external_dependencies.txt file $updatedDependenciesContent"  
         
       # Run the version update script
+      Write-Host "dir ../../1/s/"
+      dir ../../1/s/
+      Write-Host "dir ../../1/s/eng/"  
+      dir ../../1/s/eng/
+      Write-Host "dir ../../1/s/eng/versioning  "
+      dir ../../1/s/eng/versioning  
+        
       Write-Host "Running the version update script"
       python ../../1/s/eng/versioning/update_versions.py --bt client --ut external_dependency --sr
     displayName: Clone, build, and update OpenAI Java with necessary steps
