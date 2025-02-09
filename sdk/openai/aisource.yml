@@ -5,7 +5,7 @@ extends:
     DisableAzureResourceCreation: true
     UseFederatedAuth: false
     PreSteps:
-      - template: ./../../../../sdk/openai/openai-build.yml
+      - template: ./../../../../../sdk/openai/openai-build.yml
     Artifacts:
       - name: azure-ai-openai
         groupId: com.azure
