@@ -82,8 +82,8 @@ public final class SingleDocumentTranslationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> translateWithResponse(String targetLanguage, BinaryData documentTranslateContent,
         RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'translate' is
-        // 'multipart/form-data'
+        // Operation 'translate' is of content-type 'multipart/form-data'. Protocol API is not usable and hence not
+        // generated.
         return this.serviceClient.translateWithResponse(targetLanguage, documentTranslateContent, requestOptions);
     }
 

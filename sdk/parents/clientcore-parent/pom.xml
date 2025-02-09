@@ -205,8 +205,6 @@
     <skipCompile>false</skipCompile>
     <skipTestCompile>false</skipTestCompile>
 
-    <compiler.proc>none</compiler.proc>
-
     <!-- JavaDoc properties -->
 
     <!-- ClientCore source path is included here and it's packages are excluded as almost all client libraries
@@ -730,10 +728,9 @@
               <arg>-Xlint:varargs</arg>
             </compilerArgs>
 
-            <!-- Default is annotation processing being off. -->
-             <proc>${compiler.proc}</proc>
-
             <createMissingPackageInfoClass>false</createMissingPackageInfoClass>
+
+            <proc>none</proc>
           </configuration>
         </plugin>
 

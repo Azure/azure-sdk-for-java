@@ -40,7 +40,7 @@ public final class PathBuilder {
         boolean hasQueryParams = !method.getQueryParams().isEmpty();
 
         // Pattern for substitution placeholders
-        Pattern pattern = Pattern.compile("\\{(.+?)\\}");
+        Pattern pattern = Pattern.compile("\\{(.+?)}");
         Matcher matcher = pattern.matcher(rawHost);
         StringBuffer buffer = new StringBuffer();
 

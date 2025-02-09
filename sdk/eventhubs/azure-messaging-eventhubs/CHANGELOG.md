@@ -823,4 +823,4 @@ For release notes and more information please visit https://aka.ms/azure-sdk-pre
 - Creating more than two concurrent `EventHubClients` or `EventHubConsumers` does not work. Limit usage of concurrent
   clients and consumers to two to avoid failures.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FCHANGELOG.png)
+
