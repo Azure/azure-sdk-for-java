@@ -30,7 +30,6 @@ import static com.azure.openai.tests.TestUtils.AZURE_OPEN_AI;
 import static com.azure.openai.tests.TestUtils.GA;
 import static com.azure.openai.tests.TestUtils.OPEN_AI;
 import static com.azure.openai.tests.TestUtils.PREVIEW;
-import static com.openai.models.ResponseFormatJsonObject.Type.JSON_OBJECT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -244,7 +243,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
                                 "Who won the world series in 2020? Return in json with answer as the key.")))
                 .model(testModel)
                 .responseFormat(
-                        ResponseFormatJsonObject.builder().type(JSON_OBJECT).build())
+                        ResponseFormatJsonObject.builder().type(JsonValue.from("json_object")).build())
                 .build();
 
         ChatCompletion chatCompletion = client.chat().completions().create(params);

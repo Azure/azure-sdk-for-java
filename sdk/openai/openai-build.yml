@@ -1,0 +1,5 @@
+steps:
+  - pwsh: true
+    filePath: ./Clone-And-Build.ps1
+    displayName: Clone, build, and update OpenAI Java with necessary steps
+    workingDirectory: $(Agent.TempDirectory)
