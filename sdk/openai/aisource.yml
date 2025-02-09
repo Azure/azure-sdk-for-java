@@ -4,6 +4,7 @@ extends:
     ServiceDirectory: openai
     DisableAzureResourceCreation: true
     UseFederatedAuth: false
+    TestVersionSupport: true
     PreSteps:
       - template: ./../../../../../sdk/openai/openai-build.yml
     Artifacts:
