@@ -40,7 +40,7 @@ steps:
       ./gradlew clean build -x test publishToMavenLocal
 
       # Define the path to the external_dependencies.txt file
-      $dependenciesFilePath = './../../../eng/versioning/external_dependencies.txt'
+      $dependenciesFilePath = './eng/versioning/external_dependencies.txt'
 
       # Update the version in the external_dependencies.txt file
       $newVersionInExternalDependenciesFile = "com.openai:openai-java;$newVersion"
@@ -50,10 +50,6 @@ steps:
 
       # Run the version update script
       Write-Host "Running the version update script"
-      cd ../../../
       python eng/versioning/update_versions.py --bt client --ut external_dependency --sr
-
-      # Navigate back to the sdk/openai directory
-      cd .\sdk\openai
     displayName: Clone, build, and update OpenAI Java with necessary steps
     workingDirectory: $(Agent.TempDirectory)
