@@ -9,6 +9,7 @@ import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.LongCounter;
 import io.clientcore.core.instrumentation.metrics.Meter;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -47,7 +48,8 @@ public final class NoopMeter implements Meter {
      * {@inheritDoc}
      */
     @Override
-    public DoubleHistogram createDoubleHistogram(String name, String description, String unit) {
+    public DoubleHistogram createDoubleHistogram(String name, String description, String unit,
+        List<Double> bucketBoundaries) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
         Objects.requireNonNull(unit, "'unit' cannot be null.");
@@ -82,9 +84,5 @@ public final class NoopMeter implements Meter {
     @Override
     public boolean isEnabled() {
         return false;
-    }
-
-    @Override
-    public void close() {
     }
 }
