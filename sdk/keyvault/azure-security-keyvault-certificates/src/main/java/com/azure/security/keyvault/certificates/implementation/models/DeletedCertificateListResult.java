@@ -40,8 +40,7 @@ public final class DeletedCertificateListResult implements JsonSerializable<Dele
 
     /**
      * Get the value property: A response message containing a list of deleted certificates in the vault along with a
-     * link to the next page of
-     * deleted certificates.
+     * link to the next page of deleted certificates.
      *
      * @return the value value.
      */
