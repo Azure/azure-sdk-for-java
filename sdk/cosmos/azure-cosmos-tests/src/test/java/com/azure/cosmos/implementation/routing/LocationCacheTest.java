@@ -933,6 +933,7 @@ public class LocationCacheTest {
             return RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, isMasterResourceType ? ResourceType.Database : ResourceType.Document);
         }
     }
+
     private static URI createUrl(String url) {
         try {
             return new URI(url);
