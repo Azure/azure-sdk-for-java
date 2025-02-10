@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
@@ -239,7 +240,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
             final List<ByteBuffer> list = collected.stream()
                 .map(b -> b.nioBuffer())
-                .toList();
+                .collect(Collectors.toList());
 
             collectedData = BinaryData.fromListByteBuffer(list);
 
