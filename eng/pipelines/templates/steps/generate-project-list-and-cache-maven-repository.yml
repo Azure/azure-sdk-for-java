@@ -54,7 +54,7 @@ steps:
   condition: eq(variables['ArtifactPackageNames'], '')
 
 - task: PowerShell@2
-  displayName: Initialize project list variable for test run
+  displayName: Initialize project list variable for PR test run
   inputs:
     pwsh: true
     filePath: eng/pipelines/scripts/generate-project-list.ps1
