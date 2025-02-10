@@ -150,7 +150,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
-        return new KeyClient(buildClientImpl(), vaultUrl, version);
+        return new KeyClient(buildImplClient(), vaultUrl, version);
     }
 
     /**
@@ -171,10 +171,10 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyAsyncClient buildAsyncClient() {
-        return new KeyAsyncClient(buildClientImpl(), vaultUrl, version);
+        return new KeyAsyncClient(buildImplClient(), vaultUrl, version);
     }
 
-    private KeyClientImpl buildClientImpl() {
+    private KeyClientImpl buildImplClient() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
