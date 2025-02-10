@@ -15,10 +15,10 @@ import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.ProtonSession.ProtonChannel;
 import com.azure.core.amqp.implementation.ProtonSession.ProtonSessionClosedException;
-import com.azure.core.amqp.implementation.ProtonSessionWrapper.ProtonChannelWrapper;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -92,8 +92,7 @@ public class ReactorSession implements AmqpSession {
     private final Flux<AmqpEndpointState> endpointStates;
 
     private final AmqpConnection amqpConnection;
-    // TODO (anu): When removing v1, use 'ProtonSession' directly instead of wrapper.
-    private final ProtonSessionWrapper protonSession;
+    private final ProtonSession protonSession;
     private final Mono<Void> activeAwaiter;
     private final String id;
     private final String sessionName;
@@ -124,7 +123,7 @@ public class ReactorSession implements AmqpSession {
      * @param messageSerializer Serializes and deserializes proton-j messages.
      * @param retryOptions for the session operations.
      */
-    public ReactorSession(AmqpConnection amqpConnection, ProtonSessionWrapper protonSession,
+    public ReactorSession(AmqpConnection amqpConnection, ProtonSession protonSession,
         ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
@@ -165,12 +164,6 @@ public class ReactorSession implements AmqpSession {
             .flatMap(signal -> closeAsync("Shutdown signal received (" + signal.toString() + ")", null, false))
             .subscribe());
 
-        final boolean isV1OrV2WithoutSessionCache = !protonSession.isV2ClientOnSessionCache();
-        if (isV1OrV2WithoutSessionCache) {
-            // TODO (anu): delete openUnsafe() when removing v1 and 'SessionCache' (hence 'ProtonSession') is no longer
-            //  opt-in for v2.
-            protonSession.openUnsafe(logger);
-        }
         this.activeAwaiter = activeAwaiter(protonSession, retryOptions.getTryTimeout(), endpointStates);
     }
 
@@ -193,7 +186,7 @@ public class ReactorSession implements AmqpSession {
      *
      * @return the Mono that completes once the session is opened and active.
      */
-    final Mono<ReactorSession> open() {
+    public final Mono<ReactorSession> open() {
         return Mono.when(protonSession.open(), activeAwaiter).thenReturn(this);
     }
 
@@ -203,13 +196,11 @@ public class ReactorSession implements AmqpSession {
      * @param name the channel name.
      * @return the Mono that completes with created {@link ProtonChannel}.
      */
-    final Mono<ProtonChannelWrapper> channel(String name) {
-        // TODO (anu): return Mono of 'ProtonChannel' when removing v1 and 'SessionCache' (hence 'ProtonSession') is
-        //  no longer opt-in for v2.
+    final Mono<ProtonChannel> channel(String name) {
         return protonSession.channel(name, retryOptions.getTryTimeout());
     }
 
-    final ProtonSessionWrapper session() {
+    final ProtonSession session() {
         // Exposed only for testing.
         return protonSession;
     }
@@ -292,7 +283,7 @@ public class ReactorSession implements AmqpSession {
         // includeDeliveryTagInMessage).
         // Here we've to pass (DeliverySettleMode.SETTLE_ON_DELIVERY, false) as the values for those two parameters.
         return createConsumer(linkName, entityPath, timeout, retry, null, null, null, SenderSettleMode.UNSETTLED,
-            ReceiverSettleMode.SECOND, new ConsumerFactory())
+            ReceiverSettleMode.SECOND, new ConsumerFactory(DeliverySettleMode.SETTLE_ON_DELIVERY, false))
                 .or(onClosedError("Connection closed while waiting for new receive link.", entityPath, linkName))
                 .cast(AmqpLink.class);
     }
@@ -826,7 +817,7 @@ public class ReactorSession implements AmqpSession {
      * @param endpointStates the flux streaming session endpoint states.
      * @return a mono that completes when the session is active.
      */
-    private static Mono<Void> activeAwaiter(ProtonSessionWrapper protonSession, Duration tryTimeout,
+    private static Mono<Void> activeAwaiter(ProtonSession protonSession, Duration tryTimeout,
         Flux<AmqpEndpointState> endpointStates) {
         final String connectionId = protonSession.getConnectionId();
         final String sessionName = protonSession.getName();
