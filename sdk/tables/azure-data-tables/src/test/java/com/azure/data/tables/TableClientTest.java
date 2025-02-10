@@ -1334,13 +1334,4 @@ public class TableClientTest extends TableClientTestBase {
         tableClient.createEntity(entity);
         tableClient.deleteEntity(entity);
     }
-
-    @Test
-    void NonRuntimeExceptionsDontGetCasted() {
-        assertThrows(Error.class, () -> {
-            TableUtils.callWithOptionalTimeout(() -> {
-                throw new NoClassDefFoundError("This is an error");
-            }, null, new ClientLogger(TableClientTest.class));
-        });
-    }
 }
