@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.securityinsights.SecurityInsightsManager;
-import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 import com.azure.resourcemanager.securityinsights.models.Relation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,7 +21,7 @@ public final class IncidentRelationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"relatedResourceId\":\"tnhrevimxmaxcj\",\"relatedResourceName\":\"itygvdwds\",\"relatedResourceType\":\"tb\",\"relatedResourceKind\":\"v\"},\"etag\":\"zbzchnqekwan\",\"id\":\"purlcydjhtkj\",\"name\":\"erwi\",\"type\":\"ndurdonkgobxbl\"}";
+            = "{\"properties\":{\"relatedResourceId\":\"vdyznf\",\"relatedResourceName\":\"svkskmqoz\",\"relatedResourceType\":\"ivyhjrliizjixlqf\",\"relatedResourceKind\":\"fkwa\"},\"etag\":\"olro\",\"id\":\"qlmgnlqxsjxt\",\"name\":\"lexhv\",\"type\":\"qbozoolzqoc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +31,13 @@ public final class IncidentRelationsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Relation response = manager.incidentRelations()
-            .createOrUpdateWithResponse("pe", "knfzqnzbflbqmhb", "yxxvwedhagqbbse", "ea",
-                new RelationInner().withEtag("dalisdeqn").withRelatedResourceId("flmsy"),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+            .define("ezxlhdjzqdca")
+            .withExistingIncident("t", "azyqbxyxoyfp", "qqi")
+            .withEtag("ibuyvpirf")
+            .withRelatedResourceId("vpsozjiihjri")
+            .create();
 
-        Assertions.assertEquals("zbzchnqekwan", response.etag());
-        Assertions.assertEquals("tnhrevimxmaxcj", response.relatedResourceId());
+        Assertions.assertEquals("olro", response.etag());
+        Assertions.assertEquals("vdyznf", response.relatedResourceId());
     }
 }

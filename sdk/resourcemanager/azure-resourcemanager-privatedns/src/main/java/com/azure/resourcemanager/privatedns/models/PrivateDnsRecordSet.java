@@ -17,31 +17,44 @@ import java.util.Map;
 public interface PrivateDnsRecordSet
     extends ExternalChildResource<PrivateDnsRecordSet, PrivateDnsZone>, HasInnerModel<RecordSetInner> {
     /**
+     * Gets the type of the record set.
+     *
      * @return the type of the record set.
      */
     RecordType recordType();
 
     /**
+     * Gets the ETag of the record set.
+     *
      * @return the ETag of the record set.
      */
     String etag();
 
     /**
+     * Gets the metadata attached to the record set.
+     *
      * @return the metadata attached to the record set.
      */
     Map<String, String> metadata();
 
     /**
+     * Gets the time-to-live of the records in the record set.
+     *
      * @return the time-to-live of the records in the record set.
      */
     long timeToLive();
 
     /**
+     * Gets the fully qualified domain name of the record set.
+     *
      * @return the fully qualified domain name of the record set.
      */
     String fqdn();
 
     /**
+     * Gets the property whether the record set is auto-registered in the private DNS zone
+     * through a virtual network link.
+     *
      * @return the property whether the record set is auto-registered in the private DNS zone
      * through a virtual network link.
      */

@@ -5,43 +5,58 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Discovery Details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
-@JsonTypeName("Discovery")
+/**
+ * Discovery Details.
+ */
 @Fluent
 public final class DiscoveryConfiguration extends SapConfiguration {
     /*
+     * The configuration Type.
+     */
+    private SapConfigurationType configurationType = SapConfigurationType.DISCOVERY;
+
+    /*
      * The virtual machine ID of the Central Server.
      */
-    @JsonProperty(value = "centralServerVmId")
     private String centralServerVmId;
 
     /*
      * The custom storage account name for the storage account created by the service in the managed resource group
      * created as part of VIS deployment.<br><br>Refer to the storage account naming rules
-     * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).<br><br>If
-     * not provided, the service will create the storage account with a random name.
+     * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).
+     * <br><br>If not provided, the service will create the storage account with a random name.
      */
-    @JsonProperty(value = "managedRgStorageAccountName")
     private String managedRgStorageAccountName;
 
     /*
      * The geo-location where the SAP system exists.
      */
-    @JsonProperty(value = "appLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String appLocation;
 
-    /** Creates an instance of DiscoveryConfiguration class. */
+    /**
+     * Creates an instance of DiscoveryConfiguration class.
+     */
     public DiscoveryConfiguration() {
     }
 
     /**
+     * Get the configurationType property: The configuration Type.
+     * 
+     * @return the configurationType value.
+     */
+    @Override
+    public SapConfigurationType configurationType() {
+        return this.configurationType;
+    }
+
+    /**
      * Get the centralServerVmId property: The virtual machine ID of the Central Server.
-     *
+     * 
      * @return the centralServerVmId value.
      */
     public String centralServerVmId() {
@@ -50,7 +65,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
 
     /**
      * Set the centralServerVmId property: The virtual machine ID of the Central Server.
-     *
+     * 
      * @param centralServerVmId the centralServerVmId value to set.
      * @return the DiscoveryConfiguration object itself.
      */
@@ -65,7 +80,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      * storage account naming rules
      * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).&lt;br&gt;&lt;br&gt;If
      * not provided, the service will create the storage account with a random name.
-     *
+     * 
      * @return the managedRgStorageAccountName value.
      */
     public String managedRgStorageAccountName() {
@@ -78,7 +93,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      * storage account naming rules
      * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).&lt;br&gt;&lt;br&gt;If
      * not provided, the service will create the storage account with a random name.
-     *
+     * 
      * @param managedRgStorageAccountName the managedRgStorageAccountName value to set.
      * @return the DiscoveryConfiguration object itself.
      */
@@ -89,7 +104,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
 
     /**
      * Get the appLocation property: The geo-location where the SAP system exists.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -98,11 +113,56 @@ public final class DiscoveryConfiguration extends SapConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        jsonWriter.writeStringField("centralServerVmId", this.centralServerVmId);
+        jsonWriter.writeStringField("managedRgStorageAccountName", this.managedRgStorageAccountName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiscoveryConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiscoveryConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiscoveryConfiguration.
+     */
+    public static DiscoveryConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiscoveryConfiguration deserializedDiscoveryConfiguration = new DiscoveryConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationType".equals(fieldName)) {
+                    deserializedDiscoveryConfiguration.configurationType
+                        = SapConfigurationType.fromString(reader.getString());
+                } else if ("centralServerVmId".equals(fieldName)) {
+                    deserializedDiscoveryConfiguration.centralServerVmId = reader.getString();
+                } else if ("managedRgStorageAccountName".equals(fieldName)) {
+                    deserializedDiscoveryConfiguration.managedRgStorageAccountName = reader.getString();
+                } else if ("appLocation".equals(fieldName)) {
+                    deserializedDiscoveryConfiguration.appLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiscoveryConfiguration;
+        });
     }
 }

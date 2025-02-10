@@ -17,7 +17,11 @@ public final class PrivateEndpoint {
         this.id = id;
     }
 
-    /** @return the ID of the private endpoint. */
+    /**
+     * Gets the ID of the private endpoint.
+     *
+     * @return the ID of the private endpoint.
+     */
     public String id() {
         return this.id;
     }

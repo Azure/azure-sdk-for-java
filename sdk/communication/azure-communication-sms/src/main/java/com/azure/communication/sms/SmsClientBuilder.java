@@ -67,6 +67,12 @@ public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClient
     private RetryOptions retryOptions;
 
     /**
+     * Creates a new instance of {@link SmsClientBuilder}.
+     */
+    public SmsClientBuilder() {
+    }
+
+    /**
      * Set endpoint of the service
      *
      * @param endpoint url of the service

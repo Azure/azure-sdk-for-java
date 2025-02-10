@@ -32,23 +32,23 @@ public final class StorageAppliancesImpl implements StorageAppliances {
 
     public PagedIterable<StorageAppliance> list() {
         PagedIterable<StorageApplianceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StorageAppliance> list(Context context) {
         PagedIterable<StorageApplianceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName) {
         PagedIterable<StorageApplianceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<StorageApplianceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
     public Response<StorageAppliance> getByResourceGroupWithResponse(String resourceGroupName,
@@ -72,12 +72,23 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String storageApplianceName) {
-        this.serviceClient().delete(resourceGroupName, storageApplianceName);
+    public OperationStatusResult deleteByResourceGroup(String resourceGroupName, String storageApplianceName) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, storageApplianceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String storageApplianceName, Context context) {
-        this.serviceClient().delete(resourceGroupName, storageApplianceName, context);
+    public OperationStatusResult delete(String resourceGroupName, String storageApplianceName, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, storageApplianceName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public OperationStatusResult disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
@@ -125,12 +136,12 @@ public final class StorageAppliancesImpl implements StorageAppliances {
     }
 
     public StorageAppliance getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String storageApplianceName = Utils.getValueFromIdByName(id, "storageAppliances");
+        String storageApplianceName = ResourceManagerUtils.getValueFromIdByName(id, "storageAppliances");
         if (storageApplianceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
@@ -139,12 +150,12 @@ public final class StorageAppliancesImpl implements StorageAppliances {
     }
 
     public Response<StorageAppliance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String storageApplianceName = Utils.getValueFromIdByName(id, "storageAppliances");
+        String storageApplianceName = ResourceManagerUtils.getValueFromIdByName(id, "storageAppliances");
         if (storageApplianceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
@@ -152,32 +163,32 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         return this.getByResourceGroupWithResponse(resourceGroupName, storageApplianceName, context);
     }
 
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String storageApplianceName = Utils.getValueFromIdByName(id, "storageAppliances");
+        String storageApplianceName = ResourceManagerUtils.getValueFromIdByName(id, "storageAppliances");
         if (storageApplianceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
         }
-        this.delete(resourceGroupName, storageApplianceName, Context.NONE);
+        return this.delete(resourceGroupName, storageApplianceName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String storageApplianceName = Utils.getValueFromIdByName(id, "storageAppliances");
+        String storageApplianceName = ResourceManagerUtils.getValueFromIdByName(id, "storageAppliances");
         if (storageApplianceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
         }
-        this.delete(resourceGroupName, storageApplianceName, context);
+        return this.delete(resourceGroupName, storageApplianceName, context);
     }
 
     private StorageAppliancesClient serviceClient() {

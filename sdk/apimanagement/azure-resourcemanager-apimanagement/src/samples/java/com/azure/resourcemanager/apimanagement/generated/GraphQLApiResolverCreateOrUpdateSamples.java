@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for GraphQLApiResolver CreateOrUpdate. */
+/**
+ * Samples for GraphQLApiResolver CreateOrUpdate.
+ */
 public final class GraphQLApiResolverCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGraphQLApiResolver.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateGraphQLApiResolver.json
      */
     /**
      * Sample code: ApiManagementCreateGraphQLApiResolver.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementCreateGraphQLApiResolver(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .graphQLApiResolvers()
+    public static void
+        apiManagementCreateGraphQLApiResolver(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.graphQLApiResolvers()
             .define("newResolver")
             .withExistingApi("rg1", "apimService1", "someAPI")
             .withDisplayName("Query Users")

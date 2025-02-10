@@ -1693,8 +1693,8 @@ public class ShareAsyncClient {
         Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, metadata, requestConditions,
-                context)
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, null, metadata,
+                requestConditions, context)
             .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 

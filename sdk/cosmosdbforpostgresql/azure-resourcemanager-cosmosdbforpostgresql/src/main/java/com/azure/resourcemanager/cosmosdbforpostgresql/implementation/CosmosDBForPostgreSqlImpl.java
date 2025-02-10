@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -371,7 +372,7 @@ public final class CosmosDBForPostgreSqlImpl implements CosmosDBForPostgreSql {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

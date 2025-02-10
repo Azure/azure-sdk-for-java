@@ -6,46 +6,52 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** IpAddressPool represents a pool of IP addresses that can be allocated to a service. */
+/**
+ * IpAddressPool represents a pool of IP addresses that can be allocated to a service.
+ */
 @Fluent
-public final class IpAddressPool {
+public final class IpAddressPool implements JsonSerializable<IpAddressPool> {
     /*
      * The list of IP address ranges. Each range can be a either a subnet in CIDR format or an explicit start-end range
-     * of IP addresses.
+     * of IP addresses. For a BGP service load balancer configuration, only CIDR format is supported and excludes /32
+     * (IPv4) and /128 (IPv6) prefixes.
      */
-    @JsonProperty(value = "addresses", required = true)
     private List<String> addresses;
 
     /*
      * The indicator to determine if automatic allocation from the pool should occur.
      */
-    @JsonProperty(value = "autoAssign")
     private BfdEnabled autoAssign;
 
     /*
      * The name used to identify this IP address pool for association with a BGP advertisement.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The indicator to prevent the use of IP addresses ending with .0 and .255 for this pool. Enabling this option
-     * will only use IP addresses between .1 and .254 inclusive.
+     * The indicator to prevent the use of IP addresses ending with .0 and .255 for this pool. Enabling this option will
+     * only use IP addresses between .1 and .254 inclusive.
      */
-    @JsonProperty(value = "onlyUseHostIps")
     private BfdEnabled onlyUseHostIps;
 
-    /** Creates an instance of IpAddressPool class. */
+    /**
+     * Creates an instance of IpAddressPool class.
+     */
     public IpAddressPool() {
     }
 
     /**
      * Get the addresses property: The list of IP address ranges. Each range can be a either a subnet in CIDR format or
-     * an explicit start-end range of IP addresses.
-     *
+     * an explicit start-end range of IP addresses. For a BGP service load balancer configuration, only CIDR format is
+     * supported and excludes /32 (IPv4) and /128 (IPv6) prefixes.
+     * 
      * @return the addresses value.
      */
     public List<String> addresses() {
@@ -54,8 +60,9 @@ public final class IpAddressPool {
 
     /**
      * Set the addresses property: The list of IP address ranges. Each range can be a either a subnet in CIDR format or
-     * an explicit start-end range of IP addresses.
-     *
+     * an explicit start-end range of IP addresses. For a BGP service load balancer configuration, only CIDR format is
+     * supported and excludes /32 (IPv4) and /128 (IPv6) prefixes.
+     * 
      * @param addresses the addresses value to set.
      * @return the IpAddressPool object itself.
      */
@@ -66,7 +73,7 @@ public final class IpAddressPool {
 
     /**
      * Get the autoAssign property: The indicator to determine if automatic allocation from the pool should occur.
-     *
+     * 
      * @return the autoAssign value.
      */
     public BfdEnabled autoAssign() {
@@ -75,7 +82,7 @@ public final class IpAddressPool {
 
     /**
      * Set the autoAssign property: The indicator to determine if automatic allocation from the pool should occur.
-     *
+     * 
      * @param autoAssign the autoAssign value to set.
      * @return the IpAddressPool object itself.
      */
@@ -86,7 +93,7 @@ public final class IpAddressPool {
 
     /**
      * Get the name property: The name used to identify this IP address pool for association with a BGP advertisement.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -95,7 +102,7 @@ public final class IpAddressPool {
 
     /**
      * Set the name property: The name used to identify this IP address pool for association with a BGP advertisement.
-     *
+     * 
      * @param name the name value to set.
      * @return the IpAddressPool object itself.
      */
@@ -107,7 +114,7 @@ public final class IpAddressPool {
     /**
      * Get the onlyUseHostIps property: The indicator to prevent the use of IP addresses ending with .0 and .255 for
      * this pool. Enabling this option will only use IP addresses between .1 and .254 inclusive.
-     *
+     * 
      * @return the onlyUseHostIps value.
      */
     public BfdEnabled onlyUseHostIps() {
@@ -117,7 +124,7 @@ public final class IpAddressPool {
     /**
      * Set the onlyUseHostIps property: The indicator to prevent the use of IP addresses ending with .0 and .255 for
      * this pool. Enabling this option will only use IP addresses between .1 and .254 inclusive.
-     *
+     * 
      * @param onlyUseHostIps the onlyUseHostIps value to set.
      * @return the IpAddressPool object itself.
      */
@@ -128,19 +135,67 @@ public final class IpAddressPool {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (addresses() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property addresses in model IpAddressPool"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property addresses in model IpAddressPool"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model IpAddressPool"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model IpAddressPool"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IpAddressPool.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("addresses", this.addresses, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("autoAssign", this.autoAssign == null ? null : this.autoAssign.toString());
+        jsonWriter.writeStringField("onlyUseHostIps",
+            this.onlyUseHostIps == null ? null : this.onlyUseHostIps.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpAddressPool from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpAddressPool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IpAddressPool.
+     */
+    public static IpAddressPool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpAddressPool deserializedIpAddressPool = new IpAddressPool();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addresses".equals(fieldName)) {
+                    List<String> addresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpAddressPool.addresses = addresses;
+                } else if ("name".equals(fieldName)) {
+                    deserializedIpAddressPool.name = reader.getString();
+                } else if ("autoAssign".equals(fieldName)) {
+                    deserializedIpAddressPool.autoAssign = BfdEnabled.fromString(reader.getString());
+                } else if ("onlyUseHostIps".equals(fieldName)) {
+                    deserializedIpAddressPool.onlyUseHostIps = BfdEnabled.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpAddressPool;
+        });
+    }
 }

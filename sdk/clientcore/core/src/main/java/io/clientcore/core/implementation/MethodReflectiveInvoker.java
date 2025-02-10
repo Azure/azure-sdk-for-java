@@ -25,6 +25,31 @@ final class MethodReflectiveInvoker implements ReflectiveInvoker {
     }
 
     @Override
+    public Object invoke() throws Exception {
+        return method.invoke(null);
+    }
+
+    @Override
+    public Object invoke(Object argOrTarget) throws Exception {
+        return method.invoke(argOrTarget);
+    }
+
+    @Override
+    public Object invoke(Object argOrTarget, Object arg1) throws Exception {
+        return method.invoke(argOrTarget, arg1);
+    }
+
+    @Override
+    public Object invoke(Object argOrTarget, Object arg1, Object arg2) throws Exception {
+        return method.invoke(argOrTarget, arg1, arg2);
+    }
+
+    @Override
+    public Object invoke(Object argOrTarget, Object arg1, Object arg2, Object arg3) throws Exception {
+        return method.invoke(argOrTarget, arg1, arg2, arg3);
+    }
+
+    @Override
     public int getParameterCount() {
         return method.getParameterCount();
     }

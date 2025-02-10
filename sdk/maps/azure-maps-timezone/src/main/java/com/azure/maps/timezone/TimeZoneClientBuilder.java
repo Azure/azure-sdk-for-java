@@ -10,7 +10,9 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -28,6 +30,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -43,24 +46,10 @@ import java.util.Objects;
 
 /**
  * Builder class used to instantiate both synchronous and asynchronous {@link TimeZoneClient} clients.
- * <p><b>Example usage</b></p>
- * Creating a sync client using a {@link AzureKeyCredential}:
- * <!-- src_embed com.azure.maps.timezone.sync.builder.key.instantiation -->
- * <pre>
- * &#47;&#47; Authenticates using subscription key
- * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
- *
- * &#47;&#47; Creates a client
- * TimeZoneClient client = new TimeZoneClientBuilder&#40;&#41; 
- *     .credential&#40;keyCredential&#41;
- *     .timezoneClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.maps.timezone.sync.builder.ad.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { TimeZoneClient.class, TimeZoneAsyncClient.class })
-public final class TimeZoneClientBuilder
-    implements AzureKeyCredentialTrait<TimeZoneClientBuilder>, TokenCredentialTrait<TimeZoneClientBuilder>,
+public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<TimeZoneClientBuilder>,
+    AzureSasCredentialTrait<TimeZoneClientBuilder>, TokenCredentialTrait<TimeZoneClientBuilder>,
     HttpTrait<TimeZoneClientBuilder>, ConfigurationTrait<TimeZoneClientBuilder>, EndpointTrait<TimeZoneClientBuilder> {
 
     // constants
@@ -105,6 +94,7 @@ public final class TimeZoneClientBuilder
     // credentials
     private AzureKeyCredential keyCredential;
     private TokenCredential tokenCredential;
+    private AzureSasCredential sasCredential;
 
     /** Default constructor for the builder class; Create an instance of the TimeZoneClientBuilder. */
     public TimeZoneClientBuilder() {
@@ -270,6 +260,19 @@ public final class TimeZoneClientBuilder
     }
 
     /**
+     * Sets the {@link AzureSasCredential} used to authenticate HTTP requests.
+     *
+     * @param sasCredential The {@link AzureSasCredential} used to authenticate HTTP requests.
+     * @return The updated {@link TimeZoneClientBuilder} object.
+     * @throws NullPointerException If {@code sasCredential} is null.
+     */
+    @Override
+    public TimeZoneClientBuilder credential(AzureSasCredential sasCredential) {
+        this.sasCredential = Objects.requireNonNull(sasCredential, "'sasCredential' cannot be null.");
+        return this;
+    }
+
+    /**
      * Sets retry options
      * @param retryOptions the retry options for the client
      * @return a reference to this {@code TimeZoneClientBuilder}
@@ -345,6 +348,8 @@ public final class TimeZoneClientBuilder
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         } else if (keyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy(MAPS_SUBSCRIPTION_KEY, keyCredential));
+        } else if (sasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(sasCredential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(

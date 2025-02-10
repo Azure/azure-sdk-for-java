@@ -5,32 +5,35 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Changelog list.
  */
 @Fluent
-public final class ChangelogInner {
+public final class ChangelogInner implements JsonSerializable<ChangelogInner> {
     /*
      * list of changes
      */
-    @JsonProperty(value = "changes", required = true)
     private List<String> changes;
 
     /*
      * lastCommitted timestamp
      */
-    @JsonProperty(value = "lastCommitted")
     private OffsetDateTime lastCommitted;
 
     /*
      * lastModified timestamp
      */
-    @JsonProperty(value = "lastModified")
     private OffsetDateTime lastModified;
 
     /**
@@ -106,10 +109,58 @@ public final class ChangelogInner {
      */
     public void validate() {
         if (changes() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property changes in model ChangelogInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property changes in model ChangelogInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ChangelogInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("changes", this.changes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("lastCommitted",
+            this.lastCommitted == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastCommitted));
+        jsonWriter.writeStringField("lastModified",
+            this.lastModified == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModified));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangelogInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangelogInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChangelogInner.
+     */
+    public static ChangelogInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangelogInner deserializedChangelogInner = new ChangelogInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("changes".equals(fieldName)) {
+                    List<String> changes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedChangelogInner.changes = changes;
+                } else if ("lastCommitted".equals(fieldName)) {
+                    deserializedChangelogInner.lastCommitted = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedChangelogInner.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangelogInner;
+        });
+    }
 }

@@ -16,7 +16,6 @@ import com.azure.resourcemanager.synapse.models.DynamicExecutorAllocation;
 import com.azure.resourcemanager.synapse.models.LibraryRequirements;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
-import com.azure.resourcemanager.synapse.models.SparkConfigProperties;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -73,10 +72,6 @@ public final class BigDataPoolResourceInfoImpl
         return this.innerModel().isComputeIsolationEnabled();
     }
 
-    public Boolean isAutotuneEnabled() {
-        return this.innerModel().isAutotuneEnabled();
-    }
-
     public Boolean sessionLevelPackagesEnabled() {
         return this.innerModel().sessionLevelPackagesEnabled();
     }
@@ -110,7 +105,7 @@ public final class BigDataPoolResourceInfoImpl
         }
     }
 
-    public SparkConfigProperties sparkConfigProperties() {
+    public LibraryRequirements sparkConfigProperties() {
         return this.innerModel().sparkConfigProperties();
     }
 
@@ -269,6 +264,11 @@ public final class BigDataPoolResourceInfoImpl
         return this;
     }
 
+    public BigDataPoolResourceInfoImpl withCreationDate(OffsetDateTime creationDate) {
+        this.innerModel().withCreationDate(creationDate);
+        return this;
+    }
+
     public BigDataPoolResourceInfoImpl withAutoPause(AutoPauseProperties autoPause) {
         this.innerModel().withAutoPause(autoPause);
         return this;
@@ -276,11 +276,6 @@ public final class BigDataPoolResourceInfoImpl
 
     public BigDataPoolResourceInfoImpl withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled) {
         this.innerModel().withIsComputeIsolationEnabled(isComputeIsolationEnabled);
-        return this;
-    }
-
-    public BigDataPoolResourceInfoImpl withIsAutotuneEnabled(Boolean isAutotuneEnabled) {
-        this.innerModel().withIsAutotuneEnabled(isAutotuneEnabled);
         return this;
     }
 
@@ -320,7 +315,7 @@ public final class BigDataPoolResourceInfoImpl
         return this;
     }
 
-    public BigDataPoolResourceInfoImpl withSparkConfigProperties(SparkConfigProperties sparkConfigProperties) {
+    public BigDataPoolResourceInfoImpl withSparkConfigProperties(LibraryRequirements sparkConfigProperties) {
         this.innerModel().withSparkConfigProperties(sparkConfigProperties);
         return this;
     }

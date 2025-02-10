@@ -17,16 +17,16 @@ public final class SensitivityLabelUpdateListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SensitivityLabelUpdateList model = BinaryData.fromString(
-            "{\"operations\":[{\"properties\":{\"op\":\"set\",\"schema\":\"jhzi\",\"table\":\"xgfpelolppv\",\"column\":\"srp\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"zraehtwd\",\"tableName\":\"ftswibyrcdlbhsh\",\"columnName\":\"p\",\"labelName\":\"cstwity\",\"labelId\":\"evxccedcp\",\"informationType\":\"dyodnwzxltj\",\"informationTypeId\":\"nhltiugcxn\",\"isDisabled\":true,\"rank\":\"High\"},\"managedBy\":\"ibyqunyowxwlmdj\",\"id\":\"kv\",\"name\":\"g\",\"type\":\"vfvpdbodaciz\"}},\"id\":\"j\",\"name\":\"lhkrribdeibqipqk\",\"type\":\"hvxndzwmkrefajpj\"},{\"properties\":{\"op\":\"set\",\"schema\":\"kqnyh\",\"table\":\"b\",\"column\":\"j\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"fxzsjabibsyst\",\"tableName\":\"fsdjpvkvp\",\"columnName\":\"xbkzbzkdvncj\",\"labelName\":\"udurgkakmokz\",\"labelId\":\"jk\",\"informationType\":\"fhmouwq\",\"informationTypeId\":\"zrfze\",\"isDisabled\":true,\"rank\":\"High\"},\"managedBy\":\"ikayuhqlbjbsybb\",\"id\":\"wrv\",\"name\":\"ldgmfpgvmpip\",\"type\":\"slthaq\"}},\"id\":\"x\",\"name\":\"smwutwbdsrezpd\",\"type\":\"hneuyowqkd\"},{\"properties\":{\"op\":\"set\",\"schema\":\"i\",\"table\":\"ib\",\"column\":\"rcgp\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"imejzanl\",\"tableName\":\"xi\",\"columnName\":\"rmbzo\",\"labelName\":\"kixrj\",\"labelId\":\"irgzp\",\"informationType\":\"lazszrn\",\"informationTypeId\":\"iin\",\"isDisabled\":false,\"rank\":\"Critical\"},\"managedBy\":\"ylwbtlhflsjcdhsz\",\"id\":\"jvfbgofelja\",\"name\":\"rqmq\",\"type\":\"ldvriiiojnalghfk\"}},\"id\":\"tvsexsowuel\",\"name\":\"qhhahhxvrhmzkwpj\",\"type\":\"wws\"}]}")
+            "{\"operations\":[{\"properties\":{\"op\":\"set\",\"schema\":\"fvpgshoxgsg\",\"table\":\"p\",\"column\":\"gzdjtxvzf\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"gaqvlgafcqusrd\",\"tableName\":\"t\",\"columnName\":\"sdtutnwlduyc\",\"labelName\":\"zhyrmewipmve\",\"labelId\":\"xukuqgsj\",\"informationType\":\"undxgketw\",\"informationTypeId\":\"hzjhf\",\"isDisabled\":true,\"rank\":\"High\"},\"managedBy\":\"uvgp\",\"id\":\"uneqsxvmhf\",\"name\":\"uzjyihsasbhudypo\",\"type\":\"yue\"}},\"id\":\"slynsqyrpfoo\",\"name\":\"rlttymsjnygqdnfw\",\"type\":\"zdzgtilaxhnfhqly\"},{\"properties\":{\"op\":\"set\",\"schema\":\"ouwivkxoyzunbixx\",\"table\":\"ti\",\"column\":\"vcpwpgclrc\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"oxfrkenxpmyyefr\",\"tableName\":\"pdnqqskawaoqvmmb\",\"columnName\":\"qfr\",\"labelName\":\"lkzmegnitgvkxl\",\"labelId\":\"qdrfegcealzxwhc\",\"informationType\":\"symoyq\",\"informationTypeId\":\"wigdi\",\"isDisabled\":false,\"rank\":\"Critical\"},\"managedBy\":\"omfaj\",\"id\":\"wasqvdaeyyg\",\"name\":\"xakjsqzhzb\",\"type\":\"zkgimsid\"}},\"id\":\"asi\",\"name\":\"ddyvvjskgfmo\",\"type\":\"wa\"}]}")
             .toObject(SensitivityLabelUpdateList.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.SET, model.operations().get(0).op());
-        Assertions.assertEquals("jhzi", model.operations().get(0).schema());
-        Assertions.assertEquals("xgfpelolppv", model.operations().get(0).table());
-        Assertions.assertEquals("srp", model.operations().get(0).column());
-        Assertions.assertEquals("cstwity", model.operations().get(0).sensitivityLabel().labelName());
-        Assertions.assertEquals("evxccedcp", model.operations().get(0).sensitivityLabel().labelId());
-        Assertions.assertEquals("dyodnwzxltj", model.operations().get(0).sensitivityLabel().informationType());
-        Assertions.assertEquals("nhltiugcxn", model.operations().get(0).sensitivityLabel().informationTypeId());
+        Assertions.assertEquals("fvpgshoxgsg", model.operations().get(0).schema());
+        Assertions.assertEquals("p", model.operations().get(0).table());
+        Assertions.assertEquals("gzdjtxvzf", model.operations().get(0).column());
+        Assertions.assertEquals("zhyrmewipmve", model.operations().get(0).sensitivityLabel().labelName());
+        Assertions.assertEquals("xukuqgsj", model.operations().get(0).sensitivityLabel().labelId());
+        Assertions.assertEquals("undxgketw", model.operations().get(0).sensitivityLabel().informationType());
+        Assertions.assertEquals("hzjhf", model.operations().get(0).sensitivityLabel().informationTypeId());
         Assertions.assertEquals(SensitivityLabelRank.HIGH, model.operations().get(0).sensitivityLabel().rank());
     }
 
@@ -34,41 +34,32 @@ public final class SensitivityLabelUpdateListTests {
     public void testSerialize() throws Exception {
         SensitivityLabelUpdateList model = new SensitivityLabelUpdateList().withOperations(Arrays.asList(
             new SensitivityLabelUpdateInner().withOp(SensitivityLabelUpdateKind.SET)
-                .withSchema("jhzi")
-                .withTable("xgfpelolppv")
-                .withColumn("srp")
-                .withSensitivityLabel(new SensitivityLabelInner().withLabelName("cstwity")
-                    .withLabelId("evxccedcp")
-                    .withInformationType("dyodnwzxltj")
-                    .withInformationTypeId("nhltiugcxn")
+                .withSchema("fvpgshoxgsg")
+                .withTable("p")
+                .withColumn("gzdjtxvzf")
+                .withSensitivityLabel(new SensitivityLabelInner().withLabelName("zhyrmewipmve")
+                    .withLabelId("xukuqgsj")
+                    .withInformationType("undxgketw")
+                    .withInformationTypeId("hzjhf")
                     .withRank(SensitivityLabelRank.HIGH)),
             new SensitivityLabelUpdateInner().withOp(SensitivityLabelUpdateKind.SET)
-                .withSchema("kqnyh")
-                .withTable("b")
-                .withColumn("j")
-                .withSensitivityLabel(new SensitivityLabelInner().withLabelName("udurgkakmokz")
-                    .withLabelId("jk")
-                    .withInformationType("fhmouwq")
-                    .withInformationTypeId("zrfze")
-                    .withRank(SensitivityLabelRank.HIGH)),
-            new SensitivityLabelUpdateInner().withOp(SensitivityLabelUpdateKind.SET)
-                .withSchema("i")
-                .withTable("ib")
-                .withColumn("rcgp")
-                .withSensitivityLabel(new SensitivityLabelInner().withLabelName("kixrj")
-                    .withLabelId("irgzp")
-                    .withInformationType("lazszrn")
-                    .withInformationTypeId("iin")
+                .withSchema("ouwivkxoyzunbixx")
+                .withTable("ti")
+                .withColumn("vcpwpgclrc")
+                .withSensitivityLabel(new SensitivityLabelInner().withLabelName("lkzmegnitgvkxl")
+                    .withLabelId("qdrfegcealzxwhc")
+                    .withInformationType("symoyq")
+                    .withInformationTypeId("wigdi")
                     .withRank(SensitivityLabelRank.CRITICAL))));
         model = BinaryData.fromObject(model).toObject(SensitivityLabelUpdateList.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.SET, model.operations().get(0).op());
-        Assertions.assertEquals("jhzi", model.operations().get(0).schema());
-        Assertions.assertEquals("xgfpelolppv", model.operations().get(0).table());
-        Assertions.assertEquals("srp", model.operations().get(0).column());
-        Assertions.assertEquals("cstwity", model.operations().get(0).sensitivityLabel().labelName());
-        Assertions.assertEquals("evxccedcp", model.operations().get(0).sensitivityLabel().labelId());
-        Assertions.assertEquals("dyodnwzxltj", model.operations().get(0).sensitivityLabel().informationType());
-        Assertions.assertEquals("nhltiugcxn", model.operations().get(0).sensitivityLabel().informationTypeId());
+        Assertions.assertEquals("fvpgshoxgsg", model.operations().get(0).schema());
+        Assertions.assertEquals("p", model.operations().get(0).table());
+        Assertions.assertEquals("gzdjtxvzf", model.operations().get(0).column());
+        Assertions.assertEquals("zhyrmewipmve", model.operations().get(0).sensitivityLabel().labelName());
+        Assertions.assertEquals("xukuqgsj", model.operations().get(0).sensitivityLabel().labelId());
+        Assertions.assertEquals("undxgketw", model.operations().get(0).sensitivityLabel().informationType());
+        Assertions.assertEquals("hzjhf", model.operations().get(0).sensitivityLabel().informationTypeId());
         Assertions.assertEquals(SensitivityLabelRank.HIGH, model.operations().get(0).sensitivityLabel().rank());
     }
 }

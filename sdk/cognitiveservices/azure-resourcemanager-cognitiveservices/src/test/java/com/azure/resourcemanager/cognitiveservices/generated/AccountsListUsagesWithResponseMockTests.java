@@ -23,7 +23,7 @@ public final class AccountsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"pzlrphw\",\"value\":[{\"unit\":\"Percent\",\"name\":{\"value\":\"yuqdu\",\"localizedValue\":\"mnnrwr\"},\"quotaPeriod\":\"ork\",\"limit\":33.80598367891427,\"currentValue\":65.86009286032747,\"nextResetTime\":\"gdnhxmsiv\",\"status\":\"Unknown\"},{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"ggdufiqndieu\",\"localizedValue\":\"ofjchvcyyysf\"},\"quotaPeriod\":\"otcubi\",\"limit\":77.02580661377183,\"currentValue\":2.414000523273596,\"nextResetTime\":\"onmacjekniz\",\"status\":\"Included\"},{\"unit\":\"Seconds\",\"name\":{\"value\":\"pevf\",\"localizedValue\":\"b\"},\"quotaPeriod\":\"rilbywdx\",\"limit\":15.215514950847652,\"currentValue\":71.46991928606101,\"nextResetTime\":\"fscjfnynszquji\",\"status\":\"Blocked\"}]}";
+            = "{\"nextLink\":\"wvsgmwohqfzizvu\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"thnwpzte\",\"localizedValue\":\"vmribiat\"},\"quotaPeriod\":\"plucfotangcfhnyk\",\"limit\":34.811432195394524,\"currentValue\":74.0119738169162,\"nextResetTime\":\"wlmzqwmvtxnjmxmc\",\"status\":\"Included\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class AccountsListUsagesWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         UsageListResult response = manager.accounts()
-            .listUsagesWithResponse("xgibbda", "confozauors", "kokwbqplhlvnu", com.azure.core.util.Context.NONE)
+            .listUsagesWithResponse("bodthsqqgvri", "bakclacjfrnxous", "au", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pzlrphw", response.nextLink());
-        Assertions.assertEquals(UnitType.PERCENT, response.value().get(0).unit());
-        Assertions.assertEquals("yuqdu", response.value().get(0).name().value());
-        Assertions.assertEquals("mnnrwr", response.value().get(0).name().localizedValue());
-        Assertions.assertEquals("ork", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(33.80598367891427D, response.value().get(0).limit());
-        Assertions.assertEquals(65.86009286032747D, response.value().get(0).currentValue());
-        Assertions.assertEquals("gdnhxmsiv", response.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, response.value().get(0).status());
+        Assertions.assertEquals("wvsgmwohqfzizvu", response.nextLink());
+        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, response.value().get(0).unit());
+        Assertions.assertEquals("thnwpzte", response.value().get(0).name().value());
+        Assertions.assertEquals("vmribiat", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("plucfotangcfhnyk", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(34.811432195394524D, response.value().get(0).limit());
+        Assertions.assertEquals(74.0119738169162D, response.value().get(0).currentValue());
+        Assertions.assertEquals("wlmzqwmvtxnjmxmc", response.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, response.value().get(0).status());
     }
 }

@@ -5,47 +5,52 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.KeyVaultContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Properties of the Certificate contract. */
+/**
+ * Properties of the Certificate contract.
+ */
 @Fluent
-public final class CertificateContractProperties {
+public final class CertificateContractProperties implements JsonSerializable<CertificateContractProperties> {
     /*
      * Subject attribute of the certificate.
      */
-    @JsonProperty(value = "subject", required = true)
     private String subject;
 
     /*
      * Thumbprint of the certificate.
      */
-    @JsonProperty(value = "thumbprint", required = true)
     private String thumbprint;
 
     /*
      * Expiration date of the certificate. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
      * specified by the ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "expirationDate", required = true)
     private OffsetDateTime expirationDate;
 
     /*
      * KeyVault location details of the certificate.
      */
-    @JsonProperty(value = "keyVault")
     private KeyVaultContractProperties keyVault;
 
-    /** Creates an instance of CertificateContractProperties class. */
+    /**
+     * Creates an instance of CertificateContractProperties class.
+     */
     public CertificateContractProperties() {
     }
 
     /**
      * Get the subject property: Subject attribute of the certificate.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -54,7 +59,7 @@ public final class CertificateContractProperties {
 
     /**
      * Set the subject property: Subject attribute of the certificate.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the CertificateContractProperties object itself.
      */
@@ -65,7 +70,7 @@ public final class CertificateContractProperties {
 
     /**
      * Get the thumbprint property: Thumbprint of the certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -74,7 +79,7 @@ public final class CertificateContractProperties {
 
     /**
      * Set the thumbprint property: Thumbprint of the certificate.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateContractProperties object itself.
      */
@@ -86,7 +91,7 @@ public final class CertificateContractProperties {
     /**
      * Get the expirationDate property: Expiration date of the certificate. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -96,7 +101,7 @@ public final class CertificateContractProperties {
     /**
      * Set the expirationDate property: Expiration date of the certificate. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the CertificateContractProperties object itself.
      */
@@ -107,7 +112,7 @@ public final class CertificateContractProperties {
 
     /**
      * Get the keyVault property: KeyVault location details of the certificate.
-     *
+     * 
      * @return the keyVault value.
      */
     public KeyVaultContractProperties keyVault() {
@@ -116,7 +121,7 @@ public final class CertificateContractProperties {
 
     /**
      * Set the keyVault property: KeyVault location details of the certificate.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the CertificateContractProperties object itself.
      */
@@ -127,21 +132,24 @@ public final class CertificateContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subject() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subject in model CertificateContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subject in model CertificateContractProperties"));
         }
         if (thumbprint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property thumbprint in model CertificateContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property thumbprint in model CertificateContractProperties"));
         }
         if (expirationDate() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property expirationDate in model CertificateContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expirationDate in model CertificateContractProperties"));
         }
         if (keyVault() != null) {
             keyVault().validate();
@@ -149,4 +157,53 @@ public final class CertificateContractProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("expirationDate",
+            this.expirationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDate));
+        jsonWriter.writeJsonField("keyVault", this.keyVault);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateContractProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateContractProperties.
+     */
+    public static CertificateContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateContractProperties deserializedCertificateContractProperties
+                = new CertificateContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subject".equals(fieldName)) {
+                    deserializedCertificateContractProperties.subject = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateContractProperties.thumbprint = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedCertificateContractProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("keyVault".equals(fieldName)) {
+                    deserializedCertificateContractProperties.keyVault = KeyVaultContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateContractProperties;
+        });
+    }
 }

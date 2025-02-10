@@ -33,17 +33,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KeyValuesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KeyValuesClient.
+ */
 public final class KeyValuesClientImpl implements KeyValuesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KeyValuesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppConfigurationManagementClientImpl client;
 
     /**
      * Initializes an instance of KeyValuesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KeyValuesClientImpl(AppConfigurationManagementClientImpl client) {
@@ -93,17 +99,19 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the specified key-value along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KeyValueInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
@@ -135,18 +143,20 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the specified key-value along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KeyValueInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
@@ -177,12 +187,14 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -195,12 +207,14 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -214,12 +228,14 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -231,18 +247,19 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param keyValueParameters The parameters for creating a key-value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key-value resource along with all resource properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -278,19 +295,20 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param keyValueParameters The parameters for creating a key-value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key-value resource along with all resource properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -324,12 +342,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -344,12 +363,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param keyValueParameters The parameters for creating a key-value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -365,12 +385,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -384,12 +405,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -425,12 +447,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -466,12 +489,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -487,12 +511,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -510,12 +535,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -528,12 +554,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -547,12 +574,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -565,12 +593,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -585,12 +614,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -601,12 +631,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

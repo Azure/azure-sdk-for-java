@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The NotificationEndpoint model. */
+/**
+ * The NotificationEndpoint model.
+ */
 @Fluent
-public final class NotificationEndpoint {
+public final class NotificationEndpoint implements JsonSerializable<NotificationEndpoint> {
     /*
      * The notificationDestination property.
      */
-    @JsonProperty(value = "notificationDestination")
     private String notificationDestination;
 
     /*
      * The locations property.
      */
-    @JsonProperty(value = "locations")
     private List<String> locations;
 
-    /** Creates an instance of NotificationEndpoint class. */
+    /**
+     * Creates an instance of NotificationEndpoint class.
+     */
     public NotificationEndpoint() {
     }
 
     /**
      * Get the notificationDestination property: The notificationDestination property.
-     *
+     * 
      * @return the notificationDestination value.
      */
     public String notificationDestination() {
@@ -38,7 +44,7 @@ public final class NotificationEndpoint {
 
     /**
      * Set the notificationDestination property: The notificationDestination property.
-     *
+     * 
      * @param notificationDestination the notificationDestination value to set.
      * @return the NotificationEndpoint object itself.
      */
@@ -49,7 +55,7 @@ public final class NotificationEndpoint {
 
     /**
      * Get the locations property: The locations property.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -58,7 +64,7 @@ public final class NotificationEndpoint {
 
     /**
      * Set the locations property: The locations property.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the NotificationEndpoint object itself.
      */
@@ -69,9 +75,49 @@ public final class NotificationEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notificationDestination", this.notificationDestination);
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationEndpoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotificationEndpoint.
+     */
+    public static NotificationEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationEndpoint deserializedNotificationEndpoint = new NotificationEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notificationDestination".equals(fieldName)) {
+                    deserializedNotificationEndpoint.notificationDestination = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNotificationEndpoint.locations = locations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationEndpoint;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class QuotaRequestState extends ExpandableStringEnum<QuotaRequestSt
      * @param name a name to look for.
      * @return the corresponding QuotaRequestState.
      */
-    @JsonCreator
     public static QuotaRequestState fromString(String name) {
         return fromString(name, QuotaRequestState.class);
     }

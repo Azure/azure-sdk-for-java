@@ -326,7 +326,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     private static byte[] calculateDigest(SignatureAlgorithm algorithm, byte[] data) throws NoSuchAlgorithmException {
         HashAlgorithm hashAlgorithm = SignatureHashResolver.DEFAULT.get(algorithm);
-        MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());
+        MessageDigest md = MessageDigest.getInstance(Objects.toString(hashAlgorithm, null));
 
         md.update(data);
 

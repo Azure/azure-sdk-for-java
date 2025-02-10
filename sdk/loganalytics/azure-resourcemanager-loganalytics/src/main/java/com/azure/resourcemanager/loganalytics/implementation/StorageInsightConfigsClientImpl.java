@@ -33,17 +33,23 @@ import com.azure.resourcemanager.loganalytics.fluent.models.StorageInsightInner;
 import com.azure.resourcemanager.loganalytics.models.StorageInsightListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StorageInsightConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StorageInsightConfigsClient.
+ */
 public final class StorageInsightConfigsClientImpl implements StorageInsightConfigsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StorageInsightConfigsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationalInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of StorageInsightConfigsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StorageInsightConfigsClientImpl(OperationalInsightsManagementClientImpl client) {
@@ -108,7 +114,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Create or update a storage insight.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -117,7 +123,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the top level storage insight resource container along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageInsightInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -156,7 +162,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Create or update a storage insight.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -166,7 +172,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the top level storage insight resource container along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageInsightInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -204,7 +210,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Create or update a storage insight.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -223,7 +229,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Create or update a storage insight.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -243,7 +249,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Create or update a storage insight.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -262,7 +268,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Gets a storage insight instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -303,7 +309,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Gets a storage insight instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -344,7 +350,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Gets a storage insight instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -362,7 +368,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Gets a storage insight instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -380,7 +386,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Gets a storage insight instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -396,7 +402,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Deletes a storageInsightsConfigs resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -436,7 +442,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Deletes a storageInsightsConfigs resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -476,7 +482,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Deletes a storageInsightsConfigs resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -493,7 +499,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Deletes a storageInsightsConfigs resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -511,7 +517,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Deletes a storageInsightsConfigs resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -526,14 +532,14 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Lists the storage insight instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list storage insights operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -565,7 +571,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Lists the storage insight instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -573,7 +579,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list storage insights operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -605,7 +611,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Lists the storage insight instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -621,7 +627,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Lists the storage insight instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -639,7 +645,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Lists the storage insight instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -654,7 +660,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Lists the storage insight instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -671,14 +677,13 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list storage insights operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -699,15 +704,14 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list storage insights operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceNextSinglePageAsync(String nextLink,

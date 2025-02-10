@@ -24,7 +24,7 @@ public final class CheckSkuAvailabilityParameter implements JsonSerializable<Che
     private List<String> skus;
 
     /*
-     * The Kind of the resource.
+     * The kind (type) of cognitive service account.
      */
     private String kind;
 
@@ -60,7 +60,7 @@ public final class CheckSkuAvailabilityParameter implements JsonSerializable<Che
     }
 
     /**
-     * Get the kind property: The Kind of the resource.
+     * Get the kind property: The kind (type) of cognitive service account.
      * 
      * @return the kind value.
      */
@@ -69,7 +69,7 @@ public final class CheckSkuAvailabilityParameter implements JsonSerializable<Che
     }
 
     /**
-     * Set the kind property: The Kind of the resource.
+     * Set the kind property: The kind (type) of cognitive service account.
      * 
      * @param kind the kind value to set.
      * @return the CheckSkuAvailabilityParameter object itself.

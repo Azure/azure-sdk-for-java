@@ -7,24 +7,24 @@ package com.azure.resourcemanager.loadtesting.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequestPropertiesDimensions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class QuotaBucketRequestPropertiesDimensionsTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaBucketRequestPropertiesDimensions model
-            = BinaryData.fromString("{\"subscriptionId\":\"mdvpjhulsu\",\"location\":\"mkjozkrwf\"}")
+            = BinaryData.fromString("{\"subscriptionId\":\"ebvmgxsabkyqd\",\"location\":\"jitcjczdzevn\"}")
                 .toObject(QuotaBucketRequestPropertiesDimensions.class);
-        Assertions.assertEquals("mdvpjhulsu", model.subscriptionId());
-        Assertions.assertEquals("mkjozkrwf", model.location());
+        Assertions.assertEquals("ebvmgxsabkyqd", model.subscriptionId());
+        Assertions.assertEquals("jitcjczdzevn", model.location());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QuotaBucketRequestPropertiesDimensions model
-            = new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("mdvpjhulsu").withLocation("mkjozkrwf");
+            = new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("ebvmgxsabkyqd")
+                .withLocation("jitcjczdzevn");
         model = BinaryData.fromObject(model).toObject(QuotaBucketRequestPropertiesDimensions.class);
-        Assertions.assertEquals("mdvpjhulsu", model.subscriptionId());
-        Assertions.assertEquals("mkjozkrwf", model.location());
+        Assertions.assertEquals("ebvmgxsabkyqd", model.subscriptionId());
+        Assertions.assertEquals("jitcjczdzevn", model.location());
     }
 }

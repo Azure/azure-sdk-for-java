@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The commitment plan association.
@@ -26,6 +27,11 @@ public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
      * Resource Etag.
      */
     private String etag;
+
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
 
     /*
      * Properties of Cognitive Services account commitment plan association.
@@ -69,6 +75,26 @@ public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the CommitmentPlanAccountAssociationInner object itself.
+     */
+    public CommitmentPlanAccountAssociationInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
@@ -150,6 +176,7 @@ public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -181,6 +208,9 @@ public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
                     deserializedCommitmentPlanAccountAssociationInner.systemData = SystemData.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedCommitmentPlanAccountAssociationInner.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCommitmentPlanAccountAssociationInner.tags = tags;
                 } else if ("properties".equals(fieldName)) {
                     deserializedCommitmentPlanAccountAssociationInner.innerProperties
                         = CommitmentPlanAccountAssociationProperties.fromJson(reader);

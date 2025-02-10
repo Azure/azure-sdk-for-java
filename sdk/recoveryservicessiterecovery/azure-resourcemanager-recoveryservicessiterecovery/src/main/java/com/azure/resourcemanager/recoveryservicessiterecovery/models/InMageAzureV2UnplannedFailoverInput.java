@@ -5,34 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * InMageAzureV2 provider specific input for unplanned failover.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageAzureV2")
 @Fluent
 public final class InMageAzureV2UnplannedFailoverInput extends UnplannedFailoverProviderSpecificInput {
+    /*
+     * The class type.
+     */
+    private String instanceType = "InMageAzureV2";
+
     /*
      * The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point,
      * null should be passed.
      */
-    @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
      * A value indicating the inplace OS Upgrade version.
      */
-    @JsonProperty(value = "osUpgradeVersion")
     private String osUpgradeVersion;
 
     /**
      * Creates an instance of InMageAzureV2UnplannedFailoverInput class.
      */
     public InMageAzureV2UnplannedFailoverInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -84,6 +96,48 @@ public final class InMageAzureV2UnplannedFailoverInput extends UnplannedFailover
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("osUpgradeVersion", this.osUpgradeVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageAzureV2UnplannedFailoverInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageAzureV2UnplannedFailoverInput if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageAzureV2UnplannedFailoverInput.
+     */
+    public static InMageAzureV2UnplannedFailoverInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageAzureV2UnplannedFailoverInput deserializedInMageAzureV2UnplannedFailoverInput
+                = new InMageAzureV2UnplannedFailoverInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageAzureV2UnplannedFailoverInput.instanceType = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedInMageAzureV2UnplannedFailoverInput.recoveryPointId = reader.getString();
+                } else if ("osUpgradeVersion".equals(fieldName)) {
+                    deserializedInMageAzureV2UnplannedFailoverInput.osUpgradeVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageAzureV2UnplannedFailoverInput;
+        });
     }
 }

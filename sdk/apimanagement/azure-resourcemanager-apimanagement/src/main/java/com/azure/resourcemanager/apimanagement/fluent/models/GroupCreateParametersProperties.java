@@ -6,28 +6,31 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.GroupType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters supplied to the Create Group operation. */
+/**
+ * Parameters supplied to the Create Group operation.
+ */
 @Fluent
-public final class GroupCreateParametersProperties {
+public final class GroupCreateParametersProperties implements JsonSerializable<GroupCreateParametersProperties> {
     /*
      * Group name.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Group description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Group type.
      */
-    @JsonProperty(value = "type")
     private GroupType type;
 
     /*
@@ -35,16 +38,17 @@ public final class GroupCreateParametersProperties {
      * provider, e.g. for Azure Active Directory `aad://<tenant>.onmicrosoft.com/groups/<group object id>`; otherwise
      * the value is null.
      */
-    @JsonProperty(value = "externalId")
     private String externalId;
 
-    /** Creates an instance of GroupCreateParametersProperties class. */
+    /**
+     * Creates an instance of GroupCreateParametersProperties class.
+     */
     public GroupCreateParametersProperties() {
     }
 
     /**
      * Get the displayName property: Group name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -53,7 +57,7 @@ public final class GroupCreateParametersProperties {
 
     /**
      * Set the displayName property: Group name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the GroupCreateParametersProperties object itself.
      */
@@ -64,7 +68,7 @@ public final class GroupCreateParametersProperties {
 
     /**
      * Get the description property: Group description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -73,7 +77,7 @@ public final class GroupCreateParametersProperties {
 
     /**
      * Set the description property: Group description.
-     *
+     * 
      * @param description the description value to set.
      * @return the GroupCreateParametersProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class GroupCreateParametersProperties {
 
     /**
      * Get the type property: Group type.
-     *
+     * 
      * @return the type value.
      */
     public GroupType type() {
@@ -93,7 +97,7 @@ public final class GroupCreateParametersProperties {
 
     /**
      * Set the type property: Group type.
-     *
+     * 
      * @param type the type value to set.
      * @return the GroupCreateParametersProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class GroupCreateParametersProperties {
      * Get the externalId property: Identifier of the external groups, this property contains the id of the group from
      * the external identity provider, e.g. for Azure Active Directory
      * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
-     *
+     * 
      * @return the externalId value.
      */
     public String externalId() {
@@ -117,7 +121,7 @@ public final class GroupCreateParametersProperties {
      * Set the externalId property: Identifier of the external groups, this property contains the id of the group from
      * the external identity provider, e.g. for Azure Active Directory
      * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
-     *
+     * 
      * @param externalId the externalId value to set.
      * @return the GroupCreateParametersProperties object itself.
      */
@@ -128,15 +132,63 @@ public final class GroupCreateParametersProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property displayName in model GroupCreateParametersProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model GroupCreateParametersProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GroupCreateParametersProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("externalId", this.externalId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupCreateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupCreateParametersProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GroupCreateParametersProperties.
+     */
+    public static GroupCreateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupCreateParametersProperties deserializedGroupCreateParametersProperties
+                = new GroupCreateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedGroupCreateParametersProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedGroupCreateParametersProperties.description = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGroupCreateParametersProperties.type = GroupType.fromString(reader.getString());
+                } else if ("externalId".equals(fieldName)) {
+                    deserializedGroupCreateParametersProperties.externalId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupCreateParametersProperties;
+        });
+    }
 }

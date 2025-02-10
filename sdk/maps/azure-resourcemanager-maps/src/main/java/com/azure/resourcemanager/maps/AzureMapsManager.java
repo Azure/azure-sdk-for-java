@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -38,7 +38,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to AzureMapsManager. Azure Maps. */
+/**
+ * Entry point to AzureMapsManager.
+ * Azure Maps.
+ */
 public final class AzureMapsManager {
     private Accounts accounts;
 
@@ -60,7 +63,7 @@ public final class AzureMapsManager {
 
     /**
      * Creates an instance of AzureMaps service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the AzureMaps service API instance.
@@ -73,7 +76,7 @@ public final class AzureMapsManager {
 
     /**
      * Creates an instance of AzureMaps service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the AzureMaps service API instance.
@@ -86,14 +89,16 @@ public final class AzureMapsManager {
 
     /**
      * Gets a Configurable instance that can be used to create AzureMapsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new AzureMapsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -165,8 +170,8 @@ public final class AzureMapsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -208,7 +213,7 @@ public final class AzureMapsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.maps")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -241,7 +246,7 @@ public final class AzureMapsManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -256,7 +261,7 @@ public final class AzureMapsManager {
 
     /**
      * Gets the resource collection API of Accounts. It manages MapsAccount.
-     *
+     * 
      * @return Resource collection API of Accounts.
      */
     public Accounts accounts() {
@@ -268,7 +273,7 @@ public final class AzureMapsManager {
 
     /**
      * Gets the resource collection API of Maps.
-     *
+     * 
      * @return Resource collection API of Maps.
      */
     public Maps maps() {
@@ -280,7 +285,7 @@ public final class AzureMapsManager {
 
     /**
      * Gets the resource collection API of Creators. It manages Creator.
-     *
+     * 
      * @return Resource collection API of Creators.
      */
     public Creators creators() {
@@ -293,7 +298,7 @@ public final class AzureMapsManager {
     /**
      * Gets wrapped service client AzureMapsManagementClient providing direct access to the underlying auto-generated
      * API implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client AzureMapsManagementClient.
      */
     public AzureMapsManagementClient serviceClient() {

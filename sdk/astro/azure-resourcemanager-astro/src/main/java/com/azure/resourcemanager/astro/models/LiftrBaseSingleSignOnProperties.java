@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.astro.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties specific to Single Sign On Resource.
  */
 @Fluent
-public final class LiftrBaseSingleSignOnProperties {
+public final class LiftrBaseSingleSignOnProperties implements JsonSerializable<LiftrBaseSingleSignOnProperties> {
     /*
      * State of the Single Sign On for the organization
      */
-    @JsonProperty(value = "singleSignOnState")
     private SingleSignOnStates singleSignOnState;
 
     /*
      * AAD enterprise application Id used to setup SSO
      */
-    @JsonProperty(value = "enterpriseAppId")
     private String enterpriseAppId;
 
     /*
      * URL for SSO to be used by the partner to redirect the user to their system
      */
-    @JsonProperty(value = "singleSignOnUrl")
     private String singleSignOnUrl;
 
     /*
      * List of AAD domains fetched from Microsoft Graph for user.
      */
-    @JsonProperty(value = "aadDomains")
     private List<String> aadDomains;
 
     /*
      * Provisioning State of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /**
@@ -144,5 +143,57 @@ public final class LiftrBaseSingleSignOnProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("singleSignOnState",
+            this.singleSignOnState == null ? null : this.singleSignOnState.toString());
+        jsonWriter.writeStringField("enterpriseAppId", this.enterpriseAppId);
+        jsonWriter.writeStringField("singleSignOnUrl", this.singleSignOnUrl);
+        jsonWriter.writeArrayField("aadDomains", this.aadDomains, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiftrBaseSingleSignOnProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiftrBaseSingleSignOnProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LiftrBaseSingleSignOnProperties.
+     */
+    public static LiftrBaseSingleSignOnProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiftrBaseSingleSignOnProperties deserializedLiftrBaseSingleSignOnProperties
+                = new LiftrBaseSingleSignOnProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("singleSignOnState".equals(fieldName)) {
+                    deserializedLiftrBaseSingleSignOnProperties.singleSignOnState
+                        = SingleSignOnStates.fromString(reader.getString());
+                } else if ("enterpriseAppId".equals(fieldName)) {
+                    deserializedLiftrBaseSingleSignOnProperties.enterpriseAppId = reader.getString();
+                } else if ("singleSignOnUrl".equals(fieldName)) {
+                    deserializedLiftrBaseSingleSignOnProperties.singleSignOnUrl = reader.getString();
+                } else if ("aadDomains".equals(fieldName)) {
+                    List<String> aadDomains = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLiftrBaseSingleSignOnProperties.aadDomains = aadDomains;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLiftrBaseSingleSignOnProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiftrBaseSingleSignOnProperties;
+        });
     }
 }

@@ -5,57 +5,68 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * HyperV to AzStackHCI event model custom properties. This class provides provider specific details for events of type
- * DataContract.HealthEvents.HealthEventType.ProtectedItemHealth and
+ * HyperV to AzStackHCI event model custom properties. This class provides provider specific
+ * details for events of type DataContract.HealthEvents.HealthEventType.ProtectedItemHealth and
  * DataContract.HealthEvents.HealthEventType.AgentHealth.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVToAzStackHCI")
 @Immutable
 public final class HyperVToAzStackHciEventModelCustomProperties extends EventModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "HyperVToAzStackHCI";
+
+    /*
      * Gets or sets the friendly name of the source which has raised this health event.
      */
-    @JsonProperty(value = "eventSourceFriendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String eventSourceFriendlyName;
 
     /*
      * Gets or sets the protected item friendly name.
      */
-    @JsonProperty(value = "protectedItemFriendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String protectedItemFriendlyName;
 
     /*
      * Gets or sets the source appliance name.
      */
-    @JsonProperty(value = "sourceApplianceName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceApplianceName;
 
     /*
      * Gets or sets the source target name.
      */
-    @JsonProperty(value = "targetApplianceName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetApplianceName;
 
     /*
      * Gets or sets the server type.
      */
-    @JsonProperty(value = "serverType", access = JsonProperty.Access.WRITE_ONLY)
     private String serverType;
 
-    /** Creates an instance of HyperVToAzStackHciEventModelCustomProperties class. */
+    /**
+     * Creates an instance of HyperVToAzStackHciEventModelCustomProperties class.
+     */
     public HyperVToAzStackHciEventModelCustomProperties() {
+    }
+
+    /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
      * Get the eventSourceFriendlyName property: Gets or sets the friendly name of the source which has raised this
      * health event.
-     *
+     * 
      * @return the eventSourceFriendlyName value.
      */
     public String eventSourceFriendlyName() {
@@ -64,7 +75,7 @@ public final class HyperVToAzStackHciEventModelCustomProperties extends EventMod
 
     /**
      * Get the protectedItemFriendlyName property: Gets or sets the protected item friendly name.
-     *
+     * 
      * @return the protectedItemFriendlyName value.
      */
     public String protectedItemFriendlyName() {
@@ -73,7 +84,7 @@ public final class HyperVToAzStackHciEventModelCustomProperties extends EventMod
 
     /**
      * Get the sourceApplianceName property: Gets or sets the source appliance name.
-     *
+     * 
      * @return the sourceApplianceName value.
      */
     public String sourceApplianceName() {
@@ -82,7 +93,7 @@ public final class HyperVToAzStackHciEventModelCustomProperties extends EventMod
 
     /**
      * Get the targetApplianceName property: Gets or sets the source target name.
-     *
+     * 
      * @return the targetApplianceName value.
      */
     public String targetApplianceName() {
@@ -91,7 +102,7 @@ public final class HyperVToAzStackHciEventModelCustomProperties extends EventMod
 
     /**
      * Get the serverType property: Gets or sets the server type.
-     *
+     * 
      * @return the serverType value.
      */
     public String serverType() {
@@ -100,11 +111,59 @@ public final class HyperVToAzStackHciEventModelCustomProperties extends EventMod
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVToAzStackHciEventModelCustomProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVToAzStackHciEventModelCustomProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVToAzStackHciEventModelCustomProperties.
+     */
+    public static HyperVToAzStackHciEventModelCustomProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVToAzStackHciEventModelCustomProperties deserializedHyperVToAzStackHciEventModelCustomProperties
+                = new HyperVToAzStackHciEventModelCustomProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciEventModelCustomProperties.instanceType = reader.getString();
+                } else if ("eventSourceFriendlyName".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciEventModelCustomProperties.eventSourceFriendlyName
+                        = reader.getString();
+                } else if ("protectedItemFriendlyName".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciEventModelCustomProperties.protectedItemFriendlyName
+                        = reader.getString();
+                } else if ("sourceApplianceName".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciEventModelCustomProperties.sourceApplianceName = reader.getString();
+                } else if ("targetApplianceName".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciEventModelCustomProperties.targetApplianceName = reader.getString();
+                } else if ("serverType".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciEventModelCustomProperties.serverType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVToAzStackHciEventModelCustomProperties;
+        });
     }
 }

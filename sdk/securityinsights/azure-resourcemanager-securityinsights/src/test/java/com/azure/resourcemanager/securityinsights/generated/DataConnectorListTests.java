@@ -14,17 +14,17 @@ public final class DataConnectorListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataConnectorList model = BinaryData.fromString(
-            "{\"nextLink\":\"nlccrm\",\"value\":[{\"kind\":\"DataConnector\",\"etag\":\"upijubyqjfkakfq\",\"id\":\"kemyil\",\"name\":\"udxjascowv\",\"type\":\"djkpdxph\"},{\"kind\":\"DataConnector\",\"etag\":\"ksnmgzv\",\"id\":\"ij\",\"name\":\"kzuqnwsith\",\"type\":\"q\"},{\"kind\":\"DataConnector\",\"etag\":\"yahluqwqulsutr\",\"id\":\"hxykfhyqez\",\"name\":\"qqug\",\"type\":\"rftb\"}]}")
+            "{\"nextLink\":\"xlzevgbmqjqabcy\",\"value\":[{\"kind\":\"DataConnector\",\"etag\":\"vkwlzuvccfwnf\",\"id\":\"acfi\",\"name\":\"nlebxetqgtzxd\",\"type\":\"nqbqqwxr\"},{\"kind\":\"DataConnector\",\"etag\":\"eallnwsubisnj\",\"id\":\"pmng\",\"name\":\"zscxaqwo\",\"type\":\"chcbonqvpkvlrxnj\"},{\"kind\":\"DataConnector\",\"etag\":\"seiphe\",\"id\":\"lokeyy\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"}]}")
             .toObject(DataConnectorList.class);
-        Assertions.assertEquals("upijubyqjfkakfq", model.value().get(0).etag());
+        Assertions.assertEquals("vkwlzuvccfwnf", model.value().get(0).etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataConnectorList model
-            = new DataConnectorList().withValue(Arrays.asList(new DataConnectorInner().withEtag("upijubyqjfkakfq"),
-                new DataConnectorInner().withEtag("ksnmgzv"), new DataConnectorInner().withEtag("yahluqwqulsutr")));
+            = new DataConnectorList().withValue(Arrays.asList(new DataConnectorInner().withEtag("vkwlzuvccfwnf"),
+                new DataConnectorInner().withEtag("eallnwsubisnj"), new DataConnectorInner().withEtag("seiphe")));
         model = BinaryData.fromObject(model).toObject(DataConnectorList.class);
-        Assertions.assertEquals("upijubyqjfkakfq", model.value().get(0).etag());
+        Assertions.assertEquals("vkwlzuvccfwnf", model.value().get(0).etag());
     }
 }

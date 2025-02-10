@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArtifactSourceInner;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactSourceFragment;
 
-/** An instance of this class provides access to all the operations defined in ArtifactSourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ArtifactSourcesClient.
+ */
 public interface ArtifactSourcesClient {
     /**
      * List artifact sources in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface ArtifactSourcesClient {
 
     /**
      * List artifact sources in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=displayName)'.
@@ -48,7 +50,7 @@ public interface ArtifactSourcesClient {
 
     /**
      * Get artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the artifact source.
@@ -65,7 +67,7 @@ public interface ArtifactSourcesClient {
 
     /**
      * Get artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the artifact source.
@@ -79,7 +81,7 @@ public interface ArtifactSourcesClient {
 
     /**
      * Create or replace an existing artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the artifact source.
@@ -96,7 +98,7 @@ public interface ArtifactSourcesClient {
 
     /**
      * Create or replace an existing artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the artifact source.
@@ -112,7 +114,7 @@ public interface ArtifactSourcesClient {
 
     /**
      * Delete artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the artifact source.
@@ -127,7 +129,7 @@ public interface ArtifactSourcesClient {
 
     /**
      * Delete artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the artifact source.
@@ -140,7 +142,7 @@ public interface ArtifactSourcesClient {
 
     /**
      * Allows modifying tags of artifact sources. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the artifact source.
@@ -157,7 +159,7 @@ public interface ArtifactSourcesClient {
 
     /**
      * Allows modifying tags of artifact sources. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the artifact source.

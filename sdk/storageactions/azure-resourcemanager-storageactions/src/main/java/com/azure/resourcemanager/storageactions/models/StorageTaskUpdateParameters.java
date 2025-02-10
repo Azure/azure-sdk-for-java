@@ -5,34 +5,33 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Parameters of the storage task update request.
  */
 @Fluent
-public final class StorageTaskUpdateParameters {
+public final class StorageTaskUpdateParameters implements JsonSerializable<StorageTaskUpdateParameters> {
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
-     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and
-     * grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
+     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping
+     * this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a
+     * key no greater in length than 128 characters and a value no greater in length than 256 characters.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Properties of the storage task.
      */
-    @JsonProperty(value = "properties")
     private StorageTaskProperties properties;
 
     /**
@@ -64,8 +63,8 @@ public final class StorageTaskUpdateParameters {
     /**
      * Get the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
      * in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
-     * resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length
-     * than 256 characters.
+     * resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than
+     * 256 characters.
      * 
      * @return the tags value.
      */
@@ -76,8 +75,8 @@ public final class StorageTaskUpdateParameters {
     /**
      * Set the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
      * in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
-     * resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length
-     * than 256 characters.
+     * resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than
+     * 256 characters.
      * 
      * @param tags the tags value to set.
      * @return the StorageTaskUpdateParameters object itself.
@@ -119,5 +118,48 @@ public final class StorageTaskUpdateParameters {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskUpdateParameters.
+     */
+    public static StorageTaskUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskUpdateParameters deserializedStorageTaskUpdateParameters = new StorageTaskUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedStorageTaskUpdateParameters.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStorageTaskUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageTaskUpdateParameters.properties = StorageTaskProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskUpdateParameters;
+        });
     }
 }

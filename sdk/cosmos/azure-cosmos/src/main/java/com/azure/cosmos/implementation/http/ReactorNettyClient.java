@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.http;
 import com.azure.cosmos.implementation.Configs;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
@@ -17,6 +18,7 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.NettyOutbound;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.http.client.HttpClientState;
@@ -136,13 +138,39 @@ public class ReactorNettyClient implements HttpClient {
         this.httpClient =
             this.httpClient
                 .secure(sslContextSpec ->
-                    sslContextSpec.sslContext(configs.getSslContext(httpClientConfig.isServerCertValidationDisabled())))
+                    sslContextSpec.sslContext(
+                        configs.getSslContext(
+                            httpClientConfig.isServerCertValidationDisabled(),
+                            false)))
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis())
                 .httpResponseDecoder(httpResponseDecoderSpec ->
                     httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
                         .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
                         .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
                         .validateHeaders(true));
+
+        if (httpClientConfig.getHttp2Config().isEnabled()) {
+            this.httpClient = this.httpClient
+                .secure(sslContextSpec ->
+                    sslContextSpec.sslContext(
+                        configs.getSslContext(
+                            httpClientConfig.isServerCertValidationDisabled(),
+                            httpClientConfig.getHttp2Config().isEnabled()
+                        )))
+                .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
+                .doOnConnected((connection -> {
+                    // The response header clean up pipeline is being added due to an error getting when calling gateway:
+                    // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
+                    // validateHeaders(false) does not work for http2
+                    ChannelPipeline channelPipeline = connection.channel().pipeline();
+                    if (channelPipeline.get("reactor.left.httpCodec") != null) {
+                        channelPipeline.addAfter(
+                            "reactor.left.httpCodec",
+                            "customHeaderCleaner",
+                            new Http2ResponseHeaderCleanerHandler());
+                    }
+                }));
+        }
     }
 
     @Override

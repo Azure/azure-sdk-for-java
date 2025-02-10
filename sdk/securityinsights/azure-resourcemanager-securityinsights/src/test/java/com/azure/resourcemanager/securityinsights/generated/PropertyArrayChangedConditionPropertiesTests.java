@@ -15,9 +15,9 @@ public final class PropertyArrayChangedConditionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PropertyArrayChangedConditionProperties model = BinaryData.fromString(
-            "{\"conditionType\":\"PropertyArrayChanged\",\"conditionProperties\":{\"arrayType\":\"Tactics\",\"changeType\":\"Added\"}}")
+            "{\"conditionType\":\"PropertyArrayChanged\",\"conditionProperties\":{\"arrayType\":\"Labels\",\"changeType\":\"Added\"}}")
             .toObject(PropertyArrayChangedConditionProperties.class);
-        Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedArrayType.TACTICS,
+        Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedArrayType.LABELS,
             model.conditionProperties().arrayType());
         Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedChangeType.ADDED,
             model.conditionProperties().changeType());
@@ -27,10 +27,10 @@ public final class PropertyArrayChangedConditionPropertiesTests {
     public void testSerialize() throws Exception {
         PropertyArrayChangedConditionProperties model = new PropertyArrayChangedConditionProperties()
             .withConditionProperties(new AutomationRulePropertyArrayChangedValuesCondition()
-                .withArrayType(AutomationRulePropertyArrayChangedConditionSupportedArrayType.TACTICS)
+                .withArrayType(AutomationRulePropertyArrayChangedConditionSupportedArrayType.LABELS)
                 .withChangeType(AutomationRulePropertyArrayChangedConditionSupportedChangeType.ADDED));
         model = BinaryData.fromObject(model).toObject(PropertyArrayChangedConditionProperties.class);
-        Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedArrayType.TACTICS,
+        Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedArrayType.LABELS,
             model.conditionProperties().arrayType());
         Assertions.assertEquals(AutomationRulePropertyArrayChangedConditionSupportedChangeType.ADDED,
             model.conditionProperties().changeType());

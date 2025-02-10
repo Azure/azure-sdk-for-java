@@ -10,7 +10,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.BlobDataSourceProperties;
-import com.azure.resourcemanager.streamanalytics.models.BlobWriteMode;
 import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
 import java.io.IOException;
 import java.util.List;
@@ -24,11 +23,6 @@ public final class BlobOutputDataSourceProperties extends BlobDataSourceProperti
      * Blob path prefix.
      */
     private String blobPathPrefix;
-
-    /*
-     * Blob write mode.
-     */
-    private BlobWriteMode blobWriteMode;
 
     /**
      * Creates an instance of BlobOutputDataSourceProperties class.
@@ -53,26 +47,6 @@ public final class BlobOutputDataSourceProperties extends BlobDataSourceProperti
      */
     public BlobOutputDataSourceProperties withBlobPathPrefix(String blobPathPrefix) {
         this.blobPathPrefix = blobPathPrefix;
-        return this;
-    }
-
-    /**
-     * Get the blobWriteMode property: Blob write mode.
-     * 
-     * @return the blobWriteMode value.
-     */
-    public BlobWriteMode blobWriteMode() {
-        return this.blobWriteMode;
-    }
-
-    /**
-     * Set the blobWriteMode property: Blob write mode.
-     * 
-     * @param blobWriteMode the blobWriteMode value to set.
-     * @return the BlobOutputDataSourceProperties object itself.
-     */
-    public BlobOutputDataSourceProperties withBlobWriteMode(BlobWriteMode blobWriteMode) {
-        this.blobWriteMode = blobWriteMode;
         return this;
     }
 
@@ -157,7 +131,6 @@ public final class BlobOutputDataSourceProperties extends BlobDataSourceProperti
         jsonWriter.writeStringField("authenticationMode",
             authenticationMode() == null ? null : authenticationMode().toString());
         jsonWriter.writeStringField("blobPathPrefix", this.blobPathPrefix);
-        jsonWriter.writeStringField("blobWriteMode", this.blobWriteMode == null ? null : this.blobWriteMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -194,9 +167,6 @@ public final class BlobOutputDataSourceProperties extends BlobDataSourceProperti
                         .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
                 } else if ("blobPathPrefix".equals(fieldName)) {
                     deserializedBlobOutputDataSourceProperties.blobPathPrefix = reader.getString();
-                } else if ("blobWriteMode".equals(fieldName)) {
-                    deserializedBlobOutputDataSourceProperties.blobWriteMode
-                        = BlobWriteMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

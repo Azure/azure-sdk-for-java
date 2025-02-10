@@ -11,23 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class NameAvailabilityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameAvailabilityInner model
-            = BinaryData.fromString("{\"message\":\"yjr\",\"nameAvailable\":false,\"name\":\"aos\",\"type\":\"xc\"}")
-                .toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("yjr", model.message());
-        Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("aos", model.name());
-        Assertions.assertEquals("xc", model.type());
+        NameAvailabilityInner model = BinaryData
+            .fromString("{\"message\":\"sa\",\"nameAvailable\":true,\"name\":\"uo\",\"type\":\"skghsauuimj\"}")
+            .toObject(NameAvailabilityInner.class);
+        Assertions.assertEquals("sa", model.message());
+        Assertions.assertEquals(true, model.nameAvailable());
+        Assertions.assertEquals("uo", model.name());
+        Assertions.assertEquals("skghsauuimj", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NameAvailabilityInner model
-            = new NameAvailabilityInner().withMessage("yjr").withNameAvailable(false).withName("aos").withType("xc");
+        NameAvailabilityInner model = new NameAvailabilityInner().withMessage("sa")
+            .withNameAvailable(true)
+            .withName("uo")
+            .withType("skghsauuimj");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("yjr", model.message());
-        Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("aos", model.name());
-        Assertions.assertEquals("xc", model.type());
+        Assertions.assertEquals("sa", model.message());
+        Assertions.assertEquals(true, model.nameAvailable());
+        Assertions.assertEquals("uo", model.name());
+        Assertions.assertEquals("skghsauuimj", model.type());
     }
 }

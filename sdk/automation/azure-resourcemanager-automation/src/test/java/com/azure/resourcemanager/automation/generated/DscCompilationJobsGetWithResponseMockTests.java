@@ -23,7 +23,7 @@ public final class DscCompilationJobsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configuration\":{\"name\":\"hvfdqqj\"},\"startedBy\":\"rhwzdanojisg\",\"jobId\":\"f504e581-e521-4ace-9eb2-a93ec0905803\",\"creationTime\":\"2021-09-13T20:00:32Z\",\"provisioningState\":\"Suspended\",\"runOn\":\"tuz\",\"status\":\"Suspending\",\"statusDetails\":\"ibpvbkaehxsmzyg\",\"startTime\":\"2021-06-14T07:19:19Z\",\"endTime\":\"2021-10-06T00:03:02Z\",\"exception\":\"seivmakxhysow\",\"lastModifiedTime\":\"2021-06-07T14:14:17Z\",\"lastStatusModifiedTime\":\"2021-10-25T11:03:27Z\",\"parameters\":{\"tfjmskdchmaiub\":\"ect\",\"vgmfalkzazmgok\":\"vlzw\",\"zrthqet\":\"dgjqafkmkro\",\"iezeagm\":\"pqrtvaoznqni\"}},\"id\":\"eituugedhfpjs\",\"name\":\"lzmb\",\"type\":\"syjdeolctae\"}";
+            = "{\"properties\":{\"configuration\":{\"name\":\"hvfdqqj\"},\"startedBy\":\"rhwzdanojisg\",\"jobId\":\"6ef0c5fd-d57b-4be1-b5b2-cc56a804512b\",\"creationTime\":\"2021-09-13T20:00:32Z\",\"provisioningState\":\"Suspended\",\"runOn\":\"tuz\",\"status\":\"Suspending\",\"statusDetails\":\"ibpvbkaehxsmzyg\",\"startTime\":\"2021-06-14T07:19:19Z\",\"endTime\":\"2021-10-06T00:03:02Z\",\"exception\":\"seivmakxhysow\",\"lastModifiedTime\":\"2021-06-07T14:14:17Z\",\"lastStatusModifiedTime\":\"2021-10-25T11:03:27Z\",\"parameters\":{\"tfjmskdchmaiub\":\"ect\",\"vgmfalkzazmgok\":\"vlzw\",\"zrthqet\":\"dgjqafkmkro\",\"iezeagm\":\"pqrtvaoznqni\"}},\"id\":\"eituugedhfpjs\",\"name\":\"lzmb\",\"type\":\"syjdeolctae\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

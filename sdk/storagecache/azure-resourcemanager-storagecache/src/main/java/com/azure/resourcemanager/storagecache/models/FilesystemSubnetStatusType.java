@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class FilesystemSubnetStatusType extends ExpandableStringEnum<Files
      * @param name a name to look for.
      * @return the corresponding FilesystemSubnetStatusType.
      */
-    @JsonCreator
     public static FilesystemSubnetStatusType fromString(String name) {
         return fromString(name, FilesystemSubnetStatusType.class);
     }

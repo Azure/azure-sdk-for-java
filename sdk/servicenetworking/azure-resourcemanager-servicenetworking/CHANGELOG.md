@@ -1,14 +1,22 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0 (2025-02-06)
 
-### Features Added
+- Azure Resource Manager Traffic Controller client library for Java. This package contains Microsoft Azure SDK for Traffic Controller Management SDK. Traffic Controller Provider management API. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.FrontendListResult` was removed
 
-### Other Changes
+#### `models.OperationListResult` was removed
+
+#### `models.AssociationListResult` was removed
+
+#### `models.TrafficControllerListResult` was removed
+
+#### `models.ResourceId` was modified
+
+* `withId(java.lang.String)` was removed
 
 ## 1.1.0-beta.1 (2024-09-30)
 

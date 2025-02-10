@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details on principal, role name and crn pattern of a role binding.
  */
 @Fluent
-public final class RoleBindingRecord {
+public final class RoleBindingRecord implements JsonSerializable<RoleBindingRecord> {
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * Id of the role binding
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Metadata of the record
      */
-    @JsonProperty(value = "metadata")
     private MetadataEntity metadata;
 
     /*
      * The principal User or Group to bind the role to
      */
-    @JsonProperty(value = "principal")
     private String principal;
 
     /*
      * The name of the role to bind to the principal
      */
-    @JsonProperty(value = "role_name")
     private String roleName;
 
     /*
      * A CRN that specifies the scope and resource patterns necessary for the role to bind
      */
-    @JsonProperty(value = "crn_pattern")
     private String crnPattern;
 
     /**
@@ -155,8 +153,7 @@ public final class RoleBindingRecord {
     }
 
     /**
-     * Get the crnPattern property: A CRN that specifies the scope and resource patterns necessary for the role to
-     * bind.
+     * Get the crnPattern property: A CRN that specifies the scope and resource patterns necessary for the role to bind.
      * 
      * @return the crnPattern value.
      */
@@ -165,8 +162,7 @@ public final class RoleBindingRecord {
     }
 
     /**
-     * Set the crnPattern property: A CRN that specifies the scope and resource patterns necessary for the role to
-     * bind.
+     * Set the crnPattern property: A CRN that specifies the scope and resource patterns necessary for the role to bind.
      * 
      * @param crnPattern the crnPattern value to set.
      * @return the RoleBindingRecord object itself.
@@ -185,5 +181,56 @@ public final class RoleBindingRecord {
         if (metadata() != null) {
             metadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeStringField("principal", this.principal);
+        jsonWriter.writeStringField("role_name", this.roleName);
+        jsonWriter.writeStringField("crn_pattern", this.crnPattern);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleBindingRecord from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleBindingRecord if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleBindingRecord.
+     */
+    public static RoleBindingRecord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleBindingRecord deserializedRoleBindingRecord = new RoleBindingRecord();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedRoleBindingRecord.kind = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedRoleBindingRecord.id = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedRoleBindingRecord.metadata = MetadataEntity.fromJson(reader);
+                } else if ("principal".equals(fieldName)) {
+                    deserializedRoleBindingRecord.principal = reader.getString();
+                } else if ("role_name".equals(fieldName)) {
+                    deserializedRoleBindingRecord.roleName = reader.getString();
+                } else if ("crn_pattern".equals(fieldName)) {
+                    deserializedRoleBindingRecord.crnPattern = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleBindingRecord;
+        });
     }
 }

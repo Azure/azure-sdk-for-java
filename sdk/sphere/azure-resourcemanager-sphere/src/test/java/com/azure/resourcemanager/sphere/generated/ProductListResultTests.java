@@ -18,13 +18,17 @@ public final class ProductListResultTests {
             "{\"value\":[{\"properties\":{\"description\":\"qpuedckzywbiex\",\"provisioningState\":\"Provisioning\"},\"id\":\"ue\",\"name\":\"xibxujwbhqwalm\",\"type\":\"zyoxaepdkzjan\"}],\"nextLink\":\"xrhdwbavxbniwdjs\"}")
             .toObject(ProductListResult.class);
         Assertions.assertEquals("qpuedckzywbiex", model.value().get(0).properties().description());
+        Assertions.assertEquals("xrhdwbavxbniwdjs", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductListResult model = new ProductListResult().withValue(Arrays
-            .asList(new ProductInner().withProperties(new ProductProperties().withDescription("qpuedckzywbiex"))));
+        ProductListResult model = new ProductListResult()
+            .withValue(Arrays
+                .asList(new ProductInner().withProperties(new ProductProperties().withDescription("qpuedckzywbiex"))))
+            .withNextLink("xrhdwbavxbniwdjs");
         model = BinaryData.fromObject(model).toObject(ProductListResult.class);
         Assertions.assertEquals("qpuedckzywbiex", model.value().get(0).properties().description());
+        Assertions.assertEquals("xrhdwbavxbniwdjs", model.nextLink());
     }
 }

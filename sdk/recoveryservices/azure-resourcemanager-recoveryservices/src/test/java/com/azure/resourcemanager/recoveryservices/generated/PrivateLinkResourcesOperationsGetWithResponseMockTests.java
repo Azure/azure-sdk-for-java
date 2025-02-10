@@ -20,7 +20,7 @@ public final class PrivateLinkResourcesOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"oellwp\",\"requiredMembers\":[\"ygpfqb\"],\"requiredZoneNames\":[\"eopzfqrhhuaopp\",\"cq\",\"qxolzdahzx\",\"t\"]},\"id\":\"gbkdmoizpos\",\"name\":\"grcfb\",\"type\":\"rmfqjhhkxbpvj\"}";
+            = "{\"properties\":{\"groupId\":\"xznelixhnrztf\",\"requiredMembers\":[\"bnxknalaulppg\"],\"requiredZoneNames\":[\"pnapnyiropuh\",\"igvpgylg\",\"git\",\"medjvcslynqwwncw\"]},\"id\":\"hxg\",\"name\":\"rmgucnap\",\"type\":\"eoellwptfdygp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class PrivateLinkResourcesOperationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkResource response = manager.privateLinkResourcesOperations()
-            .getWithResponse("gylgqgitxmedjvcs", "ynqwwncwzzhxgk", "rmgucnap", com.azure.core.util.Context.NONE)
+            .getWithResponse("n", "ixisxyawjoy", "qcslyjpkiid", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

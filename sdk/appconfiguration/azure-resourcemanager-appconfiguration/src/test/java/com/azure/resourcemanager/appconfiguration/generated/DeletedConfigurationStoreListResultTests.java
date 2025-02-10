@@ -14,17 +14,17 @@ public final class DeletedConfigurationStoreListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedConfigurationStoreListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"de\",\"name\":\"jzicwifsjt\",\"type\":\"zfbishcbkhaj\",\"properties\":{\"configurationStoreId\":\"eamdp\",\"location\":\"g\",\"deletionDate\":\"2021-05-30T00:59:07Z\",\"scheduledPurgeDate\":\"2021-01-24T10:22:55Z\",\"tags\":{},\"purgeProtectionEnabled\":true}},{\"id\":\"pwhonowkg\",\"name\":\"wankixzbi\",\"type\":\"eputtmrywnuzoqf\",\"properties\":{\"configurationStoreId\":\"qzrnkcqvyxlwhz\",\"location\":\"icohoqqnwvl\",\"deletionDate\":\"2021-02-08T19:31:14Z\",\"scheduledPurgeDate\":\"2021-11-09T22:07:11Z\",\"tags\":{},\"purgeProtectionEnabled\":false}}],\"nextLink\":\"nmmqhgyxzkon\"}")
+            "{\"value\":[{\"id\":\"ndnhj\",\"name\":\"uwhvylwzbtdhxujz\",\"type\":\"mpowuwpr\",\"properties\":{\"configurationStoreId\":\"veual\",\"location\":\"j\",\"deletionDate\":\"2021-04-21T08:53:38Z\",\"scheduledPurgeDate\":\"2021-04-26T22:12:21Z\",\"tags\":{\"riplrbpbewtg\":\"bcswsrt\",\"c\":\"fgb\",\"gibtnm\":\"wxzvlvqhjkb\"},\"purgeProtectionEnabled\":true}}],\"nextLink\":\"wwaloayqcgwrt\"}")
             .toObject(DeletedConfigurationStoreListResult.class);
-        Assertions.assertEquals("nmmqhgyxzkon", model.nextLink());
+        Assertions.assertEquals("wwaloayqcgwrt", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeletedConfigurationStoreListResult model = new DeletedConfigurationStoreListResult()
-            .withValue(Arrays.asList(new DeletedConfigurationStoreInner(), new DeletedConfigurationStoreInner()))
-            .withNextLink("nmmqhgyxzkon");
+        DeletedConfigurationStoreListResult model
+            = new DeletedConfigurationStoreListResult().withValue(Arrays.asList(new DeletedConfigurationStoreInner()))
+                .withNextLink("wwaloayqcgwrt");
         model = BinaryData.fromObject(model).toObject(DeletedConfigurationStoreListResult.class);
-        Assertions.assertEquals("nmmqhgyxzkon", model.nextLink());
+        Assertions.assertEquals("wwaloayqcgwrt", model.nextLink());
     }
 }

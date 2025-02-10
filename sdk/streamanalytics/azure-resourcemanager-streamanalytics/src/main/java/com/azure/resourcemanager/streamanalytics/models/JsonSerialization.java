@@ -49,7 +49,7 @@ public final class JsonSerialization extends Serialization {
      * 
      * @return the innerProperties value.
      */
-    private JsonSerializationProperties innerProperties() {
+    JsonSerializationProperties innerProperties() {
         return this.innerProperties;
     }
 

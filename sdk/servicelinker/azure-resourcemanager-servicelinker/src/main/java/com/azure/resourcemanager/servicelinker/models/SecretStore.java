@@ -21,11 +21,6 @@ public final class SecretStore implements JsonSerializable<SecretStore> {
      */
     private String keyVaultId;
 
-    /*
-     * The key vault secret name to store secret, only valid when storing one secret
-     */
-    private String keyVaultSecretName;
-
     /**
      * Creates an instance of SecretStore class.
      */
@@ -53,28 +48,6 @@ public final class SecretStore implements JsonSerializable<SecretStore> {
     }
 
     /**
-     * Get the keyVaultSecretName property: The key vault secret name to store secret, only valid when storing one
-     * secret.
-     * 
-     * @return the keyVaultSecretName value.
-     */
-    public String keyVaultSecretName() {
-        return this.keyVaultSecretName;
-    }
-
-    /**
-     * Set the keyVaultSecretName property: The key vault secret name to store secret, only valid when storing one
-     * secret.
-     * 
-     * @param keyVaultSecretName the keyVaultSecretName value to set.
-     * @return the SecretStore object itself.
-     */
-    public SecretStore withKeyVaultSecretName(String keyVaultSecretName) {
-        this.keyVaultSecretName = keyVaultSecretName;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -89,7 +62,6 @@ public final class SecretStore implements JsonSerializable<SecretStore> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("keyVaultId", this.keyVaultId);
-        jsonWriter.writeStringField("keyVaultSecretName", this.keyVaultSecretName);
         return jsonWriter.writeEndObject();
     }
 
@@ -110,8 +82,6 @@ public final class SecretStore implements JsonSerializable<SecretStore> {
 
                 if ("keyVaultId".equals(fieldName)) {
                     deserializedSecretStore.keyVaultId = reader.getString();
-                } else if ("keyVaultSecretName".equals(fieldName)) {
-                    deserializedSecretStore.keyVaultSecretName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

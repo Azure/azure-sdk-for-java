@@ -7,11 +7,13 @@ package com.azure.resourcemanager.loganalytics.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SavedSearches. */
+/**
+ * Resource collection API of SavedSearches.
+ */
 public interface SavedSearches {
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -26,7 +28,7 @@ public interface SavedSearches {
 
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -38,7 +40,7 @@ public interface SavedSearches {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -53,7 +55,7 @@ public interface SavedSearches {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -66,7 +68,7 @@ public interface SavedSearches {
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -80,7 +82,7 @@ public interface SavedSearches {
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +94,7 @@ public interface SavedSearches {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface SavedSearches {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface SavedSearches {
 
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface SavedSearches {
 
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface SavedSearches {
 
     /**
      * Begins definition for a new SavedSearch resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SavedSearch definition.
      */

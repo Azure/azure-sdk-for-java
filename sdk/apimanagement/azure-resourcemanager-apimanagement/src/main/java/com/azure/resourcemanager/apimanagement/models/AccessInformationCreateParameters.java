@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationCreateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Tenant access information update parameters. */
+/**
+ * Tenant access information update parameters.
+ */
 @Fluent
-public final class AccessInformationCreateParameters {
+public final class AccessInformationCreateParameters implements JsonSerializable<AccessInformationCreateParameters> {
     /*
      * Tenant access information update parameter properties.
      */
-    @JsonProperty(value = "properties")
     private AccessInformationCreateParameterProperties innerProperties;
 
-    /** Creates an instance of AccessInformationCreateParameters class. */
+    /**
+     * Creates an instance of AccessInformationCreateParameters class.
+     */
     public AccessInformationCreateParameters() {
     }
 
     /**
      * Get the innerProperties property: Tenant access information update parameter properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccessInformationCreateParameterProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class AccessInformationCreateParameters {
 
     /**
      * Get the principalId property: Principal (User) Identifier.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -41,7 +48,7 @@ public final class AccessInformationCreateParameters {
 
     /**
      * Set the principalId property: Principal (User) Identifier.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the AccessInformationCreateParameters object itself.
      */
@@ -56,7 +63,7 @@ public final class AccessInformationCreateParameters {
     /**
      * Get the primaryKey property: Primary access key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -66,7 +73,7 @@ public final class AccessInformationCreateParameters {
     /**
      * Set the primaryKey property: Primary access key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the AccessInformationCreateParameters object itself.
      */
@@ -81,7 +88,7 @@ public final class AccessInformationCreateParameters {
     /**
      * Get the secondaryKey property: Secondary access key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -91,7 +98,7 @@ public final class AccessInformationCreateParameters {
     /**
      * Set the secondaryKey property: Secondary access key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the AccessInformationCreateParameters object itself.
      */
@@ -105,7 +112,7 @@ public final class AccessInformationCreateParameters {
 
     /**
      * Get the enabled property: Determines whether direct access is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -114,7 +121,7 @@ public final class AccessInformationCreateParameters {
 
     /**
      * Set the enabled property: Determines whether direct access is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AccessInformationCreateParameters object itself.
      */
@@ -128,12 +135,50 @@ public final class AccessInformationCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessInformationCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessInformationCreateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessInformationCreateParameters.
+     */
+    public static AccessInformationCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessInformationCreateParameters deserializedAccessInformationCreateParameters
+                = new AccessInformationCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAccessInformationCreateParameters.innerProperties
+                        = AccessInformationCreateParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessInformationCreateParameters;
+        });
     }
 }

@@ -21,31 +21,43 @@ import java.time.OffsetDateTime;
 public interface EventHubConsumerGroup extends NestedResource, HasManager<EventHubsManager>,
     Refreshable<EventHubConsumerGroup>, HasInnerModel<ConsumerGroupInner>, Updatable<EventHubConsumerGroup.Update> {
     /**
+     * Gets the resource group of the namespace where parent event hub resides.
+     *
      * @return the resource group of the namespace where parent event hub resides
      */
     String namespaceResourceGroupName();
 
     /**
+     * Gets the namespace name of parent event hub.
+     *
      * @return the namespace name of parent event hub
      */
     String namespaceName();
 
     /**
+     * Gets the name of the parent event hub.
+     *
      * @return the name of the parent event hub
      */
     String eventHubName();
 
     /**
+     * Gets creation time of the consumer group.
+     *
      * @return creation time of the consumer group
      */
     OffsetDateTime createdAt();
 
     /**
+     * Gets last modified time of the consumer group.
+     *
      * @return last modified time of the consumer group
      */
     OffsetDateTime updatedAt();
 
     /**
+     * Gets user metadata associated with the consumer group.
+     *
      * @return user metadata associated with the consumer group
      */
     String userMetadata();

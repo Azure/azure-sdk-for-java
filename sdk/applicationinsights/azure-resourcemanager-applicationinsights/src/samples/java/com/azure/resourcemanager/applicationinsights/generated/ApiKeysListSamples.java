@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-/** Samples for ApiKeys List. */
+/**
+ * Samples for ApiKeys List.
+ */
 public final class ApiKeysListSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysList.json
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysList.json
      */
     /**
      * Sample code: APIKeysList.
-     *
+     * 
      * @param manager Entry point to ApplicationInsightsManager.
      */
     public static void aPIKeysList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {

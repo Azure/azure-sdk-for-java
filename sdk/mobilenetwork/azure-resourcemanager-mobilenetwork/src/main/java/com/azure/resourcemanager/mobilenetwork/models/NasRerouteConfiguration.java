@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Configuration enabling NAS reroute.
  */
 @Fluent
-public final class NasRerouteConfiguration {
+public final class NasRerouteConfiguration implements JsonSerializable<NasRerouteConfiguration> {
     /*
      * The macro network's MME group ID. This is where unknown UEs are sent to via NAS reroute.
      */
-    @JsonProperty(value = "macroMmeGroupId", required = true)
     private int macroMmeGroupId;
 
     /**
@@ -52,5 +55,42 @@ public final class NasRerouteConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("macroMmeGroupId", this.macroMmeGroupId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NasRerouteConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NasRerouteConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NasRerouteConfiguration.
+     */
+    public static NasRerouteConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NasRerouteConfiguration deserializedNasRerouteConfiguration = new NasRerouteConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("macroMmeGroupId".equals(fieldName)) {
+                    deserializedNasRerouteConfiguration.macroMmeGroupId = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNasRerouteConfiguration;
+        });
     }
 }

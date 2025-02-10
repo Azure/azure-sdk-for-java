@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Compilation error when evaluating route. */
+/**
+ * Compilation error when evaluating route.
+ */
 @Fluent
-public final class RouteCompilationError {
+public final class RouteCompilationError implements JsonSerializable<RouteCompilationError> {
     /*
      * Route error message
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Severity of the route error
      */
-    @JsonProperty(value = "severity")
     private RouteErrorSeverity severity;
 
     /*
      * Location where the route error happened
      */
-    @JsonProperty(value = "location")
     private RouteErrorRange location;
 
-    /** Creates an instance of RouteCompilationError class. */
+    /**
+     * Creates an instance of RouteCompilationError class.
+     */
     public RouteCompilationError() {
     }
 
     /**
      * Get the message property: Route error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -43,7 +48,7 @@ public final class RouteCompilationError {
 
     /**
      * Set the message property: Route error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the RouteCompilationError object itself.
      */
@@ -54,7 +59,7 @@ public final class RouteCompilationError {
 
     /**
      * Get the severity property: Severity of the route error.
-     *
+     * 
      * @return the severity value.
      */
     public RouteErrorSeverity severity() {
@@ -63,7 +68,7 @@ public final class RouteCompilationError {
 
     /**
      * Set the severity property: Severity of the route error.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the RouteCompilationError object itself.
      */
@@ -74,7 +79,7 @@ public final class RouteCompilationError {
 
     /**
      * Get the location property: Location where the route error happened.
-     *
+     * 
      * @return the location value.
      */
     public RouteErrorRange location() {
@@ -83,7 +88,7 @@ public final class RouteCompilationError {
 
     /**
      * Set the location property: Location where the route error happened.
-     *
+     * 
      * @param location the location value to set.
      * @return the RouteCompilationError object itself.
      */
@@ -94,12 +99,54 @@ public final class RouteCompilationError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() != null) {
             location().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeJsonField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteCompilationError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteCompilationError if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteCompilationError.
+     */
+    public static RouteCompilationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteCompilationError deserializedRouteCompilationError = new RouteCompilationError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedRouteCompilationError.message = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedRouteCompilationError.severity = RouteErrorSeverity.fromString(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedRouteCompilationError.location = RouteErrorRange.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteCompilationError;
+        });
     }
 }

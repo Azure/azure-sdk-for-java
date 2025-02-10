@@ -21,7 +21,7 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
     /*
      * Type of integration runtime.
      */
-    private String type = "IntegrationRuntimeReference";
+    private final String type = "IntegrationRuntimeReference";
 
     /*
      * Reference integration runtime name.
@@ -46,17 +46,6 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Type of integration runtime.
-     * 
-     * @param type the type value to set.
-     * @return the IntegrationRuntimeReference object itself.
-     */
-    public IntegrationRuntimeReference withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

@@ -14,9 +14,9 @@ public final class CreateOrUpdateComputePolicyParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateOrUpdateComputePolicyParameters model = BinaryData.fromString(
-            "{\"properties\":{\"objectId\":\"b3529058-c095-4ed0-a814-8258ee1b4204\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":357365351,\"minPriorityPerJob\":1487439384}}")
+            "{\"properties\":{\"objectId\":\"a5294833-3657-46cb-a0f8-dd860c35e26a\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":357365351,\"minPriorityPerJob\":1487439384}}")
             .toObject(CreateOrUpdateComputePolicyParameters.class);
-        Assertions.assertEquals(UUID.fromString("b3529058-c095-4ed0-a814-8258ee1b4204"), model.objectId());
+        Assertions.assertEquals(UUID.fromString("a5294833-3657-46cb-a0f8-dd860c35e26a"), model.objectId());
         Assertions.assertEquals(AadObjectType.USER, model.objectType());
         Assertions.assertEquals(357365351, model.maxDegreeOfParallelismPerJob());
         Assertions.assertEquals(1487439384, model.minPriorityPerJob());
@@ -25,12 +25,12 @@ public final class CreateOrUpdateComputePolicyParametersTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateOrUpdateComputePolicyParameters model = new CreateOrUpdateComputePolicyParameters()
-            .withObjectId(UUID.fromString("b3529058-c095-4ed0-a814-8258ee1b4204"))
+            .withObjectId(UUID.fromString("a5294833-3657-46cb-a0f8-dd860c35e26a"))
             .withObjectType(AadObjectType.USER)
             .withMaxDegreeOfParallelismPerJob(357365351)
             .withMinPriorityPerJob(1487439384);
         model = BinaryData.fromObject(model).toObject(CreateOrUpdateComputePolicyParameters.class);
-        Assertions.assertEquals(UUID.fromString("b3529058-c095-4ed0-a814-8258ee1b4204"), model.objectId());
+        Assertions.assertEquals(UUID.fromString("a5294833-3657-46cb-a0f8-dd860c35e26a"), model.objectId());
         Assertions.assertEquals(AadObjectType.USER, model.objectType());
         Assertions.assertEquals(357365351, model.maxDegreeOfParallelismPerJob());
         Assertions.assertEquals(1487439384, model.minPriorityPerJob());

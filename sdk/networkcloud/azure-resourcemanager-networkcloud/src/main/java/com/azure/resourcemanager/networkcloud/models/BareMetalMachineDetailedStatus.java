@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The more detailed status of the bare metal machine. */
+/**
+ * The more detailed status of the bare metal machine.
+ */
 public final class BareMetalMachineDetailedStatus extends ExpandableStringEnum<BareMetalMachineDetailedStatus> {
-    /** Static value Preparing for BareMetalMachineDetailedStatus. */
+    /**
+     * Static value Preparing for BareMetalMachineDetailedStatus.
+     */
     public static final BareMetalMachineDetailedStatus PREPARING = fromString("Preparing");
 
-    /** Static value Error for BareMetalMachineDetailedStatus. */
+    /**
+     * Static value Error for BareMetalMachineDetailedStatus.
+     */
     public static final BareMetalMachineDetailedStatus ERROR = fromString("Error");
 
-    /** Static value Available for BareMetalMachineDetailedStatus. */
+    /**
+     * Static value Available for BareMetalMachineDetailedStatus.
+     */
     public static final BareMetalMachineDetailedStatus AVAILABLE = fromString("Available");
 
-    /** Static value Provisioning for BareMetalMachineDetailedStatus. */
+    /**
+     * Static value Provisioning for BareMetalMachineDetailedStatus.
+     */
     public static final BareMetalMachineDetailedStatus PROVISIONING = fromString("Provisioning");
 
-    /** Static value Provisioned for BareMetalMachineDetailedStatus. */
+    /**
+     * Static value Provisioned for BareMetalMachineDetailedStatus.
+     */
     public static final BareMetalMachineDetailedStatus PROVISIONED = fromString("Provisioned");
 
-    /** Static value Deprovisioning for BareMetalMachineDetailedStatus. */
+    /**
+     * Static value Deprovisioning for BareMetalMachineDetailedStatus.
+     */
     public static final BareMetalMachineDetailedStatus DEPROVISIONING = fromString("Deprovisioning");
 
     /**
      * Creates a new instance of BareMetalMachineDetailedStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class BareMetalMachineDetailedStatus extends ExpandableStringEnum<B
 
     /**
      * Creates or finds a BareMetalMachineDetailedStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BareMetalMachineDetailedStatus.
      */
-    @JsonCreator
     public static BareMetalMachineDetailedStatus fromString(String name) {
         return fromString(name, BareMetalMachineDetailedStatus.class);
     }
 
     /**
      * Gets known BareMetalMachineDetailedStatus values.
-     *
+     * 
      * @return known BareMetalMachineDetailedStatus values.
      */
     public static Collection<BareMetalMachineDetailedStatus> values() {

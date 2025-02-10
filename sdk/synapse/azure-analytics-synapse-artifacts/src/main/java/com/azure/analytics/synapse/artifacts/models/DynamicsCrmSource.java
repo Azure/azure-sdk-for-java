@@ -23,12 +23,14 @@ public final class DynamicsCrmSource extends CopySource {
     private String type = "DynamicsCrmSource";
 
     /*
-     * FetchXML is a proprietary query language that is used in Microsoft Dynamics CRM (online & on-premises). Type: string (or Expression with resultType string).
+     * FetchXML is a proprietary query language that is used in Microsoft Dynamics CRM (online & on-premises). Type:
+     * string (or Expression with resultType string).
      */
     private Object query;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     private Object additionalColumns;
 

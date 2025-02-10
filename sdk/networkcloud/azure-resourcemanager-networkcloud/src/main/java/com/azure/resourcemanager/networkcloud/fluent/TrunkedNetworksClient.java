@@ -11,16 +11,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.TrunkedNetworkInner;
 import com.azure.resourcemanager.networkcloud.models.TrunkedNetworkPatchParameters;
 
-/** An instance of this class provides access to all the operations defined in TrunkedNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TrunkedNetworksClient.
+ */
 public interface TrunkedNetworksClient {
     /**
      * List trunked networks in the subscription.
-     *
-     * <p>Get a list of trunked networks in the provided subscription.
-     *
+     * 
+     * Get a list of trunked networks in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trunked networks in the provided subscription as paginated response with {@link PagedIterable}.
@@ -30,9 +33,9 @@ public interface TrunkedNetworksClient {
 
     /**
      * List trunked networks in the subscription.
-     *
-     * <p>Get a list of trunked networks in the provided subscription.
-     *
+     * 
+     * Get a list of trunked networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,40 +47,40 @@ public interface TrunkedNetworksClient {
 
     /**
      * List trunked networks in the resource group.
-     *
-     * <p>Get a list of trunked networks in the provided resource group.
-     *
+     * 
+     * Get a list of trunked networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trunked networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of trunked networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TrunkedNetworkInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * List trunked networks in the resource group.
-     *
-     * <p>Get a list of trunked networks in the provided resource group.
-     *
+     * 
+     * Get a list of trunked networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trunked networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of trunked networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TrunkedNetworkInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Retrieve the trunked network.
-     *
-     * <p>Get properties of the provided trunked network.
-     *
+     * 
+     * Get properties of the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
@@ -92,9 +95,9 @@ public interface TrunkedNetworksClient {
 
     /**
      * Retrieve the trunked network.
-     *
-     * <p>Get properties of the provided trunked network.
-     *
+     * 
+     * Get properties of the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,9 +110,9 @@ public interface TrunkedNetworksClient {
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -117,7 +120,7 @@ public interface TrunkedNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of trunkedNetwork represents a network that utilizes multiple
-     *     isolation domains and specified VLANs to create a trunked network.
+     * isolation domains and specified VLANs to create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(String resourceGroupName,
@@ -125,9 +128,9 @@ public interface TrunkedNetworksClient {
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -136,7 +139,7 @@ public interface TrunkedNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of trunkedNetwork represents a network that utilizes multiple
-     *     isolation domains and specified VLANs to create a trunked network.
+     * isolation domains and specified VLANs to create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(String resourceGroupName,
@@ -144,9 +147,9 @@ public interface TrunkedNetworksClient {
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -154,7 +157,7 @@ public interface TrunkedNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network.
+     * create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TrunkedNetworkInner createOrUpdate(String resourceGroupName, String trunkedNetworkName,
@@ -162,9 +165,9 @@ public interface TrunkedNetworksClient {
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -173,7 +176,7 @@ public interface TrunkedNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network.
+     * create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TrunkedNetworkInner createOrUpdate(String resourceGroupName, String trunkedNetworkName,
@@ -181,70 +184,73 @@ public interface TrunkedNetworksClient {
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trunkedNetworkName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String trunkedNetworkName);
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trunkedNetworkName,
-        Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String trunkedNetworkName, Context context);
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String trunkedNetworkName);
+    OperationStatusResultInner delete(String resourceGroupName, String trunkedNetworkName);
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String trunkedNetworkName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String trunkedNetworkName, Context context);
 
     /**
      * Patch the trunked network.
-     *
-     * <p>Update tags associated with the provided trunked network.
-     *
+     * 
+     * Update tags associated with the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkUpdateParameters The request body.
@@ -253,7 +259,7 @@ public interface TrunkedNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network along with {@link Response}.
+     * create a trunked network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TrunkedNetworkInner> updateWithResponse(String resourceGroupName, String trunkedNetworkName,
@@ -261,16 +267,16 @@ public interface TrunkedNetworksClient {
 
     /**
      * Patch the trunked network.
-     *
-     * <p>Update tags associated with the provided trunked network.
-     *
+     * 
+     * Update tags associated with the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network.
+     * create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TrunkedNetworkInner update(String resourceGroupName, String trunkedNetworkName);

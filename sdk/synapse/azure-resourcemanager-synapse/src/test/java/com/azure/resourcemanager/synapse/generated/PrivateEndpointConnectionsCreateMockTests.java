@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"vstclg\"},\"privateLinkServiceConnectionState\":{\"status\":\"werfwx\",\"description\":\"mtbljjeh\",\"actionsRequired\":\"ifkwdvbtbrekqhs\"},\"provisioningState\":\"Succeeded\"},\"id\":\"qwdqi\",\"name\":\"mghg\",\"type\":\"nztxlujkh\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"hqxc\"},\"privateLinkServiceConnectionState\":{\"status\":\"tkbtnqlrngl\",\"description\":\"biipsnawwlqkznx\",\"actionsRequired\":\"llxricc\"},\"provisioningState\":\"Succeeded\"},\"id\":\"rwvaexhdc\",\"name\":\"rceqnkbrupob\",\"type\":\"hdmljz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class PrivateEndpointConnectionsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .define("quvjez")
-            .withExistingWorkspace("qicladv", "tdavuqmcbymsfobj")
+            .define("uyld")
+            .withExistingWorkspace("etaoutnpdc", "uhspfefyihduy")
             .withPrivateEndpoint(new PrivateEndpoint())
             .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus("mioyo").withDescription("l"))
+                new PrivateLinkServiceConnectionState().withStatus("x").withDescription("lf"))
             .create();
 
-        Assertions.assertEquals("werfwx", response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("mtbljjeh", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("tkbtnqlrngl", response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("biipsnawwlqkznx", response.privateLinkServiceConnectionState().description());
     }
 }

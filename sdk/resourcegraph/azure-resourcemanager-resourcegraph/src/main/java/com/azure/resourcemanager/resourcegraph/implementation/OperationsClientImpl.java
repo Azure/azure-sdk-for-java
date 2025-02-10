@@ -29,17 +29,23 @@ import com.azure.resourcemanager.resourcegraph.fluent.models.OperationInner;
 import com.azure.resourcemanager.resourcegraph.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceGraphClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(ResourceGraphClientImpl client) {
@@ -54,7 +60,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceGraphClientO")
-    private interface OperationsService {
+    public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ResourceGraph/operations")
         @ExpectedResponses({ 200 })
@@ -65,11 +71,11 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all of the available REST API operations.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Resource Graph operations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
@@ -88,13 +94,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all of the available REST API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Resource Graph operations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
@@ -111,7 +117,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all of the available REST API operations.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Resource Graph operations as paginated response with {@link PagedFlux}.
@@ -123,7 +129,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all of the available REST API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -137,7 +143,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all of the available REST API operations.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Resource Graph operations as paginated response with {@link PagedIterable}.
@@ -149,7 +155,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all of the available REST API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

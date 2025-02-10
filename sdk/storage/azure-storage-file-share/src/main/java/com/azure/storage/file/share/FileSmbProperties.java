@@ -15,7 +15,6 @@ import java.util.EnumSet;
  * A class used to represent the SMB properties of a file.
  */
 public class FileSmbProperties {
-
     private String filePermissionKey;
     private EnumSet<NtfsFileAttributes> ntfsFileAttributes;
     private OffsetDateTime fileCreationTime;
@@ -34,6 +33,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's permission key.
+     *
      * @return The file's permission key.
      */
     public String getFilePermissionKey() {
@@ -41,6 +42,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's {@link NtfsFileAttributes}.
+     *
      * @return The file's {@link NtfsFileAttributes}.
      */
     public EnumSet<NtfsFileAttributes> getNtfsFileAttributes() {
@@ -48,6 +51,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's creation time.
+     *
      * @return The file's creation time.
      */
     public OffsetDateTime getFileCreationTime() {
@@ -55,6 +60,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's last write time.
+     *
      * @return The file's last write time.
      */
     public OffsetDateTime getFileLastWriteTime() {
@@ -62,6 +69,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's change time.
+     *
      * @return The file's change time.
      */
     public OffsetDateTime getFileChangeTime() {
@@ -69,6 +78,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's ID.
+     *
      * @return The file's ID.
      */
     public String getFileId() {
@@ -76,6 +87,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's parent ID.
+     *
      * @return The file's parent ID.
      */
     public String getParentId() {
@@ -190,6 +203,33 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the string representation of the file's {@link NtfsFileAttributes} or null if no value is set.
+     *
+     * @return The value of the file's {@link NtfsFileAttributes}.
+     */
+    String getNtfsFileAttributesString() {
+        return ntfsFileAttributes == null ? null : NtfsFileAttributes.toString(ntfsFileAttributes);
+    }
+
+    /**
+     * Gets the string representation of the file's creation time or null if no value is set.
+     *
+     * @return The value of the file's creation time.
+     */
+    String getFileCreationTimeString() {
+        return fileCreationTime == null ? null : parseFileSMBDate(fileCreationTime);
+    }
+
+    /**
+     * Gets the string representation of the file's last write time or null if no value is set.
+     *
+     * @return The value of the file's last write time.
+     */
+    String getFileLastWriteTimeString() {
+        return fileLastWriteTime == null ? null : parseFileSMBDate(fileLastWriteTime);
+    }
+
+    /**
      * Given an <code>OffsetDateTime</code>, generates a {@code String} representing a date in the format needed for
      * file SMB properties
      *
@@ -220,11 +260,6 @@ public class FileSmbProperties {
     }
 
     static {
-        FileSmbPropertiesHelper.setAccessor(new FileSmbPropertiesHelper.FileSmbPropertiesAccessor() {
-            @Override
-            public FileSmbProperties create(HttpHeaders httpHeaders) {
-                return new FileSmbProperties(httpHeaders);
-            }
-        });
+        FileSmbPropertiesHelper.setAccessor(FileSmbProperties::new);
     }
 }

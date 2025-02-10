@@ -14,18 +14,18 @@ public final class IsolationDomainPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IsolationDomainProperties model = BinaryData
-            .fromString("{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"tgbqpfyrv\",\"tvijvwmrgcnz\"]}")
+            .fromString("{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"ysokliiksyb\",\"rrbnhylsbhujcydy\",\"l\"]}")
             .toObject(IsolationDomainProperties.class);
-        Assertions.assertEquals(Encapsulation.NONE, model.encapsulation());
-        Assertions.assertEquals("tgbqpfyrv", model.neighborGroupIds().get(0));
+        Assertions.assertEquals(Encapsulation.GRE, model.encapsulation());
+        Assertions.assertEquals("ysokliiksyb", model.neighborGroupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IsolationDomainProperties model = new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
-            .withNeighborGroupIds(Arrays.asList("tgbqpfyrv", "tvijvwmrgcnz"));
+        IsolationDomainProperties model = new IsolationDomainProperties().withEncapsulation(Encapsulation.GRE)
+            .withNeighborGroupIds(Arrays.asList("ysokliiksyb", "rrbnhylsbhujcydy", "l"));
         model = BinaryData.fromObject(model).toObject(IsolationDomainProperties.class);
-        Assertions.assertEquals(Encapsulation.NONE, model.encapsulation());
-        Assertions.assertEquals("tgbqpfyrv", model.neighborGroupIds().get(0));
+        Assertions.assertEquals(Encapsulation.GRE, model.encapsulation());
+        Assertions.assertEquals("ysokliiksyb", model.neighborGroupIds().get(0));
     }
 }

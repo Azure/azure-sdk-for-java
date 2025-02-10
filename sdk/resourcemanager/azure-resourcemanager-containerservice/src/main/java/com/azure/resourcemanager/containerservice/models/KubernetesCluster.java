@@ -27,91 +27,190 @@ public interface KubernetesCluster
     extends GroupableResource<ContainerServiceManager, ManagedClusterInner>, Refreshable<KubernetesCluster>,
     Updatable<KubernetesCluster.Update>, SupportsListingPrivateLinkResource, SupportsListingPrivateEndpointConnection {
 
-    /** @return the provisioning state of the Kubernetes cluster */
+    /**
+     * Gets the provisioning state of the Kubernetes cluster.
+     *
+     * @return the provisioning state of the Kubernetes cluster
+     */
     String provisioningState();
 
-    /** @return the DNS prefix which was specified at creation time */
+    /**
+     * Gets the DNS prefix which was specified at creation time.
+     *
+     * @return the DNS prefix which was specified at creation time
+     */
     String dnsPrefix();
 
-    /** @return the FQDN for the master pool */
+    /**
+     * Gets the FQDN for the master pool.
+     *
+     * @return the FQDN for the master pool
+     */
     String fqdn();
 
-    /** @return the Kubernetes version */
+    /**
+     * Gets the Kubernetes version.
+     *
+     * @return the Kubernetes version
+     */
     String version();
 
-    /** @return the Kubernetes configuration file content with administrative privileges to the cluster */
+    /**
+     * Gets the Kubernetes configuration file content with administrative privileges to the cluster.
+     *
+     * @return the Kubernetes configuration file content with administrative privileges to the cluster
+     */
     byte[] adminKubeConfigContent();
 
-    /** @return the Kubernetes configuration file content with user-level privileges to the cluster */
+    /**
+     * Gets the Kubernetes configuration file content with user-level privileges to the cluster.
+     *
+     * @return the Kubernetes configuration file content with user-level privileges to the cluster
+     */
     byte[] userKubeConfigContent();
 
     /**
+     * Gets the Kubernetes configuration file content with user-level privileges to the cluster.
+     *
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
      * @return the Kubernetes configuration file content with user-level privileges to the cluster
      */
     byte[] userKubeConfigContent(Format format);
 
-    /** @return the Kubernetes credentials with administrative privileges to the cluster */
+    /**
+     * Gets the Kubernetes credentials with administrative privileges to the cluster.
+     *
+     * @return the Kubernetes credentials with administrative privileges to the cluster
+     */
     List<CredentialResult> adminKubeConfigs();
 
-    /** @return the Kubernetes credentials with user-level privileges to the cluster */
+    /**
+     * Gets the Kubernetes credentials with user-level privileges to the cluster.
+     *
+     * @return the Kubernetes credentials with user-level privileges to the cluster
+     */
     List<CredentialResult> userKubeConfigs();
 
     /**
+     * Gets the Kubernetes credentials with user-level privileges to the cluster.
+     *
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
      * @return the Kubernetes credentials with user-level privileges to the cluster
      */
     List<CredentialResult> userKubeConfigs(Format format);
 
-    /** @return the service principal client ID */
+    /**
+     * Gets the service principal client ID.
+     *
+     * @return the service principal client ID
+     */
     String servicePrincipalClientId();
 
-    /** @return the service principal secret */
+    /**
+     * Gets the service principal secret.
+     *
+     * @return the service principal secret
+     */
     String servicePrincipalSecret();
 
-    /** @return the Linux root username */
+    /**
+     * Gets the Linux root username.
+     *
+     * @return the Linux root username
+     */
     String linuxRootUsername();
 
-    /** @return the Linux SSH key */
+    /**
+     * Gets the Linux SSH key.
+     *
+     * @return the Linux SSH key
+     */
     String sshKey();
 
-    /** @return the agent pools in the Kubernetes cluster */
+    /**
+     * Gets the agent pools in the Kubernetes cluster.
+     *
+     * @return the agent pools in the Kubernetes cluster
+     */
     Map<String, KubernetesClusterAgentPool> agentPools();
 
-    /** @return the network profile settings for the cluster */
+    /**
+     * Gets the network profile settings for the cluster.
+     *
+     * @return the network profile settings for the cluster
+     */
     ContainerServiceNetworkProfile networkProfile();
 
-    /** @return the cluster's add-on's profiles */
+    /**
+     * Gets the cluster's add-on's profiles.
+     *
+     * @return the cluster's add-on's profiles
+     */
     Map<String, ManagedClusterAddonProfile> addonProfiles();
 
-    /** @return the name of the resource group containing agent pool nodes */
+    /**
+     * Gets the name of the resource group containing agent pool nodes.
+     *
+     * @return the name of the resource group containing agent pool nodes
+     */
     String nodeResourceGroup();
 
-    /** @return true if Kubernetes Role-Based Access Control is enabled */
+    /**
+     * Checks whether Kubernetes Role-Based Access Control is enabled.
+     *
+     * @return true if Kubernetes Role-Based Access Control is enabled
+     */
     boolean enableRBAC();
 
-    /** @return the power state */
+    /**
+     * Gets the power state.
+     *
+     * @return the power state
+     */
     PowerState powerState();
 
-    /** @return the SKU of a Managed Cluster */
+    /**
+     * Gets the SKU of a Managed Cluster.
+     *
+     * @return the SKU of a Managed Cluster
+     */
     ManagedClusterSku sku();
 
     /**
+     * Gets the System Assigned Managed Service Identity specific Active Directory service principal ID
+     *     assigned to the Kubernetes cluster.
+     *
      * @return the System Assigned Managed Service Identity specific Active Directory service principal ID
      *     assigned to the Kubernetes cluster.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return the IDs (object IDs) of the Azure AD groups as the admin group of the cluster. */
+    /**
+     * Gets the IDs (object IDs) of the Azure AD groups as the admin group of the cluster.
+     *
+     * @return the IDs (object IDs) of the Azure AD groups as the admin group of the cluster.
+     */
     List<String> azureActiveDirectoryGroupIds();
 
-    /** @return whether local accounts is enabled. */
+    /**
+     * Checks whether local accounts is enabled.
+     *
+     * @return whether local accounts is enabled.
+     */
     boolean isLocalAccountsEnabled();
 
-    /** @return whether Azure Role-Based Access Control for Kubernetes authorization is enabled. */
+    /**
+     * Checks whether Azure Role-Based Access Control for Kubernetes authorization is enabled.
+     *
+     * @return whether Azure Role-Based Access Control for Kubernetes authorization is enabled.
+     */
     boolean isAzureRbacEnabled();
 
-    /** @return resource ID of the disk encryption set. */
+    /**
+     * Gets resource ID of the disk encryption set.
+     *
+     * @return resource ID of the disk encryption set.
+     */
     String diskEncryptionSetId();
 
     /**
@@ -122,7 +221,7 @@ public interface KubernetesCluster
     String agentPoolResourceGroup();
 
     /**
-     * Whether the kubernetes cluster can be accessed from public network.
+     * Checks whether the kubernetes cluster can be accessed from public network.
      *
      * @return whether the kubernetes cluster can be accessed from public network.
      */

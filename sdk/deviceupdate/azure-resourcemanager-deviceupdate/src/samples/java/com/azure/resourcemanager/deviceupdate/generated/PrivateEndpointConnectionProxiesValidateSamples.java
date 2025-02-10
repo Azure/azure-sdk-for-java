@@ -26,18 +26,21 @@ public final class PrivateEndpointConnectionProxiesValidateSamples {
      */
     public static void
         privateEndpointConnectionProxyValidate(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().validateWithResponse("test-rg", "contoso", "peexample01",
-            new PrivateEndpointConnectionProxyInner().withRemotePrivateEndpoint(new RemotePrivateEndpoint().withId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}")
-                .withLocation("westus2").withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000")
-                .withImmutableResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
-                .withManualPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
-                    .withName("{privateEndpointConnectionProxyId}").withGroupIds(Arrays.asList("DeviceUpdate"))
-                    .withRequestMessage("Please approve my connection, thanks.")))
-                .withPrivateLinkServiceProxies(Arrays.asList(new PrivateLinkServiceProxy().withId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}/privateLinkServiceProxies/{privateEndpointConnectionProxyId}")
-                    .withGroupConnectivityInformation(Arrays.asList())))),
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionProxies()
+            .validateWithResponse("test-rg", "contoso", "peexample01",
+                new PrivateEndpointConnectionProxyInner().withRemotePrivateEndpoint(new RemotePrivateEndpoint().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}")
+                    .withLocation("westus2")
+                    .withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000")
+                    .withImmutableResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
+                    .withManualPrivateLinkServiceConnections(
+                        Arrays.asList(new PrivateLinkServiceConnection().withName("{privateEndpointConnectionProxyId}")
+                            .withGroupIds(Arrays.asList("DeviceUpdate"))
+                            .withRequestMessage("Please approve my connection, thanks.")))
+                    .withPrivateLinkServiceProxies(Arrays.asList(new PrivateLinkServiceProxy().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}/privateLinkServiceProxies/{privateEndpointConnectionProxyId}")
+                        .withGroupConnectivityInformation(Arrays.asList())))),
+                com.azure.core.util.Context.NONE);
     }
 }

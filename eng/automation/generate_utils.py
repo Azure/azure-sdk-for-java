@@ -20,6 +20,7 @@ from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
+from utils import set_or_default_version
 
 os.chdir(pwd)
 
@@ -333,6 +334,8 @@ def generate_typespec_project(
     repo_url: str = "",
     remove_before_regen: bool = False,
     group_id: str = None,
+    version: str = None,
+    **kwargs,
 ):
 
     if not tsp_project:
@@ -389,9 +392,7 @@ def generate_typespec_project(
             logging.info("SDK folder: " + sdk_folder)
             if sdk_folder:
                 # parse service and module
-                match = re.match(r"sdk[\\/](.*)[\\/](.*)", sdk_folder)
-                service = match.group(1)
-                module = match.group(2)
+                module, service = parse_service_module(sdk_folder)
                 # check require_sdk_integration
                 cmd = ["git", "add", "."]
                 check_call(cmd, sdk_root)
@@ -413,13 +414,33 @@ def generate_typespec_project(
                     # clear existing generated source code, and regenerate
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
+                    _, current_version = set_or_default_version(sdk_root, group_id, module, version=version)
+                    tsp_cmd.append("--emitter-options")
+                    tsp_cmd.append(f'package-version={current_version}')
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True
     except subprocess.CalledProcessError as error:
         logging.error(f"[GENERATE] Code generation failed. tsp-client init fails: {error}")
+        try:
+            sdk_folder = find_sdk_folder(sdk_root)
+            logging.info("SDK folder: " + sdk_folder)
+            if sdk_folder:
+                # parse service and module
+                module, service = parse_service_module(sdk_folder)
+            else:
+                logging.info(f"[GENERATE] Code generation failed. No sdk folder found.")
+        except Exception as e:
+            logging.error(f"[GENERATE] Code generation failed. Finding sdk folder fails: {e}")
 
     return succeeded, require_sdk_integration, sdk_folder, service, module
+
+
+def parse_service_module(sdk_folder: str) -> Tuple:
+    match = re.match(r"sdk[\\/](.*)[\\/](.*)", sdk_folder)
+    service = match.group(1)
+    module = match.group(2)
+    return module, service
 
 
 def check_call(cmd: List[str], work_dir: str, shell: bool = False):

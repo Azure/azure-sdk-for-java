@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StorageAppliancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StorageAppliancesClient.
+ */
 public final class StorageAppliancesClientImpl implements StorageAppliancesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StorageAppliancesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of StorageAppliancesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StorageAppliancesClientImpl(NetworkCloudImpl client) {
@@ -130,7 +136,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/disableRemoteVendorManagement")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagement(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -140,7 +146,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/enableRemoteVendorManagement")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagement(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -168,13 +174,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the subscription.
-     *
-     * <p>Get a list of storage appliances in the provided subscription.
-     *
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of storage appliances in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listSinglePageAsync() {
@@ -197,15 +203,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the subscription.
-     *
-     * <p>Get a list of storage appliances in the provided subscription.
-     *
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of storage appliances in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listSinglePageAsync(Context context) {
@@ -228,9 +234,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the subscription.
-     *
-     * <p>Get a list of storage appliances in the provided subscription.
-     *
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of storage appliances in the provided subscription as paginated response with {@link PagedFlux}.
@@ -243,9 +249,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the subscription.
-     *
-     * <p>Get a list of storage appliances in the provided subscription.
-     *
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -260,13 +266,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the subscription.
-     *
-     * <p>Get a list of storage appliances in the provided subscription.
-     *
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of storage appliances in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> list() {
@@ -275,15 +281,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the subscription.
-     *
-     * <p>Get a list of storage appliances in the provided subscription.
-     *
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of storage appliances in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> list(Context context) {
@@ -292,15 +298,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the resource group.
-     *
-     * <p>Get a list of storage appliances in the provided resource group.
-     *
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of storage appliances in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -327,16 +333,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the resource group.
-     *
-     * <p>Get a list of storage appliances in the provided resource group.
-     *
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of storage appliances in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -364,9 +370,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the resource group.
-     *
-     * <p>Get a list of storage appliances in the provided resource group.
-     *
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -381,9 +387,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the resource group.
-     *
-     * <p>Get a list of storage appliances in the provided resource group.
-     *
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -399,15 +405,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the resource group.
-     *
-     * <p>Get a list of storage appliances in the provided resource group.
-     *
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of storage appliances in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName) {
@@ -416,16 +422,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * List storage appliances in the resource group.
-     *
-     * <p>Get a list of storage appliances in the provided resource group.
-     *
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of storage appliances in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -434,16 +440,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Retrieve the storage appliance.
-     *
-     * <p>Get properties of the provided storage appliance.
-     *
+     * 
+     * Get properties of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided storage appliance along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageApplianceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -473,9 +479,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Retrieve the storage appliance.
-     *
-     * <p>Get properties of the provided storage appliance.
-     *
+     * 
+     * Get properties of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
@@ -483,7 +489,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided storage appliance along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageApplianceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -512,9 +518,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Retrieve the storage appliance.
-     *
-     * <p>Get properties of the provided storage appliance.
-     *
+     * 
+     * Get properties of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -530,9 +536,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Retrieve the storage appliance.
-     *
-     * <p>Get properties of the provided storage appliance.
-     *
+     * 
+     * Get properties of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
@@ -549,9 +555,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Retrieve the storage appliance.
-     *
-     * <p>Get properties of the provided storage appliance.
-     *
+     * 
+     * Get properties of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -566,10 +572,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -577,7 +583,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -614,10 +620,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -626,7 +632,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -662,10 +668,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -673,7 +679,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of storageAppliance represents on-premises Network Cloud storage
-     *     appliance.
+     * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdateAsync(
@@ -687,10 +693,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -699,7 +705,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of storageAppliance represents on-premises Network Cloud storage
-     *     appliance.
+     * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdateAsync(
@@ -714,10 +720,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -725,7 +731,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
-     *     appliance.
+     * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
@@ -736,10 +742,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -748,7 +754,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
-     *     appliance.
+     * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
@@ -761,10 +767,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -772,7 +778,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageAppliance represents on-premises Network Cloud storage appliance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageApplianceInner> createOrUpdateAsync(String resourceGroupName, String storageApplianceName,
@@ -783,10 +789,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -795,7 +801,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageAppliance represents on-premises Network Cloud storage appliance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageApplianceInner> createOrUpdateAsync(String resourceGroupName, String storageApplianceName,
@@ -807,10 +813,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -827,10 +833,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Create or update the storage appliance.
-     *
-     * <p>Create a new storage appliance or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new storage appliance or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
@@ -849,16 +855,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -888,17 +895,18 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -927,166 +935,172 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageApplianceName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String storageApplianceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, storageApplianceName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageApplianceName,
-        Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String storageApplianceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, storageApplianceName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String storageApplianceName) {
         return this.beginDeleteAsync(resourceGroupName, storageApplianceName).getSyncPoller();
     }
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName,
-        Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String storageApplianceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, storageApplianceName, context).getSyncPoller();
     }
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String storageApplianceName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String storageApplianceName) {
         return beginDeleteAsync(resourceGroupName, storageApplianceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String storageApplianceName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String storageApplianceName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, storageApplianceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String storageApplianceName) {
-        deleteAsync(resourceGroupName, storageApplianceName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String storageApplianceName) {
+        return deleteAsync(resourceGroupName, storageApplianceName).block();
     }
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String storageApplianceName, Context context) {
-        deleteAsync(resourceGroupName, storageApplianceName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String storageApplianceName, Context context) {
+        return deleteAsync(resourceGroupName, storageApplianceName, context).block();
     }
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceUpdateParameters The request body.
@@ -1094,7 +1108,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1128,10 +1142,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceUpdateParameters The request body.
@@ -1140,7 +1154,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1173,10 +1187,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceUpdateParameters The request body.
@@ -1184,7 +1198,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of storageAppliance represents on-premises Network Cloud storage
-     *     appliance.
+     * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdateAsync(
@@ -1199,17 +1213,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of storageAppliance represents on-premises Network Cloud storage
-     *     appliance.
+     * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner>
@@ -1224,10 +1238,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceUpdateParameters The request body.
@@ -1236,7 +1250,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of storageAppliance represents on-premises Network Cloud storage
-     *     appliance.
+     * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdateAsync(
@@ -1251,17 +1265,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
-     *     appliance.
+     * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
@@ -1273,10 +1287,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceUpdateParameters The request body.
@@ -1285,7 +1299,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
-     *     appliance.
+     * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
@@ -1297,10 +1311,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceUpdateParameters The request body.
@@ -1308,7 +1322,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageAppliance represents on-premises Network Cloud storage appliance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageApplianceInner> updateAsync(String resourceGroupName, String storageApplianceName,
@@ -1319,17 +1333,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageAppliance represents on-premises Network Cloud storage appliance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageApplianceInner> updateAsync(String resourceGroupName, String storageApplianceName) {
@@ -1340,10 +1354,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceUpdateParameters The request body.
@@ -1352,7 +1366,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageAppliance represents on-premises Network Cloud storage appliance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageApplianceInner> updateAsync(String resourceGroupName, String storageApplianceName,
@@ -1364,10 +1378,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1383,10 +1397,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Patch the storage appliance.
-     *
-     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceUpdateParameters The request body.
@@ -1404,16 +1418,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
@@ -1444,17 +1458,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
@@ -1483,9 +1497,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1505,9 +1519,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
@@ -1529,9 +1543,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1547,9 +1561,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
@@ -1567,9 +1581,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1586,9 +1600,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
@@ -1606,9 +1620,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1624,9 +1638,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
@@ -1643,17 +1657,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
@@ -1688,9 +1702,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
@@ -1698,8 +1712,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
@@ -1734,9 +1748,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
@@ -1758,9 +1772,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1782,9 +1796,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
@@ -1808,9 +1822,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1831,9 +1845,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
@@ -1856,9 +1870,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
@@ -1878,9 +1892,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1900,9 +1914,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
@@ -1924,9 +1938,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1945,9 +1959,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
@@ -1968,14 +1982,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1997,15 +2010,14 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -2026,14 +2038,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2055,15 +2066,14 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

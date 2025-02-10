@@ -20,16 +20,32 @@ public interface LocalNetworkGateway extends GroupableResource<NetworkManager, L
 
     // Getters
 
-    /** @return IP address of local network gateway */
+    /**
+     * Gets IP address of local network gateway.
+     *
+     * @return IP address of local network gateway
+     */
     String ipAddress();
 
-    /** @return local network gateway's BGP speaker settings */
+    /**
+     * Gets local network gateway's BGP speaker settings.
+     *
+     * @return local network gateway's BGP speaker settings
+     */
     BgpSettings bgpSettings();
 
-    /** @return local network site address spaces */
+    /**
+     * Gets local network site address spaces.
+     *
+     * @return local network site address spaces
+     */
     Set<String> addressSpaces();
 
-    /** @return the provisioning state of the LocalNetworkGateway resource */
+    /**
+     * Gets the provisioning state of the LocalNetworkGateway resource.
+     *
+     * @return the provisioning state of the LocalNetworkGateway resource
+     */
     String provisioningState();
 
     /** The entirety of the local network gateway definition. */

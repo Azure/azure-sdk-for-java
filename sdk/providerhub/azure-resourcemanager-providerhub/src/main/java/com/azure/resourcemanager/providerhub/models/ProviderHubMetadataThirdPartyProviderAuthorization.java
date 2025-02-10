@@ -5,16 +5,26 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ProviderHubMetadataThirdPartyProviderAuthorization model. */
+/**
+ * The ProviderHubMetadataThirdPartyProviderAuthorization model.
+ */
 @Fluent
 public final class ProviderHubMetadataThirdPartyProviderAuthorization extends ThirdPartyProviderAuthorization {
-    /** Creates an instance of ProviderHubMetadataThirdPartyProviderAuthorization class. */
+    /**
+     * Creates an instance of ProviderHubMetadataThirdPartyProviderAuthorization class.
+     */
     public ProviderHubMetadataThirdPartyProviderAuthorization() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProviderHubMetadataThirdPartyProviderAuthorization
         withAuthorizations(List<LightHouseAuthorization> authorizations) {
@@ -22,7 +32,9 @@ public final class ProviderHubMetadataThirdPartyProviderAuthorization extends Th
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProviderHubMetadataThirdPartyProviderAuthorization withManagedByTenantId(String managedByTenantId) {
         super.withManagedByTenantId(managedByTenantId);
@@ -31,11 +43,57 @@ public final class ProviderHubMetadataThirdPartyProviderAuthorization extends Th
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (authorizations() != null) {
+            authorizations().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("authorizations", authorizations(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("managedByTenantId", managedByTenantId());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderHubMetadataThirdPartyProviderAuthorization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderHubMetadataThirdPartyProviderAuthorization if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderHubMetadataThirdPartyProviderAuthorization.
+     */
+    public static ProviderHubMetadataThirdPartyProviderAuthorization fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderHubMetadataThirdPartyProviderAuthorization deserializedProviderHubMetadataThirdPartyProviderAuthorization
+                = new ProviderHubMetadataThirdPartyProviderAuthorization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authorizations".equals(fieldName)) {
+                    List<LightHouseAuthorization> authorizations
+                        = reader.readArray(reader1 -> LightHouseAuthorization.fromJson(reader1));
+                    deserializedProviderHubMetadataThirdPartyProviderAuthorization.withAuthorizations(authorizations);
+                } else if ("managedByTenantId".equals(fieldName)) {
+                    deserializedProviderHubMetadataThirdPartyProviderAuthorization
+                        .withManagedByTenantId(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderHubMetadataThirdPartyProviderAuthorization;
+        });
     }
 }

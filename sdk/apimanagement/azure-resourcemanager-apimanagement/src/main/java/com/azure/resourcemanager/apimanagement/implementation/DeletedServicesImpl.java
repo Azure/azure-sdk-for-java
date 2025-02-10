@@ -29,12 +29,12 @@ public final class DeletedServicesImpl implements DeletedServices {
 
     public PagedIterable<DeletedServiceContract> list() {
         PagedIterable<DeletedServiceContractInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DeletedServiceContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeletedServiceContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DeletedServiceContract> list(Context context) {
         PagedIterable<DeletedServiceContractInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DeletedServiceContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeletedServiceContractImpl(inner1, this.manager()));
     }
 
     public Response<DeletedServiceContract> getByNameWithResponse(String serviceName, String location,

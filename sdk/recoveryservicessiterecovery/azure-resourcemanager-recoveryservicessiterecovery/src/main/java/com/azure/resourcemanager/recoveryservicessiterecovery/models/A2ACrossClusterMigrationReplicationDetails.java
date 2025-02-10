@@ -5,59 +5,67 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A2A provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2ACrossClusterMigration")
 @Fluent
 public final class A2ACrossClusterMigrationReplicationDetails extends ReplicationProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "A2ACrossClusterMigration";
+
+    /*
      * The fabric specific object Id of the virtual machine.
      */
-    @JsonProperty(value = "fabricObjectId")
     private String fabricObjectId;
 
     /*
      * Primary fabric location.
      */
-    @JsonProperty(value = "primaryFabricLocation")
     private String primaryFabricLocation;
 
     /*
      * The type of operating system.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * The protection state for the vm.
      */
-    @JsonProperty(value = "vmProtectionState")
     private String vmProtectionState;
 
     /*
      * The protection state description for the vm.
      */
-    @JsonProperty(value = "vmProtectionStateDescription")
     private String vmProtectionStateDescription;
 
     /*
-     * An id associated with the PE that survives actions like switch protection which change the backing PE/CPE
-     * objects internally.The lifecycle id gets carried forward to have a link/continuity in being able to have an Id
-     * that denotes the "same" protected item even though other internal Ids/ARM Id might be changing.
+     * An id associated with the PE that survives actions like switch protection which change the backing PE/CPE objects
+     * internally.The lifecycle id gets carried forward to have a link/continuity in being able to have an Id that
+     * denotes the "same" protected item even though other internal Ids/ARM Id might be changing.
      */
-    @JsonProperty(value = "lifecycleId")
     private String lifecycleId;
 
     /**
      * Creates an instance of A2ACrossClusterMigrationReplicationDetails class.
      */
     public A2ACrossClusterMigrationReplicationDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -194,6 +202,61 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("fabricObjectId", this.fabricObjectId);
+        jsonWriter.writeStringField("primaryFabricLocation", this.primaryFabricLocation);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeStringField("vmProtectionState", this.vmProtectionState);
+        jsonWriter.writeStringField("vmProtectionStateDescription", this.vmProtectionStateDescription);
+        jsonWriter.writeStringField("lifecycleId", this.lifecycleId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2ACrossClusterMigrationReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2ACrossClusterMigrationReplicationDetails if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2ACrossClusterMigrationReplicationDetails.
+     */
+    public static A2ACrossClusterMigrationReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2ACrossClusterMigrationReplicationDetails deserializedA2ACrossClusterMigrationReplicationDetails
+                = new A2ACrossClusterMigrationReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationReplicationDetails.instanceType = reader.getString();
+                } else if ("fabricObjectId".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationReplicationDetails.fabricObjectId = reader.getString();
+                } else if ("primaryFabricLocation".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationReplicationDetails.primaryFabricLocation = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationReplicationDetails.osType = reader.getString();
+                } else if ("vmProtectionState".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationReplicationDetails.vmProtectionState = reader.getString();
+                } else if ("vmProtectionStateDescription".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationReplicationDetails.vmProtectionStateDescription
+                        = reader.getString();
+                } else if ("lifecycleId".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationReplicationDetails.lifecycleId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2ACrossClusterMigrationReplicationDetails;
+        });
     }
 }

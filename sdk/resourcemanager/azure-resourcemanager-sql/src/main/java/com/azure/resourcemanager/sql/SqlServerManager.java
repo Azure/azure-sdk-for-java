@@ -41,7 +41,11 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
         this.tenantId = profile.getTenantId();
     }
 
-    /** @return the storage manager in sql manager */
+    /**
+     * Gets the storage manager in sql manager.
+     *
+     * @return the storage manager in sql manager
+     */
     public StorageManager storageManager() {
         return storageManager;
     }
@@ -101,7 +105,11 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
         }
     }
 
-    /** @return the SQL Server management API entry point */
+    /**
+     * Gets the API entry point of SQL Server management.
+     *
+     * @return the SQL Server management API entry point
+     */
     public SqlServers sqlServers() {
         if (sqlServers == null) {
             sqlServers = new SqlServersImpl(this);

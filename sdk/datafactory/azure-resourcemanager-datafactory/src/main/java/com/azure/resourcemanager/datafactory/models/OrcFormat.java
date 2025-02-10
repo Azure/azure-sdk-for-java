@@ -63,7 +63,6 @@ public final class OrcFormat extends DatasetStorageFormat {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

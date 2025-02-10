@@ -18,7 +18,7 @@ public final class ServicesDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void servicesDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.services().deleteByResourceGroupWithResponse("contoso-resources", "contoso",
-            com.azure.core.util.Context.NONE);
+        manager.services()
+            .deleteByResourceGroupWithResponse("contoso-resources", "contoso", com.azure.core.util.Context.NONE);
     }
 }

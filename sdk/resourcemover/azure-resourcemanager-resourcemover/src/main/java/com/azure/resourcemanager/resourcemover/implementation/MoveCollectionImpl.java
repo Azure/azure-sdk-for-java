@@ -145,8 +145,8 @@ public final class MoveCollectionImpl implements MoveCollection, MoveCollection.
         com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.moveCollectionName = Utils.getValueFromIdByName(innerObject.id(), "moveCollections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.moveCollectionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "moveCollections");
     }
 
     public MoveCollection refresh() {

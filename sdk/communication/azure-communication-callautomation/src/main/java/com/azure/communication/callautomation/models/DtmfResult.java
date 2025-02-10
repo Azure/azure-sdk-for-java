@@ -22,6 +22,12 @@ public final class DtmfResult extends RecognizeResult {
     private List<DtmfTone> dtmfTones;
 
     /**
+     * Creates an instance of {@link DtmfResult}.
+     */
+    public DtmfResult() {
+    }
+
+    /**
      * Get the tones property: The tones property.
      *
      * @return the tones value.

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Formulas. */
+/**
+ * Resource collection API of Formulas.
+ */
 public interface Formulas {
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Formulas {
 
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=description)'.
@@ -42,7 +44,7 @@ public interface Formulas {
 
     /**
      * Get formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -58,7 +60,7 @@ public interface Formulas {
 
     /**
      * Get formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -71,7 +73,7 @@ public interface Formulas {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -85,7 +87,7 @@ public interface Formulas {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -97,7 +99,7 @@ public interface Formulas {
 
     /**
      * Get formula.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,7 +110,7 @@ public interface Formulas {
 
     /**
      * Get formula.
-     *
+     * 
      * @param id the resource ID.
      * @param expand Specify the $expand query. Example: 'properties($select=description)'.
      * @param context The context to associate with this operation.
@@ -121,7 +123,7 @@ public interface Formulas {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,7 +133,7 @@ public interface Formulas {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +145,7 @@ public interface Formulas {
 
     /**
      * Begins definition for a new Formula resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Formula definition.
      */

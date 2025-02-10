@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The installation state of the packet core.
  */
 @Fluent
-public final class Installation {
+public final class Installation implements JsonSerializable<Installation> {
     /*
      * The desired installation state
      */
-    @JsonProperty(value = "desiredState")
     private DesiredInstallationState desiredState;
 
     /*
      * Installation state
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private InstallationState state;
 
     /*
      * Whether a reinstall of the packet core is required to pick up the latest configuration changes.
      */
-    @JsonProperty(value = "reinstallRequired", access = JsonProperty.Access.WRITE_ONLY)
     private ReinstallRequired reinstallRequired;
 
     /*
      * Reason(s) for the current installation state of the packet core.
      */
-    @JsonProperty(value = "reasons", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstallationReason> reasons;
 
     /*
      * A reference to an in-progress installation operation
      */
-    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private AsyncOperationId operation;
 
     /**
@@ -115,5 +114,51 @@ public final class Installation {
         if (operation() != null) {
             operation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("desiredState", this.desiredState == null ? null : this.desiredState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Installation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Installation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Installation.
+     */
+    public static Installation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Installation deserializedInstallation = new Installation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("desiredState".equals(fieldName)) {
+                    deserializedInstallation.desiredState = DesiredInstallationState.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedInstallation.state = InstallationState.fromString(reader.getString());
+                } else if ("reinstallRequired".equals(fieldName)) {
+                    deserializedInstallation.reinstallRequired = ReinstallRequired.fromString(reader.getString());
+                } else if ("reasons".equals(fieldName)) {
+                    List<InstallationReason> reasons
+                        = reader.readArray(reader1 -> InstallationReason.fromString(reader1.getString()));
+                    deserializedInstallation.reasons = reasons;
+                } else if ("operation".equals(fieldName)) {
+                    deserializedInstallation.operation = AsyncOperationId.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstallation;
+        });
     }
 }

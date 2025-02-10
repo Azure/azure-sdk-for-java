@@ -5,38 +5,28 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the dead letter destination for an event subscription. To configure a deadletter destination, do
  * not directly instantiate an object of this class. Instead, instantiate an object of a derived class. Currently,
  * StorageBlobDeadLetterDestination is the only class that derives from this class.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = DeadLetterDestination.class,
-    visible = true)
-@JsonTypeName("DeadLetterDestination")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "StorageBlob", value = StorageBlobDeadLetterDestination.class) })
 @Immutable
-public class DeadLetterDestination {
+public class DeadLetterDestination implements JsonSerializable<DeadLetterDestination> {
     /*
      * Type of the endpoint for the dead letter destination
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
-    private DeadLetterEndPointType endpointType;
+    private DeadLetterEndPointType endpointType = DeadLetterEndPointType.fromString("DeadLetterDestination");
 
     /**
      * Creates an instance of DeadLetterDestination class.
      */
     public DeadLetterDestination() {
-        this.endpointType = DeadLetterEndPointType.fromString("DeadLetterDestination");
     }
 
     /**
@@ -54,5 +44,67 @@ public class DeadLetterDestination {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeadLetterDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeadLetterDestination if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeadLetterDestination.
+     */
+    public static DeadLetterDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("endpointType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("StorageBlob".equals(discriminatorValue)) {
+                    return StorageBlobDeadLetterDestination.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DeadLetterDestination fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeadLetterDestination deserializedDeadLetterDestination = new DeadLetterDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedDeadLetterDestination.endpointType
+                        = DeadLetterEndPointType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeadLetterDestination;
+        });
     }
 }

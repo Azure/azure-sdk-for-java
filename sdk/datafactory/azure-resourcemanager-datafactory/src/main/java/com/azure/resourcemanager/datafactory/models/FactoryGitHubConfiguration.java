@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -172,11 +173,32 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
      */
     @Override
     public void validate() {
-        super.validate();
         if (clientSecret() != null) {
             clientSecret().validate();
         }
+        if (accountName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountName in model FactoryGitHubConfiguration"));
+        }
+        if (repositoryName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property repositoryName in model FactoryGitHubConfiguration"));
+        }
+        if (collaborationBranch() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property collaborationBranch in model FactoryGitHubConfiguration"));
+        }
+        if (rootFolder() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rootFolder in model FactoryGitHubConfiguration"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FactoryGitHubConfiguration.class);
 
     /**
      * {@inheritDoc}

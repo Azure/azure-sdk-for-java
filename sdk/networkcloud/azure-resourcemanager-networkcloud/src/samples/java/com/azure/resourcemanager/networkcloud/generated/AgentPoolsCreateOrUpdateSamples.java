@@ -22,61 +22,48 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AgentPools CreateOrUpdate. */
+/**
+ * Samples for AgentPools CreateOrUpdate.
+ */
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/AgentPools_Create.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * AgentPools_Create.json
      */
     /**
      * Sample code: Create or update Kubernetes cluster agent pool.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void createOrUpdateKubernetesClusterAgentPool(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .agentPools()
+    public static void
+        createOrUpdateKubernetesClusterAgentPool(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        manager.agentPools()
             .define("agentPoolName")
             .withRegion("location")
             .withExistingKubernetesCluster("resourceGroupName", "kubernetesClusterName")
             .withCount(3L)
             .withMode(AgentPoolMode.SYSTEM)
-            .withVmSkuName("NC_M16_v1")
+            .withVmSkuName("NC_XXXX")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withName(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
-                    .withType("CustomLocation"))
-            .withAdministratorConfiguration(
-                new AdministratorConfiguration()
-                    .withAdminUsername("azure")
-                    .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                .withType("CustomLocation"))
+            .withAdministratorConfiguration(new AdministratorConfiguration().withAdminUsername("azure")
+                .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
             .withAgentOptions(new AgentOptions().withHugepagesCount(96L).withHugepagesSize(HugepagesSize.ONEG))
-            .withAttachedNetworkConfiguration(
-                new AttachedNetworkConfiguration()
-                    .withL2Networks(
-                        Arrays
-                            .asList(
-                                new L2NetworkAttachmentConfiguration()
-                                    .withNetworkId(
-                                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")
-                                    .withPluginType(KubernetesPluginType.DPDK)))
-                    .withL3Networks(
-                        Arrays
-                            .asList(
-                                new L3NetworkAttachmentConfiguration()
-                                    .withIpamEnabled(L3NetworkConfigurationIpamEnabled.FALSE)
-                                    .withNetworkId(
-                                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName")
-                                    .withPluginType(KubernetesPluginType.SRIOV)))
-                    .withTrunkedNetworks(
-                        Arrays
-                            .asList(
-                                new TrunkedNetworkAttachmentConfiguration()
-                                    .withNetworkId(
-                                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName")
-                                    .withPluginType(KubernetesPluginType.MACVLAN))))
+            .withAttachedNetworkConfiguration(new AttachedNetworkConfiguration()
+                .withL2Networks(Arrays.asList(new L2NetworkAttachmentConfiguration().withNetworkId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")
+                    .withPluginType(KubernetesPluginType.DPDK)))
+                .withL3Networks(Arrays.asList(new L3NetworkAttachmentConfiguration()
+                    .withIpamEnabled(L3NetworkConfigurationIpamEnabled.FALSE)
+                    .withNetworkId(
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName")
+                    .withPluginType(KubernetesPluginType.SRIOV)))
+                .withTrunkedNetworks(Arrays.asList(new TrunkedNetworkAttachmentConfiguration().withNetworkId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName")
+                    .withPluginType(KubernetesPluginType.MACVLAN))))
             .withAvailabilityZones(Arrays.asList("1", "2", "3"))
             .withLabels(Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true")))
             .withTaints(Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true")))

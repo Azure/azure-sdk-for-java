@@ -6,50 +6,53 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A class representing the properties of a managed private endpoint object. */
+/**
+ * A class representing the properties of a managed private endpoint object.
+ */
 @Fluent
-public final class ManagedPrivateEndpointProperties {
+public final class ManagedPrivateEndpointProperties implements JsonSerializable<ManagedPrivateEndpointProperties> {
     /*
      * The ARM resource ID of the resource for which the managed private endpoint is created.
      */
-    @JsonProperty(value = "privateLinkResourceId", required = true)
     private String privateLinkResourceId;
 
     /*
      * The region of the resource to which the managed private endpoint is created.
      */
-    @JsonProperty(value = "privateLinkResourceRegion")
     private String privateLinkResourceRegion;
 
     /*
      * The groupId in which the managed private endpoint is created.
      */
-    @JsonProperty(value = "groupId", required = true)
     private String groupId;
 
     /*
      * The user request message.
      */
-    @JsonProperty(value = "requestMessage")
     private String requestMessage;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ManagedPrivateEndpointProperties class. */
+    /**
+     * Creates an instance of ManagedPrivateEndpointProperties class.
+     */
     public ManagedPrivateEndpointProperties() {
     }
 
     /**
      * Get the privateLinkResourceId property: The ARM resource ID of the resource for which the managed private
      * endpoint is created.
-     *
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -59,7 +62,7 @@ public final class ManagedPrivateEndpointProperties {
     /**
      * Set the privateLinkResourceId property: The ARM resource ID of the resource for which the managed private
      * endpoint is created.
-     *
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
@@ -71,7 +74,7 @@ public final class ManagedPrivateEndpointProperties {
     /**
      * Get the privateLinkResourceRegion property: The region of the resource to which the managed private endpoint is
      * created.
-     *
+     * 
      * @return the privateLinkResourceRegion value.
      */
     public String privateLinkResourceRegion() {
@@ -81,7 +84,7 @@ public final class ManagedPrivateEndpointProperties {
     /**
      * Set the privateLinkResourceRegion property: The region of the resource to which the managed private endpoint is
      * created.
-     *
+     * 
      * @param privateLinkResourceRegion the privateLinkResourceRegion value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
@@ -92,7 +95,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Get the groupId property: The groupId in which the managed private endpoint is created.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -101,7 +104,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Set the groupId property: The groupId in which the managed private endpoint is created.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
@@ -112,7 +115,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Get the requestMessage property: The user request message.
-     *
+     * 
      * @return the requestMessage value.
      */
     public String requestMessage() {
@@ -121,7 +124,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Set the requestMessage property: The user request message.
-     *
+     * 
      * @param requestMessage the requestMessage value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
@@ -132,7 +135,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -141,19 +144,71 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (privateLinkResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property privateLinkResourceId in model ManagedPrivateEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateLinkResourceId in model ManagedPrivateEndpointProperties"));
         }
         if (groupId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property groupId in model ManagedPrivateEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groupId in model ManagedPrivateEndpointProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedPrivateEndpointProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateLinkResourceId", this.privateLinkResourceId);
+        jsonWriter.writeStringField("groupId", this.groupId);
+        jsonWriter.writeStringField("privateLinkResourceRegion", this.privateLinkResourceRegion);
+        jsonWriter.writeStringField("requestMessage", this.requestMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedPrivateEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedPrivateEndpointProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedPrivateEndpointProperties.
+     */
+    public static ManagedPrivateEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedPrivateEndpointProperties deserializedManagedPrivateEndpointProperties
+                = new ManagedPrivateEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateLinkResourceId".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.privateLinkResourceId = reader.getString();
+                } else if ("groupId".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.groupId = reader.getString();
+                } else if ("privateLinkResourceRegion".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.privateLinkResourceRegion = reader.getString();
+                } else if ("requestMessage".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.requestMessage = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedPrivateEndpointProperties;
+        });
+    }
 }

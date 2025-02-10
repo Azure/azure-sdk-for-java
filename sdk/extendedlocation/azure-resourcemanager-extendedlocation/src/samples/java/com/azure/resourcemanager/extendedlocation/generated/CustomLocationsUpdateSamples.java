@@ -17,7 +17,7 @@ import java.util.Map;
 public final class CustomLocationsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/
+     * specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/
      * CustomLocationsPatch.json
      */
     /**

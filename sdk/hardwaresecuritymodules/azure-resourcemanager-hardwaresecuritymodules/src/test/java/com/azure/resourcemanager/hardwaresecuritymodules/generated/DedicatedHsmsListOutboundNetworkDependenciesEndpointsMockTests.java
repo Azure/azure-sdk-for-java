@@ -6,62 +6,43 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.OutboundEnvironmentEndpoint;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DedicatedHsmsListOutboundNetworkDependenciesEndpointsMockTests {
     @Test
     public void testListOutboundNetworkDependenciesEndpoints() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"category\":\"jvpglydzgk\",\"endpoints\":[{\"domainName\":\"ev\",\"endpointDetails\":[{\"ipAddress\":\"r\",\"port\":108809884,\"protocol\":\"wytpzdmovz\",\"description\":\"va\"}]},{\"domainName\":\"zqadf\",\"endpointDetails\":[{\"ipAddress\":\"riglaec\",\"port\":566063527,\"protocol\":\"icokpv\",\"description\":\"lqtmldgxob\"}]}]}]}";
+            = "{\"value\":[{\"category\":\"fkbey\",\"endpoints\":[{\"domainName\":\"mjmwvvjektcx\",\"endpointDetails\":[{\"ipAddress\":\"wlrsffrzpwv\",\"port\":1792150681,\"protocol\":\"gbiqylihkaet\",\"description\":\"tvfcivfsn\"},{\"ipAddress\":\"m\",\"port\":1059821653,\"protocol\":\"hjfbebrjcxe\",\"description\":\"uwutttxfvjrbi\"},{\"ipAddress\":\"hxepcyvahfnlj\",\"port\":561070013,\"protocol\":\"j\",\"description\":\"ujqgidok\"},{\"ipAddress\":\"ljyoxgvcltb\",\"port\":1745548413,\"protocol\":\"ghkjeszzhbi\",\"description\":\"txfvgx\"}]},{\"domainName\":\"smx\",\"endpointDetails\":[{\"ipAddress\":\"pvecxgodeb\",\"port\":398257944,\"protocol\":\"rbmpukgri\",\"description\":\"lzlfbxzpuz\"},{\"ipAddress\":\"ispnqzahmgkbrp\",\"port\":1687540865,\"protocol\":\"ibnuqqkpik\",\"description\":\"rgvtqag\"}]},{\"domainName\":\"uynhijg\",\"endpointDetails\":[{\"ipAddress\":\"fsiarbutr\",\"port\":1477198207,\"protocol\":\"azzmhjrunmpxt\",\"description\":\"bh\"}]},{\"domainName\":\"nlankxmyskpb\",\"endpointDetails\":[{\"ipAddress\":\"tkcxywnytnrsy\",\"port\":1857239406,\"protocol\":\"dybyxczfclhaa\",\"description\":\"babphlwrqlfk\"},{\"ipAddress\":\"thsu\",\"port\":296949281,\"protocol\":\"nyyazttbtwwrqpue\",\"description\":\"kzywbiex\"},{\"ipAddress\":\"eyueaxibxujwb\",\"port\":913520848,\"protocol\":\"lmuzy\",\"description\":\"aepdkzjanc\"},{\"ipAddress\":\"rhdwbavxbniw\",\"port\":1074996435,\"protocol\":\"zt\",\"description\":\"bpg\"}]}]}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<OutboundEnvironmentEndpoint> response = manager.dedicatedHsms()
-            .listOutboundNetworkDependenciesEndpoints("qedcgzulwm", "rqzz", com.azure.core.util.Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints("konocu", "oklyaxuconuq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jvpglydzgk", response.iterator().next().category());
-        Assertions.assertEquals("ev", response.iterator().next().endpoints().get(0).domainName());
-        Assertions.assertEquals("r",
+        Assertions.assertEquals("fkbey", response.iterator().next().category());
+        Assertions.assertEquals("mjmwvvjektcx", response.iterator().next().endpoints().get(0).domainName());
+        Assertions.assertEquals("wlrsffrzpwv",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(108809884,
+        Assertions.assertEquals(1792150681,
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).port());
-        Assertions.assertEquals("wytpzdmovz",
+        Assertions.assertEquals("gbiqylihkaet",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).protocol());
-        Assertions.assertEquals("va",
+        Assertions.assertEquals("tvfcivfsn",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).description());
     }
 }

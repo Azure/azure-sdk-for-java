@@ -11,7 +11,7 @@ public final class MailClusterEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MailClusterEntityProperties model = BinaryData.fromString(
-            "{\"networkMessageIds\":[\"xm\",\"ses\"],\"countByDeliveryStatus\":\"dataujbjppp\",\"countByThreatType\":\"datalpdib\",\"countByProtectionStatus\":\"datath\",\"threats\":[\"tnejrnminzqp\"],\"query\":\"tkihonikzs\",\"queryTime\":\"2021-03-15T08:33:11Z\",\"mailCount\":105751162,\"isVolumeAnomaly\":true,\"source\":\"z\",\"clusterSourceIdentifier\":\"pntogkensckh\",\"clusterSourceType\":\"carmoyfx\",\"clusterQueryStartTime\":\"2021-04-24T09:57:10Z\",\"clusterQueryEndTime\":\"2021-01-07T21:38:42Z\",\"clusterGroup\":\"qdndxly\",\"additionalData\":{\"vdgtfpeer\":\"datagga\",\"rnrnjrcufmbgacnr\":\"datacd\",\"eubkqiqmlf\":\"datafdtncmspsanma\",\"skkqjmxptuei\":\"datahlq\"},\"friendlyName\":\"ugkw\"}")
+            "{\"networkMessageIds\":[\"oafcluqvox\"],\"countByDeliveryStatus\":\"datacjimryvwgcwwpbmz\",\"countByThreatType\":\"dataesyds\",\"countByProtectionStatus\":\"dataefoh\",\"threats\":[\"vopwndyqleallk\",\"mtkhlowkxxpvbr\",\"fjmzsyzfho\"],\"query\":\"h\",\"queryTime\":\"2021-04-25T11:24:14Z\",\"mailCount\":2107805309,\"isVolumeAnomaly\":false,\"source\":\"nsjlpjrtws\",\"clusterSourceIdentifier\":\"vv\",\"clusterSourceType\":\"c\",\"clusterQueryStartTime\":\"2021-07-19T03:46:29Z\",\"clusterQueryEndTime\":\"2021-09-11T09:13:01Z\",\"clusterGroup\":\"mhwrb\",\"additionalData\":{\"yzlwh\":\"datayflubhvjglroc\"},\"friendlyName\":\"emhooclutnpq\"}")
             .toObject(MailClusterEntityProperties.class);
     }
 

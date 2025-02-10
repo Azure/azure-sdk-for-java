@@ -333,7 +333,6 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

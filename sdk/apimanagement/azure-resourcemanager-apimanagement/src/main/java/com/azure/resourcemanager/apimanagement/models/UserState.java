@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,21 +12,29 @@ import java.util.Collection;
  * portal or call any APIs of subscribed products. Default state is Active.
  */
 public final class UserState extends ExpandableStringEnum<UserState> {
-    /** Static value active for UserState. */
+    /**
+     * Static value active for UserState.
+     */
     public static final UserState ACTIVE = fromString("active");
 
-    /** Static value blocked for UserState. */
+    /**
+     * Static value blocked for UserState.
+     */
     public static final UserState BLOCKED = fromString("blocked");
 
-    /** Static value pending for UserState. */
+    /**
+     * Static value pending for UserState.
+     */
     public static final UserState PENDING = fromString("pending");
 
-    /** Static value deleted for UserState. */
+    /**
+     * Static value deleted for UserState.
+     */
     public static final UserState DELETED = fromString("deleted");
 
     /**
      * Creates a new instance of UserState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +43,17 @@ public final class UserState extends ExpandableStringEnum<UserState> {
 
     /**
      * Creates or finds a UserState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UserState.
      */
-    @JsonCreator
     public static UserState fromString(String name) {
         return fromString(name, UserState.class);
     }
 
     /**
      * Gets known UserState values.
-     *
+     * 
      * @return known UserState values.
      */
     public static Collection<UserState> values() {

@@ -220,11 +220,11 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         } else {
             streamingJob.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, jobName, streamingJob, accept, context))
+            .withContext(context -> service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, jobName, streamingJob,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -269,10 +269,9 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         } else {
             streamingJob.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, apiVersion,
+        return service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, jobName, streamingJob, accept, context);
     }
 
@@ -556,10 +555,9 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         } else {
             streamingJob.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), ifMatch, apiVersion,
+            .withContext(context -> service.update(this.client.getEndpoint(), ifMatch, this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, jobName, streamingJob, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -606,11 +604,10 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         } else {
             streamingJob.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), ifMatch, apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, jobName, streamingJob, accept, context);
+        return service.update(this.client.getEndpoint(), ifMatch, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, jobName, streamingJob, accept, context);
     }
 
     /**
@@ -709,10 +706,9 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -746,11 +742,10 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            jobName, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, accept, context);
     }
 
     /**
@@ -913,11 +908,11 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), expand, apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context))
+            .withContext(
+                context -> service.getByResourceGroup(this.client.getEndpoint(), expand, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -953,10 +948,9 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), expand, apiVersion,
+        return service.getByResourceGroup(this.client.getEndpoint(), expand, this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context);
     }
 
@@ -1041,11 +1035,10 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), expand, apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), expand,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context))
             .<PagedResponse<StreamingJobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1080,12 +1073,11 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(this.client.getEndpoint(), expand, apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, accept, context)
+            .listByResourceGroup(this.client.getEndpoint(), expand, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1200,10 +1192,9 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), expand, apiVersion,
+            .withContext(context -> service.list(this.client.getEndpoint(), expand, this.client.getApiVersion(),
                 this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<StreamingJobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -1233,11 +1224,11 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), expand, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .list(this.client.getEndpoint(), expand, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1351,10 +1342,9 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (startJobParameters != null) {
             startJobParameters.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.start(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.start(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, jobName, startJobParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1392,11 +1382,10 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (startJobParameters != null) {
             startJobParameters.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.start(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            jobName, startJobParameters, accept, context);
+        return service.start(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, startJobParameters, accept, context);
     }
 
     /**
@@ -1606,11 +1595,10 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, jobName, accept, context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1644,11 +1632,10 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            jobName, accept, context);
+        return service.stop(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, accept, context);
     }
 
     /**
@@ -1820,10 +1807,9 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (scaleJobParameters != null) {
             scaleJobParameters.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.scale(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.scale(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, jobName, scaleJobParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1861,11 +1847,10 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (scaleJobParameters != null) {
             scaleJobParameters.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.scale(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            jobName, scaleJobParameters, accept, context);
+        return service.scale(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, scaleJobParameters, accept, context);
     }
 
     /**

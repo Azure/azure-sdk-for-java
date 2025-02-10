@@ -10,16 +10,16 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NamespacesListAuthorizationRulesSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * Namespaces/AuthorizationRuleList.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/
+     * NHNameSpaceAuthorizationRuleListAll.json
      */
     /**
-     * Sample code: Namespaces_ListAuthorizationRules.
+     * Sample code: NameSpaceAuthorizationRuleListAll.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void
-        namespacesListAuthorizationRules(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        nameSpaceAuthorizationRuleListAll(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
         manager.namespaces().listAuthorizationRules("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE);
     }
 }

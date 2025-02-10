@@ -28,7 +28,7 @@ public class AzureJdbcAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor() {
+    static JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor() {
         return new JdbcPropertiesBeanPostProcessor();
     }
 }

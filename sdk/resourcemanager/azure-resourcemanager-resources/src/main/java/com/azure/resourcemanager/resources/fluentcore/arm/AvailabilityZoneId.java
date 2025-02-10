@@ -27,6 +27,15 @@ public class AvailabilityZoneId extends ExpandableStringEnum<AvailabilityZoneId>
     public static final AvailabilityZoneId ZONE_3 = fromString("3");
 
     /**
+     * Creates a new instance of AvailabilityZoneId value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AvailabilityZoneId() {
+    }
+
+    /**
      * Finds or creates an availability zone identifier based on the specified identifier in string format.
      *
      * @param id the zone identifier in string format
@@ -37,6 +46,8 @@ public class AvailabilityZoneId extends ExpandableStringEnum<AvailabilityZoneId>
     }
 
     /**
+     * Gets known AvailabilityZoneId values.
+     *
      * @return known availability zone identifiers
      */
     public static Collection<AvailabilityZoneId> values() {

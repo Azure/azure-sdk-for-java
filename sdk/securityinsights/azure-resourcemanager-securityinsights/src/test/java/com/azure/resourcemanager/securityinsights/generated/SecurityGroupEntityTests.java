@@ -11,7 +11,7 @@ public final class SecurityGroupEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityGroupEntity model = BinaryData.fromString(
-            "{\"kind\":\"SecurityGroup\",\"properties\":{\"distinguishedName\":\"hwfwjnox\",\"objectGuid\":\"d85d639e-094c-4371-b529-e14dd8e73684\",\"sid\":\"tfnressfepgck\",\"additionalData\":{\"mjnhjlu\":\"datamgvsnvbtqdxfmj\",\"dlhzwhcu\":\"datallbsupubdxc\",\"dizhrjqfyaytvsly\":\"datavbosjj\",\"uarlcjiwgsxfaioc\":\"datakcgn\"},\"friendlyName\":\"gujjgn\"},\"id\":\"rzxbarcbp\",\"name\":\"efzq\",\"type\":\"ymjwenjcyt\"}")
+            "{\"kind\":\"SecurityGroup\",\"properties\":{\"distinguishedName\":\"mrjgeihfqlggwfi\",\"objectGuid\":\"3a7769ca-865b-49bd-861b-07935c840b63\",\"sid\":\"xmjpbyep\",\"additionalData\":{\"ljvrcmyfqipgxhnp\":\"datat\"},\"friendlyName\":\"yqwcabvnuil\"},\"id\":\"yaswlpaugmr\",\"name\":\"fjlrxwtoauk\",\"type\":\"fkvcisi\"}")
             .toObject(SecurityGroupEntity.class);
     }
 

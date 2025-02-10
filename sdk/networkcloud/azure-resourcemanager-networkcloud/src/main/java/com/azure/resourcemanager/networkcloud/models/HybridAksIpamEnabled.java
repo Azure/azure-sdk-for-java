@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,15 +13,19 @@ import java.util.Collection;
  * AKS Cluster.
  */
 public final class HybridAksIpamEnabled extends ExpandableStringEnum<HybridAksIpamEnabled> {
-    /** Static value True for HybridAksIpamEnabled. */
+    /**
+     * Static value True for HybridAksIpamEnabled.
+     */
     public static final HybridAksIpamEnabled TRUE = fromString("True");
 
-    /** Static value False for HybridAksIpamEnabled. */
+    /**
+     * Static value False for HybridAksIpamEnabled.
+     */
     public static final HybridAksIpamEnabled FALSE = fromString("False");
 
     /**
      * Creates a new instance of HybridAksIpamEnabled value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +34,17 @@ public final class HybridAksIpamEnabled extends ExpandableStringEnum<HybridAksIp
 
     /**
      * Creates or finds a HybridAksIpamEnabled from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HybridAksIpamEnabled.
      */
-    @JsonCreator
     public static HybridAksIpamEnabled fromString(String name) {
         return fromString(name, HybridAksIpamEnabled.class);
     }
 
     /**
      * Gets known HybridAksIpamEnabled values.
-     *
+     * 
      * @return known HybridAksIpamEnabled values.
      */
     public static Collection<HybridAksIpamEnabled> values() {

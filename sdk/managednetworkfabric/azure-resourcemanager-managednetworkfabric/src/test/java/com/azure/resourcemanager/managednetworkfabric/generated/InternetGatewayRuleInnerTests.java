@@ -17,29 +17,31 @@ public final class InternetGatewayRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternetGatewayRuleInner model = BinaryData.fromString(
-            "{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"lc\"]},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"rhyzdf\",\"rsofpltdbmairrh\",\"hfnrac\",\"npq\"],\"annotation\":\"tuujwouh\"},\"location\":\"wsigrbjbxsj\",\"tags\":{\"vqkjyaznu\":\"i\",\"lv\":\"tggmuwdchozfnkfe\",\"oaiknaqlnuwig\":\"noakiz\"},\"id\":\"yxl\",\"name\":\"kwph\",\"type\":\"xzcwxhmpejt\"}")
+            "{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"moichdlpnfpubntn\",\"atzviqsowsaael\"]},\"provisioningState\":\"Updating\",\"internetGatewayIds\":[\"ju\",\"plrvkmjcwmjvlg\",\"ggcvk\"],\"annotation\":\"lizrzbjpsfxsfuz\"},\"location\":\"vtmva\",\"tags\":{\"oveofizrvjfnmj\":\"idqlvhu\"},\"id\":\"vlwyzg\",\"name\":\"blkujrllfojuidjp\",\"type\":\"uyjucejikzo\"}")
             .toObject(InternetGatewayRuleInner.class);
-        Assertions.assertEquals("wsigrbjbxsj", model.location());
-        Assertions.assertEquals("i", model.tags().get("vqkjyaznu"));
+        Assertions.assertEquals("vtmva", model.location());
+        Assertions.assertEquals("idqlvhu", model.tags().get("oveofizrvjfnmj"));
         Assertions.assertEquals(Action.ALLOW, model.ruleProperties().action());
-        Assertions.assertEquals("lc", model.ruleProperties().addressList().get(0));
-        Assertions.assertEquals("tuujwouh", model.annotation());
+        Assertions.assertEquals("moichdlpnfpubntn", model.ruleProperties().addressList().get(0));
+        Assertions.assertEquals("lizrzbjpsfxsfuz", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayRuleInner model = new InternetGatewayRuleInner().withLocation("wsigrbjbxsj")
-            .withTags(mapOf("vqkjyaznu", "i", "lv", "tggmuwdchozfnkfe", "oaiknaqlnuwig", "noakiz"))
-            .withRuleProperties(new RuleProperties().withAction(Action.ALLOW).withAddressList(Arrays.asList("lc")))
-            .withAnnotation("tuujwouh");
+        InternetGatewayRuleInner model = new InternetGatewayRuleInner().withLocation("vtmva")
+            .withTags(mapOf("oveofizrvjfnmj", "idqlvhu"))
+            .withRuleProperties(new RuleProperties().withAction(Action.ALLOW)
+                .withAddressList(Arrays.asList("moichdlpnfpubntn", "atzviqsowsaael")))
+            .withAnnotation("lizrzbjpsfxsfuz");
         model = BinaryData.fromObject(model).toObject(InternetGatewayRuleInner.class);
-        Assertions.assertEquals("wsigrbjbxsj", model.location());
-        Assertions.assertEquals("i", model.tags().get("vqkjyaznu"));
+        Assertions.assertEquals("vtmva", model.location());
+        Assertions.assertEquals("idqlvhu", model.tags().get("oveofizrvjfnmj"));
         Assertions.assertEquals(Action.ALLOW, model.ruleProperties().action());
-        Assertions.assertEquals("lc", model.ruleProperties().addressList().get(0));
-        Assertions.assertEquals("tuujwouh", model.annotation());
+        Assertions.assertEquals("moichdlpnfpubntn", model.ruleProperties().addressList().get(0));
+        Assertions.assertEquals("lizrzbjpsfxsfuz", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

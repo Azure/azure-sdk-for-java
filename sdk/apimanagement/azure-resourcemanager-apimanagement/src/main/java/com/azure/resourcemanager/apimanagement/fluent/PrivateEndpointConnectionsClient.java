@@ -16,25 +16,27 @@ import com.azure.resourcemanager.apimanagement.fluent.models.PrivateLinkResource
 import com.azure.resourcemanager.apimanagement.fluent.models.PrivateLinkResourceListResultInner;
 import com.azure.resourcemanager.apimanagement.models.PrivateEndpointConnectionRequest;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * Lists all private endpoint connections of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of private endpoint connection associated with the specified storage account as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> listByService(String resourceGroupName, String serviceName);
 
     /**
      * Lists all private endpoint connections of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -42,7 +44,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of private endpoint connection associated with the specified storage account as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> listByService(String resourceGroupName, String serviceName,
@@ -50,7 +52,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the details of the Private Endpoint Connection specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -66,7 +68,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the details of the Private Endpoint Connection specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -81,11 +83,11 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Creates a new Private Endpoint Connection or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointConnectionRequest A request to approve or reject a private endpoint connection.
+     * @param privateEndpointConnectionRequest The privateEndpointConnectionRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -98,11 +100,11 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Creates a new Private Endpoint Connection or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointConnectionRequest A request to approve or reject a private endpoint connection.
+     * @param privateEndpointConnectionRequest The privateEndpointConnectionRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -116,11 +118,11 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Creates a new Private Endpoint Connection or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointConnectionRequest A request to approve or reject a private endpoint connection.
+     * @param privateEndpointConnectionRequest The privateEndpointConnectionRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -132,11 +134,11 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Creates a new Private Endpoint Connection or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointConnectionRequest A request to approve or reject a private endpoint connection.
+     * @param privateEndpointConnectionRequest The privateEndpointConnectionRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -150,7 +152,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes the specified Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -165,7 +167,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes the specified Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -181,7 +183,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes the specified Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -194,7 +196,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes the specified Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -208,7 +210,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -223,7 +225,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +238,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateLinkSubResourceName Name of the private link resource.
@@ -252,7 +254,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param privateLinkSubResourceName Name of the private link resource.

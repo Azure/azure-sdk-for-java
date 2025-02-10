@@ -199,9 +199,10 @@ public final class BareMetalMachineKeySetImpl
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.bareMetalMachineKeySetName = Utils.getValueFromIdByName(innerObject.id(), "bareMetalMachineKeySets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.bareMetalMachineKeySetName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bareMetalMachineKeySets");
     }
 
     public BareMetalMachineKeySet refresh() {

@@ -6,7 +6,11 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,11 +18,11 @@ import java.util.List;
  * on the bare metal machine.
  */
 @Fluent
-public final class BareMetalMachineRunReadCommandsParameters {
+public final class BareMetalMachineRunReadCommandsParameters
+    implements JsonSerializable<BareMetalMachineRunReadCommandsParameters> {
     /*
      * The list of read-only commands to be executed directly against the target machine.
      */
-    @JsonProperty(value = "commands", required = true)
     private List<BareMetalMachineCommandSpecification> commands;
 
     /*
@@ -26,16 +30,17 @@ public final class BareMetalMachineRunReadCommandsParameters {
      * If the execution time exceeds the maximum, the script will be stopped, any output produced until then will be
      * captured, and the exit code matching a timeout will be returned (252).
      */
-    @JsonProperty(value = "limitTimeSeconds", required = true)
     private long limitTimeSeconds;
 
-    /** Creates an instance of BareMetalMachineRunReadCommandsParameters class. */
+    /**
+     * Creates an instance of BareMetalMachineRunReadCommandsParameters class.
+     */
     public BareMetalMachineRunReadCommandsParameters() {
     }
 
     /**
      * Get the commands property: The list of read-only commands to be executed directly against the target machine.
-     *
+     * 
      * @return the commands value.
      */
     public List<BareMetalMachineCommandSpecification> commands() {
@@ -44,7 +49,7 @@ public final class BareMetalMachineRunReadCommandsParameters {
 
     /**
      * Set the commands property: The list of read-only commands to be executed directly against the target machine.
-     *
+     * 
      * @param commands the commands value to set.
      * @return the BareMetalMachineRunReadCommandsParameters object itself.
      */
@@ -54,10 +59,10 @@ public final class BareMetalMachineRunReadCommandsParameters {
     }
 
     /**
-     * Get the limitTimeSeconds property: The maximum time the commands are allowed to run. If the execution time
-     * exceeds the maximum, the script will be stopped, any output produced until then will be captured, and the exit
-     * code matching a timeout will be returned (252).
-     *
+     * Get the limitTimeSeconds property: The maximum time the commands are allowed to run.
+     * If the execution time exceeds the maximum, the script will be stopped, any output produced until then will be
+     * captured, and the exit code matching a timeout will be returned (252).
+     * 
      * @return the limitTimeSeconds value.
      */
     public long limitTimeSeconds() {
@@ -65,10 +70,10 @@ public final class BareMetalMachineRunReadCommandsParameters {
     }
 
     /**
-     * Set the limitTimeSeconds property: The maximum time the commands are allowed to run. If the execution time
-     * exceeds the maximum, the script will be stopped, any output produced until then will be captured, and the exit
-     * code matching a timeout will be returned (252).
-     *
+     * Set the limitTimeSeconds property: The maximum time the commands are allowed to run.
+     * If the execution time exceeds the maximum, the script will be stopped, any output produced until then will be
+     * captured, and the exit code matching a timeout will be returned (252).
+     * 
      * @param limitTimeSeconds the limitTimeSeconds value to set.
      * @return the BareMetalMachineRunReadCommandsParameters object itself.
      */
@@ -79,17 +84,61 @@ public final class BareMetalMachineRunReadCommandsParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (commands() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property commands in model BareMetalMachineRunReadCommandsParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property commands in model BareMetalMachineRunReadCommandsParameters"));
         } else {
             commands().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BareMetalMachineRunReadCommandsParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("commands", this.commands, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeLongField("limitTimeSeconds", this.limitTimeSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BareMetalMachineRunReadCommandsParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BareMetalMachineRunReadCommandsParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BareMetalMachineRunReadCommandsParameters.
+     */
+    public static BareMetalMachineRunReadCommandsParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BareMetalMachineRunReadCommandsParameters deserializedBareMetalMachineRunReadCommandsParameters
+                = new BareMetalMachineRunReadCommandsParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commands".equals(fieldName)) {
+                    List<BareMetalMachineCommandSpecification> commands
+                        = reader.readArray(reader1 -> BareMetalMachineCommandSpecification.fromJson(reader1));
+                    deserializedBareMetalMachineRunReadCommandsParameters.commands = commands;
+                } else if ("limitTimeSeconds".equals(fieldName)) {
+                    deserializedBareMetalMachineRunReadCommandsParameters.limitTimeSeconds = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBareMetalMachineRunReadCommandsParameters;
+        });
+    }
 }

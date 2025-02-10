@@ -151,10 +151,10 @@ public final class AttachedDatabaseConfigurationImpl implements AttachedDatabase
         com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
         this.attachedDatabaseConfigurationName
-            = Utils.getValueFromIdByName(innerObject.id(), "attachedDatabaseConfigurations");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "attachedDatabaseConfigurations");
     }
 
     public AttachedDatabaseConfiguration refresh() {

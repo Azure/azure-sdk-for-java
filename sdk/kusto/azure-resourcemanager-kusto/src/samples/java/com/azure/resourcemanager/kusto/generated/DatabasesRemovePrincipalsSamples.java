@@ -10,48 +10,41 @@ import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalType;
 import java.util.Arrays;
 
-/** Samples for Databases RemovePrincipals. */
+/**
+ * Samples for Databases RemovePrincipals.
+ */
 public final class DatabasesRemovePrincipalsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabaseRemovePrincipals.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabaseRemovePrincipals.json
      */
     /**
      * Sample code: KustoDatabaseRemovePrincipals.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabaseRemovePrincipals(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
-            .removePrincipalsWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                new DatabasePrincipalListRequest()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new DatabasePrincipalInner()
-                                    .withRole(DatabasePrincipalRole.ADMIN)
-                                    .withName("Some User")
-                                    .withType(DatabasePrincipalType.USER)
-                                    .withFqn("aaduser=some_guid")
-                                    .withEmail("user@microsoft.com")
-                                    .withAppId(""),
-                                new DatabasePrincipalInner()
-                                    .withRole(DatabasePrincipalRole.VIEWER)
-                                    .withName("Kusto")
-                                    .withType(DatabasePrincipalType.GROUP)
-                                    .withFqn("aadgroup=some_guid")
-                                    .withEmail("kusto@microsoft.com")
-                                    .withAppId(""),
-                                new DatabasePrincipalInner()
-                                    .withRole(DatabasePrincipalRole.ADMIN)
-                                    .withName("SomeApp")
-                                    .withType(DatabasePrincipalType.APP)
-                                    .withFqn("aadapp=some_guid_app_id")
-                                    .withEmail("")
-                                    .withAppId("some_guid_app_id"))),
+        manager.databases()
+            .removePrincipalsWithResponse("kustorptest", "kustoCluster", "KustoDatabase8",
+                new DatabasePrincipalListRequest().withValue(Arrays.asList(
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.ADMIN)
+                        .withName("Some User")
+                        .withType(DatabasePrincipalType.USER)
+                        .withFqn("aaduser=some_guid")
+                        .withEmail("user@microsoft.com")
+                        .withAppId(""),
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.VIEWER)
+                        .withName("Kusto")
+                        .withType(DatabasePrincipalType.GROUP)
+                        .withFqn("aadgroup=some_guid")
+                        .withEmail("kusto@microsoft.com")
+                        .withAppId(""),
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.ADMIN)
+                        .withName("SomeApp")
+                        .withType(DatabasePrincipalType.APP)
+                        .withFqn("aadapp=some_guid_app_id")
+                        .withEmail("")
+                        .withAppId("some_guid_app_id"))),
                 com.azure.core.util.Context.NONE);
     }
 }

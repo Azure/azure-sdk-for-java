@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.datadog.generated;
 
-/** Samples for Monitors List. */
+/**
+ * Samples for Monitors List.
+ */
 public final class MonitorsListSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_List.json
+     * x-ms-original-file:
+     * specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_List.json
      */
     /**
      * Sample code: Monitors_List.
-     *
+     * 
      * @param manager Entry point to MicrosoftDatadogManager.
      */
     public static void monitorsList(com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {

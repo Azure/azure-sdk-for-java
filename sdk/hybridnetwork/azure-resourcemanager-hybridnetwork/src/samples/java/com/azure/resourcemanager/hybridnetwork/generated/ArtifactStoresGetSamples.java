@@ -19,7 +19,7 @@ public final class ArtifactStoresGetSamples {
      * @param manager Entry point to HybridNetworkManager.
      */
     public static void getAArtifactStoreResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.artifactStores().getWithResponse("rg", "TestPublisher", "TestArtifactStoreName",
-            com.azure.core.util.Context.NONE);
+        manager.artifactStores()
+            .getWithResponse("rg", "TestPublisher", "TestArtifactStoreName", com.azure.core.util.Context.NONE);
     }
 }

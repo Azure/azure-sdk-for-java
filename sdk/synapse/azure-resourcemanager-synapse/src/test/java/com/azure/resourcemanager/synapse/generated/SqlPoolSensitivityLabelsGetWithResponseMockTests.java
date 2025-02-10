@@ -23,7 +23,7 @@ public final class SqlPoolSensitivityLabelsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"schemaName\":\"ejtpjfoj\",\"tableName\":\"nrlshx\",\"columnName\":\"nsy\",\"labelName\":\"toiboancdr\",\"labelId\":\"anvxuldxonckb\",\"informationType\":\"blfxlupibaqzi\",\"informationTypeId\":\"zpzwegh\",\"isDisabled\":true,\"rank\":\"Critical\"},\"managedBy\":\"vgfklqiyndveqe\",\"id\":\"sbfvdstrkzxsgtzn\",\"name\":\"vlrdsmovpi\",\"type\":\"y\"}";
+            = "{\"properties\":{\"schemaName\":\"sx\",\"tableName\":\"d\",\"columnName\":\"wuyqaeo\",\"labelName\":\"jh\",\"labelId\":\"jkbvhhdaurgho\",\"informationType\":\"aexbkhxjxjo\",\"informationTypeId\":\"lqxr\",\"isDisabled\":false,\"rank\":\"None\"},\"managedBy\":\"bekt\",\"id\":\"b\",\"name\":\"z\",\"type\":\"m\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class SqlPoolSensitivityLabelsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SensitivityLabel response = manager.sqlPoolSensitivityLabels()
-            .getWithResponse("izekuvfrj", "ucaonz", "ajbvbn", "rdemdidack", "idgzwdydamis", "pztdivyk",
-                SensitivityLabelSource.RECOMMENDED, com.azure.core.util.Context.NONE)
+            .getWithResponse("zwx", "yxhighc", "xb", "molpcqyde", "kvskiczdfrjei", "ikgqaboohxbms",
+                SensitivityLabelSource.CURRENT, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("toiboancdr", response.labelName());
-        Assertions.assertEquals("anvxuldxonckb", response.labelId());
-        Assertions.assertEquals("blfxlupibaqzi", response.informationType());
-        Assertions.assertEquals("zpzwegh", response.informationTypeId());
-        Assertions.assertEquals(SensitivityLabelRank.CRITICAL, response.rank());
+        Assertions.assertEquals("jh", response.labelName());
+        Assertions.assertEquals("jkbvhhdaurgho", response.labelId());
+        Assertions.assertEquals("aexbkhxjxjo", response.informationType());
+        Assertions.assertEquals("lqxr", response.informationTypeId());
+        Assertions.assertEquals(SensitivityLabelRank.NONE, response.rank());
     }
 }

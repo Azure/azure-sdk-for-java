@@ -20,18 +20,34 @@ public interface ExpressRouteCircuit extends GroupableResource<NetworkManager, E
 
     // Actions
 
-    /** @return entry point to manage express route peerings associated with express route circuit */
+    /**
+     * Gets entry point to manage express route peerings associated with express route circuit.
+     *
+     * @return entry point to manage express route peerings associated with express route circuit
+     */
     ExpressRouteCircuitPeerings peerings();
 
     // Getters
 
-    /** @return the SKU type */
+    /**
+     * Gets the SKU type.
+     *
+     * @return the SKU type
+     */
     ExpressRouteCircuitSkuType sku();
 
-    /** @return the flag indicating if classic operations allowed */
+    /**
+     * Checks whether classic operations allowed.
+     *
+     * @return the flag indicating if classic operations allowed
+     */
     boolean isAllowClassicOperations();
 
-    /** @return the CircuitProvisioningState state of the resource */
+    /**
+     * Gets the CircuitProvisioningState state of the resource.
+     *
+     * @return the CircuitProvisioningState state of the resource
+     */
     String circuitProvisioningState();
 
     /**
@@ -41,16 +57,32 @@ public interface ExpressRouteCircuit extends GroupableResource<NetworkManager, E
      */
     ServiceProviderProvisioningState serviceProviderProvisioningState();
 
-    /** @return the peerings associated with this express route circuit, indexed by name */
+    /**
+     * Gets the peerings associated with this express route circuit.
+     *
+     * @return the peerings associated with this express route circuit, indexed by name
+     */
     Map<String, ExpressRouteCircuitPeering> peeringsMap();
 
-    /** @return the ServiceKey */
+    /**
+     * gets the service key.
+     *
+     * @return the ServiceKey
+     */
     String serviceKey();
 
-    /** @return the ServiceProviderNotes */
+    /**
+     * Gets the service provider notes.
+     *
+     * @return the ServiceProviderNotes
+     */
     String serviceProviderNotes();
 
-    /** @return the ServiceProviderProperties */
+    /**
+     * Gets the service provider properties.
+     *
+     * @return the ServiceProviderProperties
+     */
     ExpressRouteCircuitServiceProviderProperties serviceProviderProperties();
 
     /**

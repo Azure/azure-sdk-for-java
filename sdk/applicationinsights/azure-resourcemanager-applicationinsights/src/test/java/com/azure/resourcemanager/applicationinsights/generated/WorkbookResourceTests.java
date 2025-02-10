@@ -18,29 +18,33 @@ public final class WorkbookResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbookResource model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"b7deb4ee-efa9-46c9-8c77-7a9290d6e3d7\",\"tenantId\":\"5f85f425-298e-477d-9cf5-2db2e1840718\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"k\":{\"principalId\":\"607bf139-ac9a-4744-b8bd-146929c27749\",\"clientId\":\"8700282f-6aac-4911-bd44-095729a39ac6\"}}},\"kind\":\"shared\",\"etag\":\"jervtia\",\"location\":\"xsdszuempsb\",\"tags\":{\"eyvpnqicvinvkj\":\"z\"},\"id\":\"xdxr\",\"name\":\"uukzclewyhmlw\",\"type\":\"aztz\"}")
+            "{\"identity\":{\"principalId\":\"ffc3fd0a-b0ab-419a-b66c-a4f3599a248a\",\"tenantId\":\"c4ded780-aac6-4067-b0aa-2ed81a3a17f9\",\"type\":\"None\",\"userAssignedIdentities\":{\"tmmjihyeozph\":{\"principalId\":\"c353e8eb-a8ee-47f1-9558-5981fd99bf30\",\"clientId\":\"3d116020-6909-40fe-b79f-7c830e7bf74c\"},\"uyqncygupkvipmd\":{\"principalId\":\"a65e6d26-ff07-43c2-a66a-763f522c1db1\",\"clientId\":\"1884e2a7-250a-4de1-bf20-f7e4bddd7fc4\"},\"xqupevzhf\":{\"principalId\":\"8dd97920-f0ce-4ef9-86c2-a8d86a8ed1ed\",\"clientId\":\"78a2588c-f63d-4254-b7c3-c4c0d19ec431\"},\"txhojujb\":{\"principalId\":\"af289ddd-cb9f-4e84-aaab-8814469f73d6\",\"clientId\":\"8d61e937-ab1e-4726-b2db-71b33b74db26\"}}},\"kind\":\"shared\",\"etag\":\"mc\",\"location\":\"vhixbjxy\",\"tags\":{\"coolsttpkiwkkb\":\"yl\"},\"id\":\"ujrywvtyl\",\"name\":\"fpncurdo\",\"type\":\"wiithtywub\"}")
             .toObject(WorkbookResource.class);
-        Assertions.assertEquals("xsdszuempsb", model.location());
-        Assertions.assertEquals("z", model.tags().get("eyvpnqicvinvkj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("vhixbjxy", model.location());
+        Assertions.assertEquals("yl", model.tags().get("coolsttpkiwkkb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals(WorkbookSharedTypeKind.SHARED, model.kind());
-        Assertions.assertEquals("jervtia", model.etag());
+        Assertions.assertEquals("mc", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookResource model = new WorkbookResource().withLocation("xsdszuempsb")
-            .withTags(mapOf("eyvpnqicvinvkj", "z"))
-            .withIdentity(new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("k", new UserAssignedIdentity())))
-            .withKind(WorkbookSharedTypeKind.SHARED)
-            .withEtag("jervtia");
+        WorkbookResource model
+            = new WorkbookResource().withLocation("vhixbjxy")
+                .withTags(mapOf("coolsttpkiwkkb", "yl"))
+                .withIdentity(
+                    new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.NONE)
+                        .withUserAssignedIdentities(mapOf("tmmjihyeozph", new UserAssignedIdentity(), "uyqncygupkvipmd",
+                            new UserAssignedIdentity(), "xqupevzhf", new UserAssignedIdentity(), "txhojujb",
+                            new UserAssignedIdentity())))
+                .withKind(WorkbookSharedTypeKind.SHARED)
+                .withEtag("mc");
         model = BinaryData.fromObject(model).toObject(WorkbookResource.class);
-        Assertions.assertEquals("xsdszuempsb", model.location());
-        Assertions.assertEquals("z", model.tags().get("eyvpnqicvinvkj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("vhixbjxy", model.location());
+        Assertions.assertEquals("yl", model.tags().get("coolsttpkiwkkb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals(WorkbookSharedTypeKind.SHARED, model.kind());
-        Assertions.assertEquals("jervtia", model.etag());
+        Assertions.assertEquals("mc", model.etag());
     }
 
     // Use "Map.of" if available

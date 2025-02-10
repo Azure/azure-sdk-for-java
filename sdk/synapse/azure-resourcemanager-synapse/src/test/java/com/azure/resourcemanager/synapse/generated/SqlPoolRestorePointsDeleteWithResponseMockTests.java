@@ -28,7 +28,8 @@ public final class SqlPoolRestorePointsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sqlPoolRestorePoints()
-            .deleteWithResponse("ytlbtlqhopxouvm", "siflikyypzkgxf", "fmy", "qsdb", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("fruwkud", "bcpftxudqyemebun", "ucmci", "tneemmjauwcgxef",
+                com.azure.core.util.Context.NONE);
 
     }
 }

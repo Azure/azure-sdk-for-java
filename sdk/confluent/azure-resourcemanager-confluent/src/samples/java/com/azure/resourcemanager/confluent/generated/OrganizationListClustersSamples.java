@@ -19,7 +19,7 @@ public final class OrganizationListClustersSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationListClusters(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().listClusters("myResourceGroup", "myOrganization", "env-12132", 10, null,
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .listClusters("myResourceGroup", "myOrganization", "env-12132", 10, null, com.azure.core.util.Context.NONE);
     }
 }

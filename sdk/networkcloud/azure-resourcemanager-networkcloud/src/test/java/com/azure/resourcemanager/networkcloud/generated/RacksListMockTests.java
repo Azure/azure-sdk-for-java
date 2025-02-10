@@ -6,45 +6,26 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.Rack;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class RacksListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"ukhk\",\"type\":\"cqx\"},\"properties\":{\"availabilityZone\":\"cbvzarmqcb\",\"clusterId\":\"kst\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"agovjy\",\"provisioningState\":\"Provisioning\",\"rackLocation\":\"xbrdvcehqwh\",\"rackSerialNumber\":\"txnmxgnmguz\",\"rackSkuId\":\"uwvorbalkjn\"},\"location\":\"bdhlltq\",\"tags\":{\"xiynecovagzk\":\"kqsy\",\"qiawzl\":\"eubanlxunpqcc\",\"izuxlrarwpewsaud\":\"klaslga\",\"sx\":\"ejtig\"},\"id\":\"pytn\",\"name\":\"qbalahovuuwxhme\",\"type\":\"jnhj\"}]}";
+            = "{\"value\":[{\"extendedLocation\":{\"name\":\"xzvsgeafgf\",\"type\":\"sehxlzsxezp\"},\"properties\":{\"availabilityZone\":\"kkwa\",\"clusterId\":\"skyfjlpzeqto\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"ixlajmllpquevham\",\"provisioningState\":\"Provisioning\",\"rackLocation\":\"gwb\",\"rackSerialNumber\":\"mkekxpkzwaqxo\",\"rackSkuId\":\"qovchiqbp\"},\"location\":\"fidusztekxbyjgm\",\"tags\":{\"rdi\":\"pxyihpqadagr\"},\"id\":\"x\",\"name\":\"wyjfowxwyovcxjs\",\"type\":\"bi\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
@@ -52,13 +33,13 @@ public final class RacksListMockTests {
 
         PagedIterable<Rack> response = manager.racks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bdhlltq", response.iterator().next().location());
-        Assertions.assertEquals("kqsy", response.iterator().next().tags().get("xiynecovagzk"));
-        Assertions.assertEquals("ukhk", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("cqx", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("cbvzarmqcb", response.iterator().next().availabilityZone());
-        Assertions.assertEquals("xbrdvcehqwh", response.iterator().next().rackLocation());
-        Assertions.assertEquals("txnmxgnmguz", response.iterator().next().rackSerialNumber());
-        Assertions.assertEquals("uwvorbalkjn", response.iterator().next().rackSkuId());
+        Assertions.assertEquals("fidusztekxbyjgm", response.iterator().next().location());
+        Assertions.assertEquals("pxyihpqadagr", response.iterator().next().tags().get("rdi"));
+        Assertions.assertEquals("xzvsgeafgf", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("sehxlzsxezp", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("kkwa", response.iterator().next().availabilityZone());
+        Assertions.assertEquals("gwb", response.iterator().next().rackLocation());
+        Assertions.assertEquals("mkekxpkzwaqxo", response.iterator().next().rackSerialNumber());
+        Assertions.assertEquals("qovchiqbp", response.iterator().next().rackSkuId());
     }
 }

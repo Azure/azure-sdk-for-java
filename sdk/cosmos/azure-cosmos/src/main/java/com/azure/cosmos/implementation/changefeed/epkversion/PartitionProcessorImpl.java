@@ -119,8 +119,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 return this.documentClient.createDocumentChangeFeedQuery(
                         this.settings.getCollectionSelfLink(),
                         this.options,
-                        itemType)
-                    .limitRequest(1);
+                        itemType);
             })
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
@@ -154,16 +153,24 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         });
                 } else {
                     // still need to checkpoint with the new continuation token
-                    this.checkpointer.checkpointPartition(continuationState).block();
+                    return this.checkpointer.checkpointPartition(continuationState)
+                        .doOnError(throwable -> {
+                            logger.debug(
+                                "Failed to checkpoint Lease with token {} from thread {}",
+                                this.lease.getLeaseToken(),
+                                Thread.currentThread().getId(),
+                                throwable);
+                        })
+                        .flatMap(lease -> {
+                            this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
+                            if (cancellationToken.isCancellationRequested()) {
+                                return Mono.error(new TaskCancelledException());
+                            }
+
+
+                            return Mono.empty();
+                        });
                 }
-
-                this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
-
-                if (cancellationToken.isCancellationRequested()) {
-                    return Flux.error(new TaskCancelledException());
-                }
-
-                return Flux.empty();
             })
             .doOnComplete(() -> {
                 if (this.options.getMaxItemCount() != this.settings.getMaxItemCount()) {

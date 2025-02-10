@@ -47,14 +47,13 @@
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
-    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-xml</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-xml;dependency} -->
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-xml;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

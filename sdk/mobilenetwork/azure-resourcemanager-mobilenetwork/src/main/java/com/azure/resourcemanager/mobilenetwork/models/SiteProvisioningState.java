@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class SiteProvisioningState extends ExpandableStringEnum<SiteProvis
      * @param name a name to look for.
      * @return the corresponding SiteProvisioningState.
      */
-    @JsonCreator
     public static SiteProvisioningState fromString(String name) {
         return fromString(name, SiteProvisioningState.class);
     }

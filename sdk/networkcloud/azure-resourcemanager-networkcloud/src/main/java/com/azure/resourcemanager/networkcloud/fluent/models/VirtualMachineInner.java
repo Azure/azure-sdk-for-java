@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
@@ -21,45 +24,54 @@ import com.azure.resourcemanager.networkcloud.models.VirtualMachinePlacementHint
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerState;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineVirtioInterfaceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** VirtualMachine represents the on-premises Network Cloud virtual machine. */
+/**
+ * VirtualMachine represents the on-premises Network Cloud virtual machine.
+ */
 @Fluent
 public final class VirtualMachineInner extends Resource {
     /*
-     * ExtendedLocation represents the Azure custom location where the resource will be created.
-     *
      * The extended location of the cluster associated with the resource.
      */
-    @JsonProperty(value = "extendedLocation", required = true)
     private ExtendedLocation extendedLocation;
 
     /*
-     * VirtualMachineProperties represents the properties of the virtual machine.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private VirtualMachineProperties innerProperties = new VirtualMachineProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of VirtualMachineInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VirtualMachineInner class.
+     */
     public VirtualMachineInner() {
     }
 
     /**
-     * Get the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Get the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -67,11 +79,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Set the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -81,10 +90,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: VirtualMachineProperties represents the properties of the virtual machine.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineProperties innerProperties() {
@@ -93,21 +100,55 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -117,7 +158,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Get the adminUsername property: The name of the administrator to which the ssh public keys will be added into the
      * authorized keys.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -127,7 +168,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Set the adminUsername property: The name of the administrator to which the ssh public keys will be added into the
      * authorized keys.
-     *
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -141,7 +182,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the availabilityZone property: The cluster availability zone containing this virtual machine.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -149,8 +190,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the bareMetalMachineId property: The resource ID of the bare metal machine the virtual machine has landed to.
-     *
+     * Get the bareMetalMachineId property: The resource ID of the bare metal machine that hosts the virtual machine.
+     * 
      * @return the bareMetalMachineId value.
      */
     public String bareMetalMachineId() {
@@ -159,7 +200,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the bootMethod property: Selects the boot method for the virtual machine.
-     *
+     * 
      * @return the bootMethod value.
      */
     public VirtualMachineBootMethod bootMethod() {
@@ -168,7 +209,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Set the bootMethod property: Selects the boot method for the virtual machine.
-     *
+     * 
      * @param bootMethod the bootMethod value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -181,10 +222,9 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the cloudServicesNetworkAttachment property: NetworkAttachment represents the single network attachment.
-     *
-     * <p>The cloud service network that provides platform-level services for the virtual machine.
-     *
+     * Get the cloudServicesNetworkAttachment property: The cloud service network that provides platform-level services
+     * for the virtual machine.
+     * 
      * @return the cloudServicesNetworkAttachment value.
      */
     public NetworkAttachment cloudServicesNetworkAttachment() {
@@ -192,10 +232,9 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the cloudServicesNetworkAttachment property: NetworkAttachment represents the single network attachment.
-     *
-     * <p>The cloud service network that provides platform-level services for the virtual machine.
-     *
+     * Set the cloudServicesNetworkAttachment property: The cloud service network that provides platform-level services
+     * for the virtual machine.
+     * 
      * @param cloudServicesNetworkAttachment the cloudServicesNetworkAttachment value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -209,7 +248,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the clusterId property: The resource ID of the cluster the virtual machine is created for.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -218,7 +257,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the cpuCores property: The number of CPU cores in the virtual machine.
-     *
+     * 
      * @return the cpuCores value.
      */
     public long cpuCores() {
@@ -227,7 +266,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Set the cpuCores property: The number of CPU cores in the virtual machine.
-     *
+     * 
      * @param cpuCores the cpuCores value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -241,7 +280,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the detailedStatus property: The more detailed status of the virtual machine.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public VirtualMachineDetailedStatus detailedStatus() {
@@ -250,7 +289,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -260,7 +299,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Get the isolateEmulatorThread property: Field Deprecated, the value will be ignored if provided. The indicator of
      * whether one of the specified CPU cores is isolated to run the emulator thread for this virtual machine.
-     *
+     * 
      * @return the isolateEmulatorThread value.
      */
     public VirtualMachineIsolateEmulatorThread isolateEmulatorThread() {
@@ -270,7 +309,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Set the isolateEmulatorThread property: Field Deprecated, the value will be ignored if provided. The indicator of
      * whether one of the specified CPU cores is isolated to run the emulator thread for this virtual machine.
-     *
+     * 
      * @param isolateEmulatorThread the isolateEmulatorThread value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -283,8 +322,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the memorySizeGB property: The memory size of the virtual machine in GB.
-     *
+     * Get the memorySizeGB property: The memory size of the virtual machine. Allocations are measured in gibibytes.
+     * 
      * @return the memorySizeGB value.
      */
     public long memorySizeGB() {
@@ -292,8 +331,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the memorySizeGB property: The memory size of the virtual machine in GB.
-     *
+     * Set the memorySizeGB property: The memory size of the virtual machine. Allocations are measured in gibibytes.
+     * 
      * @param memorySizeGB the memorySizeGB value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -307,7 +346,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the networkAttachments property: The list of network attachments to the virtual machine.
-     *
+     * 
      * @return the networkAttachments value.
      */
     public List<NetworkAttachment> networkAttachments() {
@@ -316,7 +355,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Set the networkAttachments property: The list of network attachments to the virtual machine.
-     *
+     * 
      * @param networkAttachments the networkAttachments value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -330,7 +369,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the networkData property: The Base64 encoded cloud-init network data.
-     *
+     * 
      * @return the networkData value.
      */
     public String networkData() {
@@ -339,7 +378,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Set the networkData property: The Base64 encoded cloud-init network data.
-     *
+     * 
      * @param networkData the networkData value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -353,7 +392,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the placementHints property: The scheduling hints for the virtual machine.
-     *
+     * 
      * @return the placementHints value.
      */
     public List<VirtualMachinePlacementHint> placementHints() {
@@ -362,7 +401,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Set the placementHints property: The scheduling hints for the virtual machine.
-     *
+     * 
      * @param placementHints the placementHints value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -376,7 +415,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the powerState property: The power state of the virtual machine.
-     *
+     * 
      * @return the powerState value.
      */
     public VirtualMachinePowerState powerState() {
@@ -385,7 +424,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual machine.
-     *
+     * 
      * @return the provisioningState value.
      */
     public VirtualMachineProvisioningState provisioningState() {
@@ -395,7 +434,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Get the sshPublicKeys property: The list of ssh public keys. Each key will be added to the virtual machine using
      * the cloud-init ssh_authorized_keys mechanism for the adminUsername.
-     *
+     * 
      * @return the sshPublicKeys value.
      */
     public List<SshPublicKey> sshPublicKeys() {
@@ -405,7 +444,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Set the sshPublicKeys property: The list of ssh public keys. Each key will be added to the virtual machine using
      * the cloud-init ssh_authorized_keys mechanism for the adminUsername.
-     *
+     * 
      * @param sshPublicKeys the sshPublicKeys value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -418,10 +457,9 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the storageProfile property: StorageProfile represents information about a disk.
-     *
-     * <p>The storage profile that specifies size and other parameters about the disks related to the virtual machine.
-     *
+     * Get the storageProfile property: The storage profile that specifies size and other parameters about the disks
+     * related to the virtual machine.
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -429,10 +467,9 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the storageProfile property: StorageProfile represents information about a disk.
-     *
-     * <p>The storage profile that specifies size and other parameters about the disks related to the virtual machine.
-     *
+     * Set the storageProfile property: The storage profile that specifies size and other parameters about the disks
+     * related to the virtual machine.
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -446,7 +483,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the userData property: The Base64 encoded cloud-init user data.
-     *
+     * 
      * @return the userData value.
      */
     public String userData() {
@@ -455,7 +492,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Set the userData property: The Base64 encoded cloud-init user data.
-     *
+     * 
      * @param userData the userData value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -470,7 +507,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Get the virtioInterface property: Field Deprecated, use virtualizationModel instead. The type of the virtio
      * interface.
-     *
+     * 
      * @return the virtioInterface value.
      */
     public VirtualMachineVirtioInterfaceType virtioInterface() {
@@ -480,7 +517,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Set the virtioInterface property: Field Deprecated, use virtualizationModel instead. The type of the virtio
      * interface.
-     *
+     * 
      * @param virtioInterface the virtioInterface value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -494,7 +531,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the vmDeviceModel property: The type of the device model to use.
-     *
+     * 
      * @return the vmDeviceModel value.
      */
     public VirtualMachineDeviceModelType vmDeviceModel() {
@@ -503,7 +540,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Set the vmDeviceModel property: The type of the device model to use.
-     *
+     * 
      * @param vmDeviceModel the vmDeviceModel value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -518,7 +555,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Get the vmImage property: The virtual machine image that is currently provisioned to the OS disk, using the full
      * url and tag notation used to pull the image.
-     *
+     * 
      * @return the vmImage value.
      */
     public String vmImage() {
@@ -528,7 +565,7 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Set the vmImage property: The virtual machine image that is currently provisioned to the OS disk, using the full
      * url and tag notation used to pull the image.
-     *
+     * 
      * @param vmImage the vmImage value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -541,11 +578,9 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the vmImageRepositoryCredentials property: ImageRepositoryCredentials represents the credentials used to
-     * login to the image repository.
-     *
-     * <p>The credentials used to login to the image repository that has access to the specified image.
-     *
+     * Get the vmImageRepositoryCredentials property: The credentials used to login to the image repository that has
+     * access to the specified image.
+     * 
      * @return the vmImageRepositoryCredentials value.
      */
     public ImageRepositoryCredentials vmImageRepositoryCredentials() {
@@ -553,11 +588,9 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the vmImageRepositoryCredentials property: ImageRepositoryCredentials represents the credentials used to
-     * login to the image repository.
-     *
-     * <p>The credentials used to login to the image repository that has access to the specified image.
-     *
+     * Set the vmImageRepositoryCredentials property: The credentials used to login to the image repository that has
+     * access to the specified image.
+     * 
      * @param vmImageRepositoryCredentials the vmImageRepositoryCredentials value to set.
      * @return the VirtualMachineInner object itself.
      */
@@ -572,7 +605,7 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the volumes property: The resource IDs of volumes that are attached to the virtual machine.
-     *
+     * 
      * @return the volumes value.
      */
     public List<String> volumes() {
@@ -581,23 +614,80 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (extendedLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property extendedLocation in model VirtualMachineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property extendedLocation in model VirtualMachineInner"));
         } else {
             extendedLocation().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model VirtualMachineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VirtualMachineInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineInner.
+     */
+    public static VirtualMachineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInner deserializedVirtualMachineInner = new VirtualMachineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineInner.innerProperties = VirtualMachineProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVirtualMachineInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInner;
+        });
+    }
 }

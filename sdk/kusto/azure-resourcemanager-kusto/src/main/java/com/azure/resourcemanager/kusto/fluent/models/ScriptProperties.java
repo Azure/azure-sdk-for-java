@@ -5,58 +5,72 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.kusto.models.PrincipalPermissionsAction;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.kusto.models.ScriptLevel;
+import java.io.IOException;
 
-/** A class representing database script property. */
+/**
+ * A class representing database script property.
+ */
 @Fluent
-public final class ScriptProperties {
+public final class ScriptProperties implements JsonSerializable<ScriptProperties> {
     /*
      * The url to the KQL script blob file. Must not be used together with scriptContent property
      */
-    @JsonProperty(value = "scriptUrl")
     private String scriptUrl;
 
     /*
      * The SaS token that provide read access to the file which contain the script. Must be provided when using
      * scriptUrl property.
      */
-    @JsonProperty(value = "scriptUrlSasToken")
     private String scriptUrlSasToken;
 
     /*
      * The script content. This property should be used when the script is provide inline and not through file in a SA.
      * Must not be used together with scriptUrl and scriptUrlSasToken properties.
      */
-    @JsonProperty(value = "scriptContent")
     private String scriptContent;
 
     /*
      * A unique string. If changed the script will be applied again.
      */
-    @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
 
     /*
      * Flag that indicates whether to continue if one of the command fails.
      */
-    @JsonProperty(value = "continueOnErrors")
     private Boolean continueOnErrors;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ScriptProperties class. */
+    /*
+     * Differentiates between the type of script commands included - Database or Cluster. The default is Database.
+     */
+    private ScriptLevel scriptLevel;
+
+    /*
+     * Indicates if the permissions for the script caller are kept following completion of the script.
+     */
+    private PrincipalPermissionsAction principalPermissionsAction;
+
+    /**
+     * Creates an instance of ScriptProperties class.
+     */
     public ScriptProperties() {
     }
 
     /**
      * Get the scriptUrl property: The url to the KQL script blob file. Must not be used together with scriptContent
      * property.
-     *
+     * 
      * @return the scriptUrl value.
      */
     public String scriptUrl() {
@@ -66,7 +80,7 @@ public final class ScriptProperties {
     /**
      * Set the scriptUrl property: The url to the KQL script blob file. Must not be used together with scriptContent
      * property.
-     *
+     * 
      * @param scriptUrl the scriptUrl value to set.
      * @return the ScriptProperties object itself.
      */
@@ -78,7 +92,7 @@ public final class ScriptProperties {
     /**
      * Get the scriptUrlSasToken property: The SaS token that provide read access to the file which contain the script.
      * Must be provided when using scriptUrl property.
-     *
+     * 
      * @return the scriptUrlSasToken value.
      */
     public String scriptUrlSasToken() {
@@ -88,7 +102,7 @@ public final class ScriptProperties {
     /**
      * Set the scriptUrlSasToken property: The SaS token that provide read access to the file which contain the script.
      * Must be provided when using scriptUrl property.
-     *
+     * 
      * @param scriptUrlSasToken the scriptUrlSasToken value to set.
      * @return the ScriptProperties object itself.
      */
@@ -100,7 +114,7 @@ public final class ScriptProperties {
     /**
      * Get the scriptContent property: The script content. This property should be used when the script is provide
      * inline and not through file in a SA. Must not be used together with scriptUrl and scriptUrlSasToken properties.
-     *
+     * 
      * @return the scriptContent value.
      */
     public String scriptContent() {
@@ -110,7 +124,7 @@ public final class ScriptProperties {
     /**
      * Set the scriptContent property: The script content. This property should be used when the script is provide
      * inline and not through file in a SA. Must not be used together with scriptUrl and scriptUrlSasToken properties.
-     *
+     * 
      * @param scriptContent the scriptContent value to set.
      * @return the ScriptProperties object itself.
      */
@@ -121,7 +135,7 @@ public final class ScriptProperties {
 
     /**
      * Get the forceUpdateTag property: A unique string. If changed the script will be applied again.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -130,7 +144,7 @@ public final class ScriptProperties {
 
     /**
      * Set the forceUpdateTag property: A unique string. If changed the script will be applied again.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the ScriptProperties object itself.
      */
@@ -141,7 +155,7 @@ public final class ScriptProperties {
 
     /**
      * Get the continueOnErrors property: Flag that indicates whether to continue if one of the command fails.
-     *
+     * 
      * @return the continueOnErrors value.
      */
     public Boolean continueOnErrors() {
@@ -150,7 +164,7 @@ public final class ScriptProperties {
 
     /**
      * Set the continueOnErrors property: Flag that indicates whether to continue if one of the command fails.
-     *
+     * 
      * @param continueOnErrors the continueOnErrors value to set.
      * @return the ScriptProperties object itself.
      */
@@ -161,7 +175,7 @@ public final class ScriptProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -169,10 +183,112 @@ public final class ScriptProperties {
     }
 
     /**
+     * Get the scriptLevel property: Differentiates between the type of script commands included - Database or Cluster.
+     * The default is Database.
+     * 
+     * @return the scriptLevel value.
+     */
+    public ScriptLevel scriptLevel() {
+        return this.scriptLevel;
+    }
+
+    /**
+     * Set the scriptLevel property: Differentiates between the type of script commands included - Database or Cluster.
+     * The default is Database.
+     * 
+     * @param scriptLevel the scriptLevel value to set.
+     * @return the ScriptProperties object itself.
+     */
+    public ScriptProperties withScriptLevel(ScriptLevel scriptLevel) {
+        this.scriptLevel = scriptLevel;
+        return this;
+    }
+
+    /**
+     * Get the principalPermissionsAction property: Indicates if the permissions for the script caller are kept
+     * following completion of the script.
+     * 
+     * @return the principalPermissionsAction value.
+     */
+    public PrincipalPermissionsAction principalPermissionsAction() {
+        return this.principalPermissionsAction;
+    }
+
+    /**
+     * Set the principalPermissionsAction property: Indicates if the permissions for the script caller are kept
+     * following completion of the script.
+     * 
+     * @param principalPermissionsAction the principalPermissionsAction value to set.
+     * @return the ScriptProperties object itself.
+     */
+    public ScriptProperties withPrincipalPermissionsAction(PrincipalPermissionsAction principalPermissionsAction) {
+        this.principalPermissionsAction = principalPermissionsAction;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scriptUrl", this.scriptUrl);
+        jsonWriter.writeStringField("scriptUrlSasToken", this.scriptUrlSasToken);
+        jsonWriter.writeStringField("scriptContent", this.scriptContent);
+        jsonWriter.writeStringField("forceUpdateTag", this.forceUpdateTag);
+        jsonWriter.writeBooleanField("continueOnErrors", this.continueOnErrors);
+        jsonWriter.writeStringField("scriptLevel", this.scriptLevel == null ? null : this.scriptLevel.toString());
+        jsonWriter.writeStringField("principalPermissionsAction",
+            this.principalPermissionsAction == null ? null : this.principalPermissionsAction.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScriptProperties.
+     */
+    public static ScriptProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptProperties deserializedScriptProperties = new ScriptProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scriptUrl".equals(fieldName)) {
+                    deserializedScriptProperties.scriptUrl = reader.getString();
+                } else if ("scriptUrlSasToken".equals(fieldName)) {
+                    deserializedScriptProperties.scriptUrlSasToken = reader.getString();
+                } else if ("scriptContent".equals(fieldName)) {
+                    deserializedScriptProperties.scriptContent = reader.getString();
+                } else if ("forceUpdateTag".equals(fieldName)) {
+                    deserializedScriptProperties.forceUpdateTag = reader.getString();
+                } else if ("continueOnErrors".equals(fieldName)) {
+                    deserializedScriptProperties.continueOnErrors = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedScriptProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("scriptLevel".equals(fieldName)) {
+                    deserializedScriptProperties.scriptLevel = ScriptLevel.fromString(reader.getString());
+                } else if ("principalPermissionsAction".equals(fieldName)) {
+                    deserializedScriptProperties.principalPermissionsAction
+                        = PrincipalPermissionsAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptProperties;
+        });
     }
 }
