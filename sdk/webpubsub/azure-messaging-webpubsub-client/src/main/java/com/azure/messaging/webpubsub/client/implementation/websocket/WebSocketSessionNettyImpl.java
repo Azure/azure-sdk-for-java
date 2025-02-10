@@ -76,10 +76,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                 p.addLast(sslCtx.newHandler(ch.alloc(), host, port));
             }
 
-            p.addLast(
-                new HttpClientCodec(),
-                new HttpObjectAggregator(8192),
-                WebSocketClientCompressionHandler.INSTANCE,
+            p.addLast(new HttpClientCodec(), new HttpObjectAggregator(8192), WebSocketClientCompressionHandler.INSTANCE,
                 handler);
         }
     }

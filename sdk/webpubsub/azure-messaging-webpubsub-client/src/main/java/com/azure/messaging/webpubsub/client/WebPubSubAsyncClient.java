@@ -798,7 +798,8 @@ final class WebPubSubAsyncClient implements Closeable {
         } else {
             final ClientLogger log = loggerReference.get();
             if (log != null) {
-                log.atWarning().addKeyValue("type", webPubSubMessage.getClass())
+                log.atWarning()
+                    .addKeyValue("type", webPubSubMessage.getClass())
                     .addKeyValue("message", webPubSubMessage)
                     .log("Unknown message type. Skipping decode.");
             }
