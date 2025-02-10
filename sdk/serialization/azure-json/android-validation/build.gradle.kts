@@ -11,10 +11,8 @@ android {
         minSdk = 26
     }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
+    buildTypes.getByName("release") {
+        isMinifyEnabled = false
     }
 
     compileOptions {
@@ -28,16 +26,23 @@ android {
         checkAllWarnings = true
         warningsAsErrors = true
         targetSdk = 35
-        lintConfig = file("lint.xml")
+        lintConfig = file("../../../../android-validation/lint.xml")
     }
 
     sourceSets.getByName("main") {
         java.srcDir(file("../src/main/java"))
         java.exclude("module-info.java")
-        manifest.srcFile("AndroidManifest.xml")
+        manifest.srcFile("../../../../android-validation/AndroidManifest.xml")
     }
-    sourceSets.getByName("androidTest") {
-        setRoot("../src/androidTest")
+    sourceSets.getByName("test") {
+        setRoot("../src/test")
+    }
+
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+        testLogging {
+            events("skipped", "failed")
+        }
     }
 }
 
@@ -45,5 +50,5 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.2")
-    implementation("javax.xml.stream:stax-api:1.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

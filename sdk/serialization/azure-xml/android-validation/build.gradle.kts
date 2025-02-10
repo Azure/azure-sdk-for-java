@@ -11,10 +11,8 @@ android {
         minSdk = 26
     }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
+    buildTypes.getByName("release") {
+        isMinifyEnabled = false
     }
 
     compileOptions {
@@ -23,21 +21,28 @@ android {
     }
 
     // Results for linting will be in /build/reports/lint-results.debug.txt
+    // Add this to lint if suppressions are needed: baseline = file("lint-baseline.xml")
     lint {
-        baseline = file("lint-baseline.xml")
         checkAllWarnings = true
         warningsAsErrors = true
         targetSdk = 35
-        lintConfig = file("lint.xml")
+        lintConfig = file("../../../../android-validation/lint.xml")
     }
 
     sourceSets.getByName("main") {
         java.srcDir(file("../src/main/java"))
         java.exclude("module-info.java")
-        manifest.srcFile("AndroidManifest.xml")
+        manifest.srcFile("../../../../android-validation/AndroidManifest.xml")
     }
-    sourceSets.getByName("androidTest") {
-        setRoot("../src/androidTest")
+    sourceSets.getByName("test") {
+        setRoot("../src/test")
+    }
+
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+        testLogging {
+            events("skipped", "failed")
+        }
     }
 }
 
@@ -45,6 +50,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // This dependency is necessary for azure-xml to work with Android.
     // Android doesn't have the javax.xml.stream* APIs required by azure-xml and this package provides them.
