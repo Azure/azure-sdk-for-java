@@ -16,12 +16,19 @@ import reactor.core.publisher.Mono;
 public interface VirtualMachineExtension
     extends VirtualMachineExtensionBase, ExternalChildResource<VirtualMachineExtension, VirtualMachine> {
     /**
+     * Gets a representation of the deferred computation of this call returning the virtual machine extension
+     *     instance view
+     *
      * @return a representation of the deferred computation of this call returning the virtual machine extension
      *     instance view
      */
     Mono<VirtualMachineExtensionInstanceView> getInstanceViewAsync();
 
-    /** @return the instance view of the virtual machine extension */
+    /**
+     * Gets the instance view of the virtual machine extension.
+     *
+     * @return the instance view of the virtual machine extension
+     */
     VirtualMachineExtensionInstanceView getInstanceView();
 
     /** Grouping of virtual machine extension definition stages as a part of parent virtual machine definition. */

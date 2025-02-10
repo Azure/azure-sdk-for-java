@@ -87,13 +87,6 @@ public interface BigDataPoolResourceInfo {
     Boolean isComputeIsolationEnabled();
 
     /**
-     * Gets the isAutotuneEnabled property: Whether autotune is required or not.
-     * 
-     * @return the isAutotuneEnabled value.
-     */
-    Boolean isAutotuneEnabled();
-
-    /**
      * Gets the sessionLevelPackagesEnabled property: Whether session level packages enabled.
      * 
      * @return the sessionLevelPackagesEnabled value.
@@ -147,7 +140,7 @@ public interface BigDataPoolResourceInfo {
      * 
      * @return the sparkConfigProperties value.
      */
-    SparkConfigProperties sparkConfigProperties();
+    LibraryRequirements sparkConfigProperties();
 
     /**
      * Gets the sparkVersion property: The Apache Spark version.
@@ -269,14 +262,14 @@ public interface BigDataPoolResourceInfo {
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProvisioningState,
-            DefinitionStages.WithAutoScale, DefinitionStages.WithAutoPause,
-            DefinitionStages.WithIsComputeIsolationEnabled, DefinitionStages.WithIsAutotuneEnabled,
-            DefinitionStages.WithSessionLevelPackagesEnabled, DefinitionStages.WithCacheSize,
-            DefinitionStages.WithDynamicExecutorAllocation, DefinitionStages.WithSparkEventsFolder,
-            DefinitionStages.WithNodeCount, DefinitionStages.WithLibraryRequirements,
-            DefinitionStages.WithCustomLibraries, DefinitionStages.WithSparkConfigProperties,
-            DefinitionStages.WithSparkVersion, DefinitionStages.WithDefaultSparkLogFolder,
-            DefinitionStages.WithNodeSize, DefinitionStages.WithNodeSizeFamily, DefinitionStages.WithForce {
+            DefinitionStages.WithAutoScale, DefinitionStages.WithCreationDate, DefinitionStages.WithAutoPause,
+            DefinitionStages.WithIsComputeIsolationEnabled, DefinitionStages.WithSessionLevelPackagesEnabled,
+            DefinitionStages.WithCacheSize, DefinitionStages.WithDynamicExecutorAllocation,
+            DefinitionStages.WithSparkEventsFolder, DefinitionStages.WithNodeCount,
+            DefinitionStages.WithLibraryRequirements, DefinitionStages.WithCustomLibraries,
+            DefinitionStages.WithSparkConfigProperties, DefinitionStages.WithSparkVersion,
+            DefinitionStages.WithDefaultSparkLogFolder, DefinitionStages.WithNodeSize,
+            DefinitionStages.WithNodeSizeFamily, DefinitionStages.WithForce {
             /**
              * Executes the create request.
              * 
@@ -333,6 +326,19 @@ public interface BigDataPoolResourceInfo {
         }
 
         /**
+         * The stage of the BigDataPoolResourceInfo definition allowing to specify creationDate.
+         */
+        interface WithCreationDate {
+            /**
+             * Specifies the creationDate property: The time when the Big Data pool was created..
+             * 
+             * @param creationDate The time when the Big Data pool was created.
+             * @return the next definition stage.
+             */
+            WithCreate withCreationDate(OffsetDateTime creationDate);
+        }
+
+        /**
          * The stage of the BigDataPoolResourceInfo definition allowing to specify autoPause.
          */
         interface WithAutoPause {
@@ -356,19 +362,6 @@ public interface BigDataPoolResourceInfo {
              * @return the next definition stage.
              */
             WithCreate withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled);
-        }
-
-        /**
-         * The stage of the BigDataPoolResourceInfo definition allowing to specify isAutotuneEnabled.
-         */
-        interface WithIsAutotuneEnabled {
-            /**
-             * Specifies the isAutotuneEnabled property: Whether autotune is required or not..
-             * 
-             * @param isAutotuneEnabled Whether autotune is required or not.
-             * @return the next definition stage.
-             */
-            WithCreate withIsAutotuneEnabled(Boolean isAutotuneEnabled);
         }
 
         /**
@@ -473,7 +466,7 @@ public interface BigDataPoolResourceInfo {
              * @param sparkConfigProperties Spark configuration file to specify additional properties.
              * @return the next definition stage.
              */
-            WithCreate withSparkConfigProperties(SparkConfigProperties sparkConfigProperties);
+            WithCreate withSparkConfigProperties(LibraryRequirements sparkConfigProperties);
         }
 
         /**

@@ -4,7 +4,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs.kafka;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaSpringCloudStreamConfiguration;
@@ -35,10 +34,10 @@ class AzureEventHubsKafkaConfigurationTests {
 
     @SuppressWarnings("deprecation")
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class, AzureEventHubsKafkaAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class, TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureTokenCredentialAutoConfiguration.class, KafkaPropertiesConfiguration.class,
-                KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
+            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
+                AzureEventHubsKafkaAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class,
+                AzureTokenCredentialAutoConfiguration.class, KafkaAutoConfiguration.class,
+                AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
 
 
     @Test

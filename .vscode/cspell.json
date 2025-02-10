@@ -66,11 +66,8 @@
     "**/src/**/samples/**/*.ipynb",
     "**/sdk/**/swagger/**",
     "**/src/**/resources/**",
-    "sdk/aot/azure-aot-graalvm-samples/**",
     "sdk/agrifood/azure-verticals-agrifood-farming/**",
-    "sdk/aot/azure-aot-graalvm-support-netty/**",
     "sdk/anomalydetector/azure-ai-anomalydetector/**",
-    "sdk/aot/azure-aot-graalvm-support/**",
     "sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/**",
     "sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/**",
     "sdk/appconfiguration/azure-spring-cloud-feature-management-web/**",
@@ -202,8 +199,10 @@
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**",
     "sdk/clientcore/core/**",
-    "sdk/clientcore/core-json/**",
     "sdk/clientcore/http-okhttp3/**",
+    "sdk/clientcore/annotation-processor/**",
+    "sdk/clientcore/annotation-processor-test/**",
+    "sdk/clientcore/tools/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
     "sdk/serialization/azure-xml/**",
@@ -840,6 +839,7 @@
     {
       "filename": "/sdk/ai/**",
       "words": [
+        "OTEL",
         "ubinary",
         "UBINARY"
       ]
@@ -1030,6 +1030,7 @@
         "epoll",
         "fcgi",
         "flywaydb",
+        "fips",
         "gcloud",
         "gimap",
         "ginq",
@@ -1351,6 +1352,15 @@
         "returnsthestatusofasingledocumentinabatchtranslationrequest",
         "submitadocumenttranslationrequesttothedocumenttranslationservice",
         "translateasingledocument"
+      ]
+    },
+    {
+      "filename": "sdk/eventgrid/**",
+      "words": [
+        "mqtt",
+        "rservice", // appears in the name SignalRService
+        "gcch",
+        "updation" // current typo in a swagger
       ]
     }
   ],

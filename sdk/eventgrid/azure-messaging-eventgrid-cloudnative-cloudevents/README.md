@@ -105,7 +105,7 @@ If you encounter any bugs with these SDKs, please file issues via [Issues](https
 
 ## Next steps
 
-- [Azure Java SDKs](https://docs.microsoft.com/java/azure/)
+- [Azure Java SDKs](https://learn.microsoft.com/java/azure/)
 - If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 
 ## Contributing
@@ -115,10 +115,10 @@ Contribution Guidelines for more information.
 
 <!-- LINKS -->
 [eventgridGettingStarted]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#getting-started
-[eventgridConcept]: https://docs.microsoft.com/azure/event-grid/concepts
+[eventgridConcept]: https://learn.microsoft.com/azure/event-grid/concepts
 [eventgridClientConcept]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#key-concepts
 [javadocs]: https://azure.github.io/azure-sdk-for-java/eventgrid.html
 [CNCFCloudEvents]: https://cloudevents.github.io/sdk-java/
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid-cloudnative-cloudevents%2FREADME.png)
+

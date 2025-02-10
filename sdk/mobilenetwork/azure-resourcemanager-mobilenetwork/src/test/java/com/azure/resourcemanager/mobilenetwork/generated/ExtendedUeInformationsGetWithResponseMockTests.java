@@ -21,7 +21,7 @@ public final class ExtendedUeInformationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ratType\":\"ExtendedUeInfoProperties\",\"lastReadAt\":\"2021-10-03T12:11:57Z\"},\"id\":\"rdcueljtiahx\",\"name\":\"fqryarvsx\",\"type\":\"qbglcjkaysp\"}";
+            = "{\"properties\":{\"ratType\":\"ExtendedUeInfoProperties\",\"lastReadAt\":\"2021-03-18T08:16:47Z\"},\"id\":\"dxk\",\"name\":\"eqbw\",\"type\":\"ntghyksarcdr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ExtendedUeInformationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExtendedUeInfo response = manager.extendedUeInformations()
-            .getWithResponse("g", "rquv", "ygg", com.azure.core.util.Context.NONE)
+            .getWithResponse("veitit", "nsxzajlns", "hwjuyxxbxqvmvua", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-03T12:11:57Z"), response.properties().lastReadAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T08:16:47Z"), response.properties().lastReadAt());
     }
 }

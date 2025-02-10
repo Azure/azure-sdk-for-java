@@ -134,7 +134,6 @@ public final class RelationalSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

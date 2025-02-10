@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 public final class RedisExportDataSamples {
     /*
      * x-ms-original-file:
-     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheExport.json
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheExport.json
      */
     /**
      * Sample code: RedisCacheExport.

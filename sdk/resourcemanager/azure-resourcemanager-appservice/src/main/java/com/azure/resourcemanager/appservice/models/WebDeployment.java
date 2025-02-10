@@ -10,16 +10,32 @@ import java.time.OffsetDateTime;
 /** A client-side representation allowing user to deploy to a web app through web deployment (MSDeploy). */
 @Fluent
 public interface WebDeployment extends Executable<WebDeployment>, HasParent<WebAppBase> {
-    /** @return username of the deployer */
+    /**
+     * Gets username of the deployer.
+     *
+     * @return username of the deployer
+     */
     String deployer();
 
-    /** @return the start time of the deploy operation */
+    /**
+     * Gets the start time of the deploy operation.
+     *
+     * @return the start time of the deploy operation
+     */
     OffsetDateTime startTime();
 
-    /** @return the end time of the deploy operation */
+    /**
+     * Gest the end time of the deploy operation.
+     *
+     * @return the end time of the deploy operation
+     */
     OffsetDateTime endTime();
 
-    /** @return whether the deployment operation has completed */
+    /**
+     * Check whether the deployment operation has completed.
+     *
+     * @return whether the deployment operation has completed
+     */
     boolean complete();
 
     /** The entirety of web deployment parameters definition. */

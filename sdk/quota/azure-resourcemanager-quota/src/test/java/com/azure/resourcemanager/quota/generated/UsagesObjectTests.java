@@ -13,16 +13,16 @@ public final class UsagesObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagesObject model
-            = BinaryData.fromString("{\"value\":1340454664,\"usagesType\":\"Combined\"}").toObject(UsagesObject.class);
-        Assertions.assertEquals(1340454664, model.value());
+            = BinaryData.fromString("{\"value\":1520989721,\"usagesType\":\"Combined\"}").toObject(UsagesObject.class);
+        Assertions.assertEquals(1520989721, model.value());
         Assertions.assertEquals(UsagesTypes.COMBINED, model.usagesType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsagesObject model = new UsagesObject().withValue(1340454664).withUsagesType(UsagesTypes.COMBINED);
+        UsagesObject model = new UsagesObject().withValue(1520989721).withUsagesType(UsagesTypes.COMBINED);
         model = BinaryData.fromObject(model).toObject(UsagesObject.class);
-        Assertions.assertEquals(1340454664, model.value());
+        Assertions.assertEquals(1520989721, model.value());
         Assertions.assertEquals(UsagesTypes.COMBINED, model.usagesType());
     }
 }

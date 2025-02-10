@@ -26,9 +26,9 @@ import java.util.Queue;
 public class ThrowFromClientLoggerCheck extends AbstractCheck {
     private static final String LOGGER_LOG_EXCEPTION_AS_ERROR = "logger.logExceptionAsError";
     private static final String LOGGER_LOG_THROWABLE_AS_ERROR = "logger.logThrowableAsError";
-    private static final String LOGGING_BUILDER_LOG_THROWABLE_AS_ERROR = "logger.atError().log";    
+    private static final String LOGGING_BUILDER_LOG_THROWABLE_AS_ERROR = "logger.atError().log";
     private static final String LOGGER_LOG_EXCEPTION_AS_WARNING = "logger.logExceptionAsWarning";
-    private static final String LOGGER_LOG_THROWABLE_AS_WARNING = "logger.logThrowableAsWarning";    
+    private static final String LOGGER_LOG_THROWABLE_AS_WARNING = "logger.logThrowableAsWarning";
     private static final String LOGGING_BUILDER_LOG_THROWABLE_AS_WARNING = "logger.atWarning().log";
 
     static final String THROW_LOGGER_EXCEPTION_MESSAGE = String.format("Directly throwing an exception is disallowed. "
@@ -98,7 +98,7 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
             case TokenTypes.LITERAL_THROW:
                 // Skip check if the throw exception from static class, constructor or static method
                 if (classStaticDeque.isEmpty() || classStaticDeque.peek() || isInConstructor
-                    || methodStaticDeque.isEmpty() || methodStaticDeque.peek() 
+                    || methodStaticDeque.isEmpty() || methodStaticDeque.peek()
                     || findLogMethodIdentifier(token)) {
                     return;
                 }
@@ -126,7 +126,7 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
     }
 
     /*
-     * Checks if the expression includes call to log(), which verifies logging builder call 
+     * Checks if the expression includes call to log(), which verifies logging builder call
      * e.g. logger.atError().log(ex)
      */
     private static boolean findLogMethodIdentifier(DetailAST root) {

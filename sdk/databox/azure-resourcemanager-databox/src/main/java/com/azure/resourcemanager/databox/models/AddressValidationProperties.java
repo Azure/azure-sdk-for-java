@@ -31,11 +31,6 @@ public final class AddressValidationProperties extends ValidationInputResponse {
      */
     private List<ShippingAddress> alternateAddresses;
 
-    /*
-     * Error code and message of validation response.
-     */
-    private CloudError error;
-
     /**
      * Creates an instance of AddressValidationProperties class.
      */
@@ -68,16 +63,6 @@ public final class AddressValidationProperties extends ValidationInputResponse {
      */
     public List<ShippingAddress> alternateAddresses() {
         return this.alternateAddresses;
-    }
-
-    /**
-     * Get the error property: Error code and message of validation response.
-     * 
-     * @return the error value.
-     */
-    @Override
-    public CloudError error() {
-        return this.error;
     }
 
     /**
@@ -122,7 +107,7 @@ public final class AddressValidationProperties extends ValidationInputResponse {
                 reader.nextToken();
 
                 if ("error".equals(fieldName)) {
-                    deserializedAddressValidationProperties.error = CloudError.fromJson(reader);
+                    deserializedAddressValidationProperties.withError(CloudError.fromJson(reader));
                 } else if ("validationType".equals(fieldName)) {
                     deserializedAddressValidationProperties.validationType
                         = ValidationInputDiscriminator.fromString(reader.getString());

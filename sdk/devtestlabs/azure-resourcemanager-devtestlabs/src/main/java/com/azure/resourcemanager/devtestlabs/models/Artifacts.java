@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Artifacts. */
+/**
+ * Resource collection API of Artifacts.
+ */
 public interface Artifacts {
     /**
      * List artifacts in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -25,7 +27,7 @@ public interface Artifacts {
 
     /**
      * List artifacts in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -44,7 +46,7 @@ public interface Artifacts {
 
     /**
      * Get artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -61,7 +63,7 @@ public interface Artifacts {
 
     /**
      * Get artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -76,7 +78,7 @@ public interface Artifacts {
     /**
      * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
      * the generated artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -94,7 +96,7 @@ public interface Artifacts {
     /**
      * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
      * the generated artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.

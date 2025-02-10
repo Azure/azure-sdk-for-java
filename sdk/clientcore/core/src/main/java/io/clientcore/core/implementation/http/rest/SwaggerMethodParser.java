@@ -23,14 +23,15 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
+import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
-import io.clientcore.core.implementation.util.Base64Uri;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
-import io.clientcore.core.implementation.util.UriBuilder;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.Base64Uri;
+import io.clientcore.core.util.DateTimeRfc1123;
+import io.clientcore.core.util.UriBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.ExpandableEnum;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.util.serializer.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,7 +71,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     // to search the raw value on each call.
     private final String rawHost;
     private final String fullyQualifiedMethodName;
-    private final ClientLogger methodLogger;
+    private final ClientLogger logger;
     private final HttpMethod httpMethod;
     private final String relativePath;
     private final Map<String, List<String>> queryParams = new LinkedHashMap<>();
@@ -108,7 +109,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.rawHost = interfaceParser.getHost();
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
-        methodLogger = new ClientLogger(fullyQualifiedMethodName);
+        logger = new ClientLogger(fullyQualifiedMethodName);
 
         if (!swaggerMethod.isAnnotationPresent(HttpRequestInformation.class)) {
             // Should this also check whether there are multiple HTTP method annotations as well?
@@ -307,7 +308,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return The {@link ClientLogger} that will be used to log during the request and response.
      */
     public ClientLogger getMethodLogger() {
-        return methodLogger;
+        return logger;
     }
 
     /**
@@ -324,14 +325,15 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments The arguments to use for scheme and host substitutions.
      * @param uriBuilder The {@link UriBuilder} that will have its scheme and host set.
-     * @param serializer {@link ObjectSerializer} that is used to encode host substitutions.
+     * @param serializer {@link CompositeSerializer} that is used to encode host substitutions.
      */
-    public void setSchemeAndHost(Object[] swaggerMethodArguments, UriBuilder uriBuilder, ObjectSerializer serializer) {
+    public void setSchemeAndHost(Object[] swaggerMethodArguments, UriBuilder uriBuilder,
+        CompositeSerializer serializer) {
         setSchemeAndHost(rawHost, hostSubstitutions, swaggerMethodArguments, uriBuilder, serializer);
     }
 
     static void setSchemeAndHost(String rawHost, List<RangeReplaceSubstitution> hostSubstitutions,
-        Object[] swaggerMethodArguments, UriBuilder uriBuilder, ObjectSerializer serializer) {
+        Object[] swaggerMethodArguments, UriBuilder uriBuilder, CompositeSerializer serializer) {
         final String substitutedHost
             = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, serializer);
         int index = substitutedHost.indexOf("://");
@@ -355,11 +357,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the path that will be used to complete the Swagger method's request.
      *
      * @param methodArguments The method arguments to use with the path substitutions.
-     * @param serializer {@link ObjectSerializer} that is used to encode path substitutions.
+     * @param serializer {@link CompositeSerializer} that is used to encode path substitutions.
      *
      * @return The path value with its placeholders replaced by the matching substitutions.
      */
-    public String setPath(Object[] methodArguments, ObjectSerializer serializer) {
+    public String setPath(Object[] methodArguments, CompositeSerializer serializer) {
         return applySubstitutions(relativePath, pathSubstitutions, methodArguments, serializer);
     }
 
@@ -369,11 +371,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments The arguments that will be used to create the query parameters' values.
      * @param uriBuilder The {@link UriBuilder} where the encoded query parameters will be set.
-     * @param serializer {@link ObjectSerializer} that is used to encode the query parameters.
+     * @param serializer {@link CompositeSerializer} that is used to encode the query parameters.
      */
     @SuppressWarnings("unchecked")
     public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UriBuilder uriBuilder,
-        ObjectSerializer serializer) {
+        CompositeSerializer serializer) {
         // First we add the constant query parameters.
         for (Map.Entry<String, List<String>> entry : queryParams.entrySet()) {
             if (entry.getValue() == null || entry.getValue().isEmpty()) {
@@ -418,9 +420,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments The arguments that will be used to create the headers' values.
      * @param headers The {@link HttpHeaders} where the header values will be set.
-     * @param serializer {@link ObjectSerializer} that is used to serialize the header values.
+     * @param serializer {@link CompositeSerializer} that is used to serialize the header values.
      */
-    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders headers, ObjectSerializer serializer) {
+    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders headers, CompositeSerializer serializer) {
         headers.setAll(requestHeaders);
 
         if (swaggerMethodArguments == null) {
@@ -524,12 +526,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the object to be used as the value of the HTTP request.
      *
      * @param swaggerMethodArguments The method arguments to get the value object from.
-     * @param serializer The {@link ObjectSerializer} used to encode the request body if it's an
+     * @param serializer The {@link CompositeSerializer} used to encode the request body if it's an
      * {@code application/x-www-form-urlencoded} request.
      *
      * @return The object that will be used as the body of the HTTP request.
      */
-    public Object setBody(Object[] swaggerMethodArguments, ObjectSerializer serializer) {
+    public Object setBody(Object[] swaggerMethodArguments, CompositeSerializer serializer) {
         Object result = null;
 
         if (bodyContentMethodParameterIndex != null
@@ -590,7 +592,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return returnValueWireType;
     }
 
-    private static void addSerializedQueryParameter(ObjectSerializer adapter, Object value, boolean shouldEncode,
+    private static void addSerializedQueryParameter(CompositeSerializer adapter, Object value, boolean shouldEncode,
         UriBuilder uriBuilder, String parameterName) {
         String parameterValue = serialize(adapter, value);
 
@@ -604,7 +606,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
     }
 
-    private static String serialize(ObjectSerializer serializer, Object value) {
+    private static String serialize(CompositeSerializer serializer, Object value) {
         if (value == null) {
             return null;
         }
@@ -627,7 +629,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
         } else {
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream()) {
-                serializer.serializeToStream(outputStream, value);
+                serializer.serializeToStream(outputStream, value, SerializationFormat.JSON);
 
                 return outputStream.toString(StandardCharsets.UTF_8);
             } catch (IOException e) {
@@ -636,7 +638,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
     }
 
-    private static String serializeFormData(ObjectSerializer serializer, String key, Object value,
+    private static String serializeFormData(CompositeSerializer serializer, String key, Object value,
         boolean shouldEncode) {
         if (value == null) {
             return null;
@@ -655,7 +657,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
     }
 
-    private static String serializeAndEncodeFormValue(ObjectSerializer serializer, Object value, boolean shouldEncode) {
+    private static String serializeAndEncodeFormValue(CompositeSerializer serializer, Object value,
+        boolean shouldEncode) {
         if (value == null) {
             return null;
         }
@@ -666,7 +669,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private static String applySubstitutions(String originalValue, List<RangeReplaceSubstitution> substitutions,
-        Object[] methodArguments, ObjectSerializer serializer) {
+        Object[] methodArguments, CompositeSerializer serializer) {
         if (methodArguments == null || isNullOrEmpty(substitutions)) {
             return originalValue;
         }

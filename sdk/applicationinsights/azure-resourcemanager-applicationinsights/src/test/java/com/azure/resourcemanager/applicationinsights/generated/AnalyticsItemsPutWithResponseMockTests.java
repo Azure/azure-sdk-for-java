@@ -6,11 +6,9 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentAnalyticsItemInner;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentAnalyticsItem;
@@ -18,59 +16,42 @@ import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsC
 import com.azure.resourcemanager.applicationinsights.models.ItemScope;
 import com.azure.resourcemanager.applicationinsights.models.ItemScopePath;
 import com.azure.resourcemanager.applicationinsights.models.ItemType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AnalyticsItemsPutWithResponseMockTests {
     @Test
     public void testPutWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"Id\":\"hbxcu\",\"Name\":\"hxgsrboldfor\",\"Content\":\"wjlvizbfhfov\",\"Version\":\"cqpbtuo\",\"Scope\":\"user\",\"Type\":\"none\",\"TimeCreated\":\"bbelawumuaslzk\",\"TimeModified\":\"rwoycqucwyh\",\"Properties\":{\"functionAlias\":\"omd\"}}";
+            = "{\"Id\":\"bydpizqaclnapxb\",\"Name\":\"gn\",\"Content\":\"j\",\"Version\":\"fsmfcttuxuuyi\",\"Scope\":\"shared\",\"Type\":\"function\",\"TimeCreated\":\"quvre\",\"TimeModified\":\"rnjhvsujztczytqj\",\"Properties\":{\"functionAlias\":\"auunfprnjletlx\"}}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ApplicationInsightsComponentAnalyticsItem response = manager.analyticsItems()
-            .putWithResponse("tszcofizehtdhgb", "k", ItemScopePath.MYANALYTICS_ITEMS,
-                new ApplicationInsightsComponentAnalyticsItemInner().withId("ljeamu")
-                    .withName("zmlovuanash")
-                    .withContent("lpmjerb")
+            .putWithResponse("mpizru", "n", ItemScopePath.MYANALYTICS_ITEMS,
+                new ApplicationInsightsComponentAnalyticsItemInner().withId("pxiwf")
+                    .withName("gjsaasiixtm")
+                    .withContent("jvkviirhgfgrws")
                     .withScope(ItemScope.SHARED)
-                    .withType(ItemType.FUNCTION)
+                    .withType(ItemType.RECENT)
                     .withProperties(
-                        new ApplicationInsightsComponentAnalyticsItemProperties().withFunctionAlias("mkdasv")),
-                false, com.azure.core.util.Context.NONE)
+                        new ApplicationInsightsComponentAnalyticsItemProperties().withFunctionAlias("gozxw")),
+                true, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hbxcu", response.id());
-        Assertions.assertEquals("hxgsrboldfor", response.name());
-        Assertions.assertEquals("wjlvizbfhfov", response.content());
-        Assertions.assertEquals(ItemScope.USER, response.scope());
-        Assertions.assertEquals(ItemType.NONE, response.type());
-        Assertions.assertEquals("omd", response.properties().functionAlias());
+        Assertions.assertEquals("bydpizqaclnapxb", response.id());
+        Assertions.assertEquals("gn", response.name());
+        Assertions.assertEquals("j", response.content());
+        Assertions.assertEquals(ItemScope.SHARED, response.scope());
+        Assertions.assertEquals(ItemType.FUNCTION, response.type());
+        Assertions.assertEquals("auunfprnjletlx", response.properties().functionAlias());
     }
 }

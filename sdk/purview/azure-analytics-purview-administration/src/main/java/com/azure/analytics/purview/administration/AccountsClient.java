@@ -17,7 +17,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous PurviewAccountClient type. */
+/**
+ * Initializes a new instance of the synchronous PurviewAccountClient type.
+ */
 @ServiceClient(builder = AccountsClientBuilder.class)
 public final class AccountsClient {
     @Generated
@@ -25,7 +27,7 @@ public final class AccountsClient {
 
     /**
      * Initializes an instance of AccountsClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,10 +37,10 @@ public final class AccountsClient {
 
     /**
      * Get an account.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     identity (Optional): {
@@ -101,12 +103,13 @@ public final class AccountsClient {
      *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      *     tags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     type: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -122,18 +125,20 @@ public final class AccountsClient {
 
     /**
      * Updates an account.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     friendlyName: String (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     identity (Optional): {
@@ -196,13 +201,14 @@ public final class AccountsClient {
      *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      *     tags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     type: String (Optional)
      * }
-     * }</pre>
-     *
-     * @param accountUpdateParameters The account properties that can be updated through data plane.
+     * }
+     * </pre>
+     * 
+     * @param accountUpdateParameters The accountUpdateParameters parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -219,16 +225,17 @@ public final class AccountsClient {
 
     /**
      * List the authorization keys associated with this account.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     atlasKafkaPrimaryEndpoint: String (Optional)
      *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -244,25 +251,28 @@ public final class AccountsClient {
 
     /**
      * Regenerate the authorization keys associated with this data catalog.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey) (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     atlasKafkaPrimaryEndpoint: String (Optional)
      *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
-     * }</pre>
-     *
-     * @param keyOptions A access key options used for regeneration.
+     * }
+     * </pre>
+     * 
+     * @param keyOptions The keyOptions parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

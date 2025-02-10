@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The API specification source entity properties.
  */
 @Fluent
-public final class ApiSpecImportRequest {
+public final class ApiSpecImportRequest implements JsonSerializable<ApiSpecImportRequest> {
     /*
      * Value of the API specification source.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Format of the API specification source.
      */
-    @JsonProperty(value = "format")
     private ApiSpecImportSourceFormat format;
 
     /*
      * API specification details.
      */
-    @JsonProperty(value = "specification")
     private ApiSpecImportRequestSpecification specification;
 
     /**
@@ -105,5 +106,47 @@ public final class ApiSpecImportRequest {
         if (specification() != null) {
             specification().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
+        jsonWriter.writeJsonField("specification", this.specification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiSpecImportRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiSpecImportRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiSpecImportRequest.
+     */
+    public static ApiSpecImportRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiSpecImportRequest deserializedApiSpecImportRequest = new ApiSpecImportRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedApiSpecImportRequest.value = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    deserializedApiSpecImportRequest.format = ApiSpecImportSourceFormat.fromString(reader.getString());
+                } else if ("specification".equals(fieldName)) {
+                    deserializedApiSpecImportRequest.specification = ApiSpecImportRequestSpecification.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiSpecImportRequest;
+        });
     }
 }

@@ -6,7 +6,7 @@ package io.clientcore.core.implementation.http.rest;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

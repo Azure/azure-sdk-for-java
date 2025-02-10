@@ -22,7 +22,7 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"tgjcsgguxheml\",\"currentValue\":571555646638099029,\"limit\":5923731066969155308,\"name\":{\"value\":\"fbukklelssxblycs\",\"localizedValue\":\"ujksrlsmdesqplpv\"},\"unit\":\"cdoewbidyv\"}]}";
+            = "{\"value\":[{\"id\":\"wpzdqtvhcspo\",\"currentValue\":7851073221681739012,\"limit\":4118287642102521584,\"name\":{\"value\":\"etgbebjfulb\",\"localizedValue\":\"ichdlpn\"},\"unit\":\"ubntnbatzviqsow\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,14 @@ public final class UsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SignalRUsage> response = manager.usages().list("tmhdroznnhdr", com.azure.core.util.Context.NONE);
+        PagedIterable<SignalRUsage> response
+            = manager.usages().list("qotoihiqakydiwfb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tgjcsgguxheml", response.iterator().next().id());
-        Assertions.assertEquals(571555646638099029L, response.iterator().next().currentValue());
-        Assertions.assertEquals(5923731066969155308L, response.iterator().next().limit());
-        Assertions.assertEquals("fbukklelssxblycs", response.iterator().next().name().value());
-        Assertions.assertEquals("ujksrlsmdesqplpv", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("cdoewbidyv", response.iterator().next().unit());
+        Assertions.assertEquals("wpzdqtvhcspo", response.iterator().next().id());
+        Assertions.assertEquals(7851073221681739012L, response.iterator().next().currentValue());
+        Assertions.assertEquals(4118287642102521584L, response.iterator().next().limit());
+        Assertions.assertEquals("etgbebjfulb", response.iterator().next().name().value());
+        Assertions.assertEquals("ichdlpn", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("ubntnbatzviqsow", response.iterator().next().unit());
     }
 }

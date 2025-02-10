@@ -19,6 +19,7 @@
 
 ## Clusters
 
+- [AddCalloutPolicies](#clusters_addcalloutpolicies)
 - [AddLanguageExtensions](#clusters_addlanguageextensions)
 - [CheckNameAvailability](#clusters_checknameavailability)
 - [CreateOrUpdate](#clusters_createorupdate)
@@ -28,12 +29,15 @@
 - [GetByResourceGroup](#clusters_getbyresourcegroup)
 - [List](#clusters_list)
 - [ListByResourceGroup](#clusters_listbyresourcegroup)
+- [ListCalloutPolicies](#clusters_listcalloutpolicies)
 - [ListFollowerDatabases](#clusters_listfollowerdatabases)
+- [ListFollowerDatabasesGet](#clusters_listfollowerdatabasesget)
 - [ListLanguageExtensions](#clusters_listlanguageextensions)
 - [ListOutboundNetworkDependenciesEndpoints](#clusters_listoutboundnetworkdependenciesendpoints)
 - [ListSkus](#clusters_listskus)
 - [ListSkusByResource](#clusters_listskusbyresource)
 - [Migrate](#clusters_migrate)
+- [RemoveCalloutPolicy](#clusters_removecalloutpolicy)
 - [RemoveLanguageExtensions](#clusters_removelanguageextensions)
 - [Start](#clusters_start)
 - [Stop](#clusters_stop)
@@ -132,23 +136,23 @@
 ```java
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurationsCheckNameRequest;
 
-/** Samples for AttachedDatabaseConfigurations CheckNameAvailability. */
+/**
+ * Samples for AttachedDatabaseConfigurations CheckNameAvailability.
+ */
 public final class AttachedDatabaseConfigurationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoAttachedDatabaseConfigurationCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoAttachedDatabaseConfigurationCheckNameAvailability.json
      */
     /**
      * Sample code: KustoAttachedDatabaseConfigurationCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoAttachedDatabaseConfigurationCheckNameAvailability(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .attachedDatabaseConfigurations()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
+    public static void
+        kustoAttachedDatabaseConfigurationCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.attachedDatabaseConfigurations()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster",
                 new AttachedDatabaseConfigurationsCheckNameRequest().withName("adc1"),
                 com.azure.core.util.Context.NONE);
     }
@@ -162,20 +166,22 @@ import com.azure.resourcemanager.kusto.models.DefaultPrincipalsModificationKind;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
 import java.util.Arrays;
 
-/** Samples for AttachedDatabaseConfigurations CreateOrUpdate. */
+/**
+ * Samples for AttachedDatabaseConfigurations CreateOrUpdate.
+ */
 public final class AttachedDatabaseConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoAttachedDatabaseConfigurationsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoAttachedDatabaseConfigurationsCreateOrUpdate.json
      */
     /**
      * Sample code: AttachedDatabaseConfigurationsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void attachedDatabaseConfigurationsCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .attachedDatabaseConfigurations()
+    public static void
+        attachedDatabaseConfigurationsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.attachedDatabaseConfigurations()
             .define("attachedDatabaseConfigurationsTest")
             .withExistingCluster("kustorptest", "kustoCluster2")
             .withRegion("westus")
@@ -184,8 +190,7 @@ public final class AttachedDatabaseConfigurationsCreateOrUpdateSamples {
                 "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster2")
             .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
             .withTableLevelSharingProperties(
-                new TableLevelSharingProperties()
-                    .withTablesToInclude(Arrays.asList("Table1"))
+                new TableLevelSharingProperties().withTablesToInclude(Arrays.asList("Table1"))
                     .withTablesToExclude(Arrays.asList("Table2"))
                     .withExternalTablesToInclude(Arrays.asList("ExternalTable1"))
                     .withExternalTablesToExclude(Arrays.asList("ExternalTable2"))
@@ -200,21 +205,23 @@ public final class AttachedDatabaseConfigurationsCreateOrUpdateSamples {
 ### AttachedDatabaseConfigurations_Delete
 
 ```java
-/** Samples for AttachedDatabaseConfigurations Delete. */
+/**
+ * Samples for AttachedDatabaseConfigurations Delete.
+ */
 public final class AttachedDatabaseConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoAttachedDatabaseConfigurationsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoAttachedDatabaseConfigurationsDelete.json
      */
     /**
      * Sample code: AttachedDatabaseConfigurationsDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void attachedDatabaseConfigurationsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .attachedDatabaseConfigurations()
-            .delete(
-                "kustorptest", "kustoCluster", "attachedDatabaseConfigurationsTest", com.azure.core.util.Context.NONE);
+        manager.attachedDatabaseConfigurations()
+            .delete("kustorptest", "kustoCluster", "attachedDatabaseConfigurationsTest",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -222,21 +229,23 @@ public final class AttachedDatabaseConfigurationsDeleteSamples {
 ### AttachedDatabaseConfigurations_Get
 
 ```java
-/** Samples for AttachedDatabaseConfigurations Get. */
+/**
+ * Samples for AttachedDatabaseConfigurations Get.
+ */
 public final class AttachedDatabaseConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoAttachedDatabaseConfigurationsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoAttachedDatabaseConfigurationsGet.json
      */
     /**
      * Sample code: AttachedDatabaseConfigurationsGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void attachedDatabaseConfigurationsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .attachedDatabaseConfigurations()
-            .getWithResponse(
-                "kustorptest", "kustoCluster2", "attachedDatabaseConfigurationsTest", com.azure.core.util.Context.NONE);
+        manager.attachedDatabaseConfigurations()
+            .getWithResponse("kustorptest", "kustoCluster2", "attachedDatabaseConfigurationsTest",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -244,20 +253,22 @@ public final class AttachedDatabaseConfigurationsGetSamples {
 ### AttachedDatabaseConfigurations_ListByCluster
 
 ```java
-/** Samples for AttachedDatabaseConfigurations ListByCluster. */
+/**
+ * Samples for AttachedDatabaseConfigurations ListByCluster.
+ */
 public final class AttachedDatabaseConfigurationsListByClusterSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoAttachedDatabaseConfigurationsListByCluster.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoAttachedDatabaseConfigurationsListByCluster.json
      */
     /**
      * Sample code: KustoAttachedDatabaseConfigurationsListByCluster.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoAttachedDatabaseConfigurationsListByCluster(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .attachedDatabaseConfigurations()
+    public static void
+        kustoAttachedDatabaseConfigurationsListByCluster(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.attachedDatabaseConfigurations()
             .listByCluster("kustorptest", "kustoCluster2", com.azure.core.util.Context.NONE);
     }
 }
@@ -268,23 +279,23 @@ public final class AttachedDatabaseConfigurationsListByClusterSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignmentCheckNameRequest;
 
-/** Samples for ClusterPrincipalAssignments CheckNameAvailability. */
+/**
+ * Samples for ClusterPrincipalAssignments CheckNameAvailability.
+ */
 public final class ClusterPrincipalAssignmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterPrincipalAssignmentsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterPrincipalAssignmentsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoClusterPrincipalAssignmentsCheckNameAvailability(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusterPrincipalAssignments()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
+    public static void
+        kustoClusterPrincipalAssignmentsCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.clusterPrincipalAssignments()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster",
                 new ClusterPrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
                 com.azure.core.util.Context.NONE);
     }
@@ -297,20 +308,22 @@ public final class ClusterPrincipalAssignmentsCheckNameAvailabilitySamples {
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 
-/** Samples for ClusterPrincipalAssignments CreateOrUpdate. */
+/**
+ * Samples for ClusterPrincipalAssignments CreateOrUpdate.
+ */
 public final class ClusterPrincipalAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterPrincipalAssignmentsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterPrincipalAssignmentsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoClusterPrincipalAssignmentsCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusterPrincipalAssignments()
+    public static void
+        kustoClusterPrincipalAssignmentsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.clusterPrincipalAssignments()
             .define("kustoprincipal1")
             .withExistingCluster("kustorptest", "kustoCluster")
             .withPrincipalId("87654321-1234-1234-1234-123456789123")
@@ -325,19 +338,21 @@ public final class ClusterPrincipalAssignmentsCreateOrUpdateSamples {
 ### ClusterPrincipalAssignments_Delete
 
 ```java
-/** Samples for ClusterPrincipalAssignments Delete. */
+/**
+ * Samples for ClusterPrincipalAssignments Delete.
+ */
 public final class ClusterPrincipalAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterPrincipalAssignmentsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterPrincipalAssignmentsDelete.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterPrincipalAssignmentsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusterPrincipalAssignments()
+        manager.clusterPrincipalAssignments()
             .delete("kustorptest", "kustoCluster", "kustoprincipal1", com.azure.core.util.Context.NONE);
     }
 }
@@ -346,19 +361,21 @@ public final class ClusterPrincipalAssignmentsDeleteSamples {
 ### ClusterPrincipalAssignments_Get
 
 ```java
-/** Samples for ClusterPrincipalAssignments Get. */
+/**
+ * Samples for ClusterPrincipalAssignments Get.
+ */
 public final class ClusterPrincipalAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterPrincipalAssignmentsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterPrincipalAssignmentsGet.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterPrincipalAssignmentsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusterPrincipalAssignments()
+        manager.clusterPrincipalAssignments()
             .getWithResponse("kustorptest", "kustoCluster", "kustoprincipal1", com.azure.core.util.Context.NONE);
     }
 }
@@ -367,18 +384,54 @@ public final class ClusterPrincipalAssignmentsGetSamples {
 ### ClusterPrincipalAssignments_List
 
 ```java
-/** Samples for ClusterPrincipalAssignments List. */
+/**
+ * Samples for ClusterPrincipalAssignments List.
+ */
 public final class ClusterPrincipalAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterPrincipalAssignmentsList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterPrincipalAssignmentsList.json
      */
     /**
      * Sample code: KustoPrincipalAssignmentsList.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoPrincipalAssignmentsList(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager.clusterPrincipalAssignments().list("kustorptest", "kustoCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_AddCalloutPolicies
+
+```java
+import com.azure.resourcemanager.kusto.fluent.models.CalloutPolicyInner;
+import com.azure.resourcemanager.kusto.models.CalloutPoliciesList;
+import com.azure.resourcemanager.kusto.models.CalloutType;
+import com.azure.resourcemanager.kusto.models.OutboundAccess;
+import java.util.Arrays;
+
+/**
+ * Samples for Clusters AddCalloutPolicies.
+ */
+public final class ClustersAddCalloutPoliciesSamples {
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterAddCalloutPolicies.json
+     */
+    /**
+     * Sample code: KustoClusterAddCalloutPolicy.
+     * 
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoClusterAddCalloutPolicy(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.clusters()
+            .addCalloutPolicies("kustorptest", "kustoCluster",
+                new CalloutPoliciesList().withValue(Arrays.asList(new CalloutPolicyInner().withCalloutUriRegex("*")
+                    .withCalloutType(CalloutType.KUSTO)
+                    .withOutboundAccess(OutboundAccess.ALLOW))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -391,28 +444,25 @@ import com.azure.resourcemanager.kusto.models.LanguageExtensionName;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import java.util.Arrays;
 
-/** Samples for Clusters AddLanguageExtensions. */
+/**
+ * Samples for Clusters AddLanguageExtensions.
+ */
 public final class ClustersAddLanguageExtensionsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterAddLanguageExtensions.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterAddLanguageExtensions.json
      */
     /**
      * Sample code: KustoClusterAddLanguageExtensions.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterAddLanguageExtensions(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
-            .addLanguageExtensions(
-                "kustorptest",
-                "kustoCluster",
-                new LanguageExtensionsList()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
-                                new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
+        manager.clusters()
+            .addLanguageExtensions("kustorptest", "kustoCluster",
+                new LanguageExtensionsList().withValue(
+                    Arrays.asList(new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
+                        new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -423,21 +473,23 @@ public final class ClustersAddLanguageExtensionsSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.ClusterCheckNameRequest;
 
-/** Samples for Clusters CheckNameAvailability. */
+/**
+ * Samples for Clusters CheckNameAvailability.
+ */
 public final class ClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClustersCheckNameAvailability.json
      */
     /**
      * Sample code: KustoClustersCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
-            .checkNameAvailabilityWithResponse(
-                "westus", new ClusterCheckNameRequest().withName("kustoCluster"), com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .checkNameAvailabilityWithResponse("westus", new ClusterCheckNameRequest().withName("kustoCluster"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -458,19 +510,22 @@ import com.azure.resourcemanager.kusto.models.PublicIpType;
 import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import java.util.Arrays;
 
-/** Samples for Clusters CreateOrUpdate. */
+/**
+ * Samples for Clusters CreateOrUpdate.
+ */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersCreateOrUpdate
+     * .json
      */
     /**
      * Sample code: KustoClustersCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
+        manager.clusters()
             .define("kustoCluster")
             .withRegion("westus")
             .withExistingResourceGroup("kustorptest")
@@ -479,19 +534,11 @@ public final class ClustersCreateOrUpdateSamples {
             .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED))
             .withEnableStreamingIngest(true)
             .withEnablePurge(true)
-            .withLanguageExtensions(
-                new LanguageExtensionsList()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.PYTHON)
-                                    .withLanguageExtensionImageName(
-                                        LanguageExtensionImageName.fromString("Python_Custom_Image"))
-                                    .withLanguageExtensionCustomImageName("customImage8"),
-                                new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.R))))
+            .withLanguageExtensions(new LanguageExtensionsList().withValue(Arrays.asList(
+                new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON)
+                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8),
+                new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R)
+                    .withLanguageExtensionImageName(LanguageExtensionImageName.R))))
             .withEnableDoubleEncryption(false)
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withAllowedIpRangeList(Arrays.asList("0.0.0.0/0"))
@@ -505,14 +552,17 @@ public final class ClustersCreateOrUpdateSamples {
 ### Clusters_Delete
 
 ```java
-/** Samples for Clusters Delete. */
+/**
+ * Samples for Clusters Delete.
+ */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersDelete.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersDelete.json
      */
     /**
      * Sample code: KustoClustersDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -526,25 +576,24 @@ public final class ClustersDeleteSamples {
 ```java
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 
-/** Samples for Clusters DetachFollowerDatabases. */
+/**
+ * Samples for Clusters DetachFollowerDatabases.
+ */
 public final class ClustersDetachFollowerDatabasesSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterDetachFollowerDatabases.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterDetachFollowerDatabases.json
      */
     /**
      * Sample code: KustoClusterDetachFollowerDatabases.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterDetachFollowerDatabases(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
-            .detachFollowerDatabases(
-                "kustorptest",
-                "kustoCluster",
-                new FollowerDatabaseDefinitionInner()
-                    .withClusterResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/kustoCluster2")
+        manager.clusters()
+            .detachFollowerDatabases("kustorptest", "kustoCluster",
+                new FollowerDatabaseDefinitionInner().withClusterResourceId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/kustoCluster2")
                     .withAttachedDatabaseConfigurationName("attachedDatabaseConfigurationsTest"),
                 com.azure.core.util.Context.NONE);
     }
@@ -554,14 +603,17 @@ public final class ClustersDetachFollowerDatabasesSamples {
 ### Clusters_DiagnoseVirtualNetwork
 
 ```java
-/** Samples for Clusters DiagnoseVirtualNetwork. */
+/**
+ * Samples for Clusters DiagnoseVirtualNetwork.
+ */
 public final class ClustersDiagnoseVirtualNetworkSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersDiagnoseVirtualNetwork.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClustersDiagnoseVirtualNetwork.json
      */
     /**
      * Sample code: KustoClusterDiagnoseVirtualNetwork.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterDiagnoseVirtualNetwork(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -573,19 +625,21 @@ public final class ClustersDiagnoseVirtualNetworkSamples {
 ### Clusters_GetByResourceGroup
 
 ```java
-/** Samples for Clusters GetByResourceGroup. */
+/**
+ * Samples for Clusters GetByResourceGroup.
+ */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersGet.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersGet.json
      */
     /**
      * Sample code: KustoClustersGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
+        manager.clusters()
             .getByResourceGroupWithResponse("kustorptest", "kustoCluster", com.azure.core.util.Context.NONE);
     }
 }
@@ -594,14 +648,17 @@ public final class ClustersGetByResourceGroupSamples {
 ### Clusters_List
 
 ```java
-/** Samples for Clusters List. */
+/**
+ * Samples for Clusters List.
+ */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersList.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersList.json
      */
     /**
      * Sample code: KustoClustersList.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersList(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -613,14 +670,17 @@ public final class ClustersListSamples {
 ### Clusters_ListByResourceGroup
 
 ```java
-/** Samples for Clusters ListByResourceGroup. */
+/**
+ * Samples for Clusters ListByResourceGroup.
+ */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersListByResourceGroup.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClustersListByResourceGroup.json
      */
     /**
      * Sample code: KustoClustersListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersListByResourceGroup(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -629,17 +689,42 @@ public final class ClustersListByResourceGroupSamples {
 }
 ```
 
+### Clusters_ListCalloutPolicies
+
+```java
+/**
+ * Samples for Clusters ListCalloutPolicies.
+ */
+public final class ClustersListCalloutPoliciesSamples {
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClustersListCalloutPolicies.json
+     */
+    /**
+     * Sample code: KustoClusterListCalloutPolicies.
+     * 
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoClusterListCalloutPolicies(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.clusters().listCalloutPolicies("kustorptest", "kustoCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Clusters_ListFollowerDatabases
 
 ```java
-/** Samples for Clusters ListFollowerDatabases. */
+/**
+ * Samples for Clusters ListFollowerDatabases.
+ */
 public final class ClustersListFollowerDatabasesSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterListFollowerDatabases.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterListFollowerDatabases.json
      */
     /**
      * Sample code: KustoClusterListFollowerDatabases.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterListFollowerDatabases(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -648,17 +733,42 @@ public final class ClustersListFollowerDatabasesSamples {
 }
 ```
 
+### Clusters_ListFollowerDatabasesGet
+
+```java
+/**
+ * Samples for Clusters ListFollowerDatabasesGet.
+ */
+public final class ClustersListFollowerDatabasesGetSamples {
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterListFollowerDatabasesGet.json
+     */
+    /**
+     * Sample code: KustoClusterListFollowerDatabasesGet.
+     * 
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoClusterListFollowerDatabasesGet(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.clusters().listFollowerDatabasesGet("kustorptest", "kustoCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Clusters_ListLanguageExtensions
 
 ```java
-/** Samples for Clusters ListLanguageExtensions. */
+/**
+ * Samples for Clusters ListLanguageExtensions.
+ */
 public final class ClustersListLanguageExtensionsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterListLanguageExtensions.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterListLanguageExtensions.json
      */
     /**
      * Sample code: KustoClusterListLanguageExtensions.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterListLanguageExtensions(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -670,20 +780,22 @@ public final class ClustersListLanguageExtensionsSamples {
 ### Clusters_ListOutboundNetworkDependenciesEndpoints
 
 ```java
-/** Samples for Clusters ListOutboundNetworkDependenciesEndpoints. */
+/**
+ * Samples for Clusters ListOutboundNetworkDependenciesEndpoints.
+ */
 public final class ClustersListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoOutboundNetworkDependenciesList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoOutboundNetworkDependenciesList.json
      */
     /**
      * Sample code: Get Kusto cluster outbound network dependencies.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void getKustoClusterOutboundNetworkDependencies(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
+    public static void
+        getKustoClusterOutboundNetworkDependencies(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.clusters()
             .listOutboundNetworkDependenciesEndpoints("kustorptest", "kustoCluster", com.azure.core.util.Context.NONE);
     }
 }
@@ -692,14 +804,17 @@ public final class ClustersListOutboundNetworkDependenciesEndpointsSamples {
 ### Clusters_ListSkus
 
 ```java
-/** Samples for Clusters ListSkus. */
+/**
+ * Samples for Clusters ListSkus.
+ */
 public final class ClustersListSkusSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersListSkus.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersListSkus.json
      */
     /**
      * Sample code: KustoClustersListSkus.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersListSkus(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -711,14 +826,17 @@ public final class ClustersListSkusSamples {
 ### Clusters_ListSkusByResource
 
 ```java
-/** Samples for Clusters ListSkusByResource. */
+/**
+ * Samples for Clusters ListSkusByResource.
+ */
 public final class ClustersListSkusByResourceSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersListResourceSkus.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClustersListResourceSkus.json
      */
     /**
      * Sample code: KustoClustersListResourceSkus.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersListResourceSkus(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -732,25 +850,49 @@ public final class ClustersListSkusByResourceSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.ClusterMigrateRequest;
 
-/** Samples for Clusters Migrate. */
+/**
+ * Samples for Clusters Migrate.
+ */
 public final class ClustersMigrateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterMigrate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClusterMigrate.json
      */
     /**
      * Sample code: KustoClusterMigrate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterMigrate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
-            .migrate(
-                "kustorptest",
-                "kustoCluster1",
-                new ClusterMigrateRequest()
-                    .withClusterResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/kustoCluster2"),
+        manager.clusters()
+            .migrate("kustorptest", "kustoCluster1", new ClusterMigrateRequest().withClusterResourceId(
+                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/kustoCluster2"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_RemoveCalloutPolicy
+
+```java
+import com.azure.resourcemanager.kusto.models.CalloutPolicyToRemove;
+
+/**
+ * Samples for Clusters RemoveCalloutPolicy.
+ */
+public final class ClustersRemoveCalloutPolicySamples {
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterRemoveCalloutPolicy.json
+     */
+    /**
+     * Sample code: KustoClusterDropCalloutPolicy.
+     * 
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoClusterDropCalloutPolicy(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.clusters()
+            .removeCalloutPolicy("kustorptest", "kustoCluster", new CalloutPolicyToRemove().withCalloutId("*_kusto"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -764,28 +906,25 @@ import com.azure.resourcemanager.kusto.models.LanguageExtensionName;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import java.util.Arrays;
 
-/** Samples for Clusters RemoveLanguageExtensions. */
+/**
+ * Samples for Clusters RemoveLanguageExtensions.
+ */
 public final class ClustersRemoveLanguageExtensionsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterRemoveLanguageExtensions.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterRemoveLanguageExtensions.json
      */
     /**
      * Sample code: KustoClusterRemoveLanguageExtensions.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterRemoveLanguageExtensions(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
-            .removeLanguageExtensions(
-                "kustorptest",
-                "kustoCluster",
-                new LanguageExtensionsList()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
-                                new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
+        manager.clusters()
+            .removeLanguageExtensions("kustorptest", "kustoCluster",
+                new LanguageExtensionsList().withValue(
+                    Arrays.asList(new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
+                        new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -794,14 +933,17 @@ public final class ClustersRemoveLanguageExtensionsSamples {
 ### Clusters_Start
 
 ```java
-/** Samples for Clusters Start. */
+/**
+ * Samples for Clusters Start.
+ */
 public final class ClustersStartSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersStart.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersStart.json
      */
     /**
      * Sample code: KustoClustersStart.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersStart(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -813,14 +955,17 @@ public final class ClustersStartSamples {
 ### Clusters_Stop
 
 ```java
-/** Samples for Clusters Stop. */
+/**
+ * Samples for Clusters Stop.
+ */
 public final class ClustersStopSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersStop.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersStop.json
      */
     /**
      * Sample code: KustoClustersStop.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersStop(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -834,22 +979,23 @@ public final class ClustersStopSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.Cluster;
 
-/** Samples for Clusters Update. */
+/**
+ * Samples for Clusters Update.
+ */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersUpdate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersUpdate.json
      */
     /**
      * Sample code: KustoClustersUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        Cluster resource =
-            manager
-                .clusters()
-                .getByResourceGroupWithResponse("kustorptest", "kustoCluster2", com.azure.core.util.Context.NONE)
-                .getValue();
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("kustorptest", "kustoCluster2", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withIfMatch("*").apply();
     }
 }
@@ -860,25 +1006,23 @@ public final class ClustersUpdateSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.DataConnectionCheckNameRequest;
 
-/** Samples for DataConnections CheckNameAvailability. */
+/**
+ * Samples for DataConnections CheckNameAvailability.
+ */
 public final class DataConnectionsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoDataConnectionsCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                new DataConnectionCheckNameRequest().withName("DataConnections8"),
-                com.azure.core.util.Context.NONE);
+        manager.dataConnections()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster", "KustoDatabase8",
+                new DataConnectionCheckNameRequest().withName("DataConnections8"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -894,27 +1038,24 @@ import com.azure.resourcemanager.kusto.models.EventGridDataFormat;
 import com.azure.resourcemanager.kusto.models.EventHubDataConnection;
 import java.time.OffsetDateTime;
 
-/** Samples for DataConnections CreateOrUpdate. */
+/**
+ * Samples for DataConnections CreateOrUpdate.
+ */
 public final class DataConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsEventGridCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsEventGridCreateOrUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsEventGridCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoDataConnectionsEventGridCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
-                new EventGridDataConnection()
-                    .withLocation("westus")
+    public static void
+        kustoDataConnectionsEventGridCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.dataConnections()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest",
+                new EventGridDataConnection().withLocation("westus")
                     .withStorageAccountResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount")
                     .withEventGridResourceId(
@@ -924,7 +1065,7 @@ public final class DataConnectionsCreateOrUpdateSamples {
                     .withConsumerGroup("$Default")
                     .withTableName("TestTable")
                     .withMappingRuleName("TestMapping")
-                    .withDataFormat(EventGridDataFormat.JSON)
+                    .withDataFormat(EventGridDataFormat.MULTIJSON)
                     .withIgnoreFirstRecord(false)
                     .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
                     .withManagedIdentityResourceId(
@@ -934,24 +1075,19 @@ public final class DataConnectionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCosmosDbCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsCosmosDbCreateOrUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsCosmosDbCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoDataConnectionsCosmosDbCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase1",
-                "dataConnectionTest",
-                new CosmosDbDataConnection()
-                    .withLocation("westus")
+    public static void
+        kustoDataConnectionsCosmosDbCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.dataConnections()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest",
+                new CosmosDbDataConnection().withLocation("westus")
                     .withTableName("TestTable")
                     .withMappingRuleName("TestMapping")
                     .withManagedIdentityResourceId(
@@ -965,23 +1101,18 @@ public final class DataConnectionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
-                new EventHubDataConnection()
-                    .withLocation("westus")
+        manager.dataConnections()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest",
+                new EventHubDataConnection().withLocation("westus")
                     .withEventHubResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
                     .withConsumerGroup("testConsumerGroup1")
@@ -1004,73 +1135,63 @@ import com.azure.resourcemanager.kusto.models.EventGridDataFormat;
 import com.azure.resourcemanager.kusto.models.EventHubDataConnection;
 import com.azure.resourcemanager.kusto.models.EventHubDataFormat;
 
-/** Samples for DataConnections DataConnectionValidation. */
+/**
+ * Samples for DataConnections DataConnectionValidation.
+ */
 public final class DataConnectionsDataConnectionValidationSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionValidationAsync.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionValidationAsync.json
      */
     /**
      * Sample code: KustoDataConnectionValidation.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionValidation(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .dataConnectionValidation(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                new DataConnectionValidationInner()
-                    .withDataConnectionName("dataConnectionTest")
-                    .withProperties(
-                        new EventHubDataConnection()
-                            .withEventHubResourceId(
-                                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
-                            .withConsumerGroup("testConsumerGroup1")
-                            .withTableName("TestTable")
-                            .withMappingRuleName("TestMapping")
-                            .withDataFormat(EventHubDataFormat.JSON)
-                            .withCompression(Compression.NONE)
-                            .withManagedIdentityResourceId(
-                                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")),
+        manager.dataConnections()
+            .dataConnectionValidation("kustorptest", "kustoCluster", "KustoDatabase8",
+                new DataConnectionValidationInner().withDataConnectionName("dataConnectionTest")
+                    .withProperties(new EventHubDataConnection().withEventHubResourceId(
+                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
+                        .withConsumerGroup("testConsumerGroup1")
+                        .withTableName("TestTable")
+                        .withMappingRuleName("TestMapping")
+                        .withDataFormat(EventHubDataFormat.MULTIJSON)
+                        .withCompression(Compression.NONE)
+                        .withManagedIdentityResourceId(
+                            "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionEventGridValidationAsync.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionEventGridValidationAsync.json
      */
     /**
      * Sample code: KustoDataConnectionEventGridValidation.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionEventGridValidation(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .dataConnectionValidation(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                new DataConnectionValidationInner()
-                    .withDataConnectionName("dataConnectionTest")
-                    .withProperties(
-                        new EventGridDataConnection()
-                            .withStorageAccountResourceId(
-                                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount")
-                            .withEventGridResourceId(
-                                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest")
-                            .withEventHubResourceId(
-                                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
-                            .withConsumerGroup("$Default")
-                            .withTableName("TestTable")
-                            .withMappingRuleName("TestMapping")
-                            .withDataFormat(EventGridDataFormat.JSON)
-                            .withIgnoreFirstRecord(false)
-                            .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
-                            .withManagedIdentityResourceId(
-                                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")
-                            .withDatabaseRouting(DatabaseRouting.SINGLE)),
+        manager.dataConnections()
+            .dataConnectionValidation("kustorptest", "kustoCluster", "KustoDatabase8",
+                new DataConnectionValidationInner().withDataConnectionName("dataConnectionTest")
+                    .withProperties(new EventGridDataConnection().withStorageAccountResourceId(
+                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount")
+                        .withEventGridResourceId(
+                            "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest")
+                        .withEventHubResourceId(
+                            "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
+                        .withConsumerGroup("$Default")
+                        .withTableName("TestTable")
+                        .withMappingRuleName("TestMapping")
+                        .withDataFormat(EventGridDataFormat.MULTIJSON)
+                        .withIgnoreFirstRecord(false)
+                        .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
+                        .withManagedIdentityResourceId(
+                            "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")
+                        .withDatabaseRouting(DatabaseRouting.SINGLE)),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1079,24 +1200,23 @@ public final class DataConnectionsDataConnectionValidationSamples {
 ### DataConnections_Delete
 
 ```java
-/** Samples for DataConnections Delete. */
+/**
+ * Samples for DataConnections Delete.
+ */
 public final class DataConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsDelete.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsDelete.
+     * json
      */
     /**
      * Sample code: KustoDataConnectionsDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .delete(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
+        manager.dataConnections()
+            .delete("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1105,62 +1225,53 @@ public final class DataConnectionsDeleteSamples {
 ### DataConnections_Get
 
 ```java
-/** Samples for DataConnections Get. */
+/**
+ * Samples for DataConnections Get.
+ */
 public final class DataConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsEventGridGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsEventGridGet.json
      */
     /**
      * Sample code: KustoDataConnectionsEventGridGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsEventGridGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .getWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
+        manager.dataConnections()
+            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCosmosDbGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsCosmosDbGet.json
      */
     /**
      * Sample code: KustoDataConnectionsCosmosDbGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsCosmosDbGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .getWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase1",
-                "dataConnectionTest",
+        manager.dataConnections()
+            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsGet.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsGet.
+     * json
      */
     /**
      * Sample code: KustoDataConnectionsGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .getWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
+        manager.dataConnections()
+            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1169,19 +1280,21 @@ public final class DataConnectionsGetSamples {
 ### DataConnections_ListByDatabase
 
 ```java
-/** Samples for DataConnections ListByDatabase. */
+/**
+ * Samples for DataConnections ListByDatabase.
+ */
 public final class DataConnectionsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsListByDatabase.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsListByDatabase.json
      */
     /**
      * Sample code: KustoDatabasesListByCluster.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasesListByCluster(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
+        manager.dataConnections()
             .listByDatabase("kustorptest", "kustoCluster", "KustoDatabase8", com.azure.core.util.Context.NONE);
     }
 }
@@ -1198,98 +1311,85 @@ import com.azure.resourcemanager.kusto.models.EventGridDataFormat;
 import com.azure.resourcemanager.kusto.models.EventHubDataConnection;
 import java.time.OffsetDateTime;
 
-/** Samples for DataConnections Update. */
+/**
+ * Samples for DataConnections Update.
+ */
 public final class DataConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCosmosDbUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsCosmosDbUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsCosmosDbUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsCosmosDbUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .update(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase1",
-                "dataConnectionTest",
-                new CosmosDbDataConnection()
-                    .withLocation("westus")
-                    .withTableName("TestTable")
-                    .withMappingRuleName("TestMapping")
-                    .withManagedIdentityResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")
-                    .withCosmosDbAccountResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.DocumentDb/databaseAccounts/cosmosDbAccountTest1")
-                    .withCosmosDbDatabase("cosmosDbDatabaseTest")
-                    .withCosmosDbContainer("cosmosDbContainerTest")
-                    .withRetrievalStartDate(OffsetDateTime.parse("2022-07-29T12:00:00.6554616Z")),
+        manager.dataConnections()
+            .update("kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest", new CosmosDbDataConnection()
+                .withLocation("westus")
+                .withTableName("TestTable")
+                .withMappingRuleName("TestMapping")
+                .withManagedIdentityResourceId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")
+                .withCosmosDbAccountResourceId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.DocumentDb/databaseAccounts/cosmosDbAccountTest1")
+                .withCosmosDbDatabase("cosmosDbDatabaseTest")
+                .withCosmosDbContainer("cosmosDbContainerTest")
+                .withRetrievalStartDate(OffsetDateTime.parse("2022-07-29T12:00:00.6554616Z")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsUpdate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsUpdate.
+     * json
      */
     /**
      * Sample code: KustoDataConnectionsUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .update(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
-                new EventHubDataConnection()
-                    .withLocation("westus")
-                    .withEventHubResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
-                    .withConsumerGroup("testConsumerGroup1")
-                    .withManagedIdentityResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+        manager.dataConnections()
+            .update("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", new EventHubDataConnection()
+                .withLocation("westus")
+                .withEventHubResourceId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
+                .withConsumerGroup("testConsumerGroup1")
+                .withManagedIdentityResourceId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsEventGridUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsEventGridUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsEventGridUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsEventGridUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .update(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
-                new EventGridDataConnection()
-                    .withLocation("westus")
-                    .withStorageAccountResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount")
-                    .withEventGridResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest")
-                    .withEventHubResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2")
-                    .withConsumerGroup("$Default")
-                    .withTableName("TestTable")
-                    .withMappingRuleName("TestMapping")
-                    .withDataFormat(EventGridDataFormat.JSON)
-                    .withIgnoreFirstRecord(false)
-                    .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
-                    .withManagedIdentityResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")
-                    .withDatabaseRouting(DatabaseRouting.SINGLE),
-                com.azure.core.util.Context.NONE);
+        manager.dataConnections()
+            .update("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", new EventGridDataConnection()
+                .withLocation("westus")
+                .withStorageAccountResourceId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount")
+                .withEventGridResourceId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest")
+                .withEventHubResourceId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2")
+                .withConsumerGroup("$Default")
+                .withTableName("TestTable")
+                .withMappingRuleName("TestMapping")
+                .withDataFormat(EventGridDataFormat.MULTIJSON)
+                .withIgnoreFirstRecord(false)
+                .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
+                .withManagedIdentityResourceId(
+                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")
+                .withDatabaseRouting(DatabaseRouting.SINGLE), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1301,28 +1401,26 @@ import com.azure.resourcemanager.kusto.models.DatabaseInviteFollowerRequest;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
 import java.util.Arrays;
 
-/** Samples for DatabaseOperation InviteFollower. */
+/**
+ * Samples for DatabaseOperation InviteFollower.
+ */
 public final class DatabaseOperationInviteFollowerSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabaseInviteFollower.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabaseInviteFollower
+     * .json
      */
     /**
      * Sample code: KustoDatabaseInviteFollower.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabaseInviteFollower(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databaseOperations()
-            .inviteFollowerWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "database",
-                new DatabaseInviteFollowerRequest()
-                    .withInviteeEmail("invitee@contoso.com")
+        manager.databaseOperations()
+            .inviteFollowerWithResponse("kustorptest", "kustoCluster", "database",
+                new DatabaseInviteFollowerRequest().withInviteeEmail("invitee@contoso.com")
                     .withTableLevelSharingProperties(
-                        new TableLevelSharingProperties()
-                            .withTablesToInclude(Arrays.asList("Table1"))
+                        new TableLevelSharingProperties().withTablesToInclude(Arrays.asList("Table1"))
                             .withTablesToExclude(Arrays.asList("Table2"))
                             .withExternalTablesToInclude(Arrays.asList("ExternalTable*"))
                             .withExternalTablesToExclude(Arrays.asList())
@@ -1340,23 +1438,22 @@ public final class DatabaseOperationInviteFollowerSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignmentCheckNameRequest;
 
-/** Samples for DatabasePrincipalAssignments CheckNameAvailability. */
+/**
+ * Samples for DatabasePrincipalAssignments CheckNameAvailability.
+ */
 public final class DatabasePrincipalAssignmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasePrincipalAssignmentsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabasePrincipalAssignmentsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoDatabaseCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabaseCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databasePrincipalAssignments()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "Kustodatabase8",
+        manager.databasePrincipalAssignments()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster", "Kustodatabase8",
                 new DatabasePrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
                 com.azure.core.util.Context.NONE);
     }
@@ -1369,20 +1466,22 @@ public final class DatabasePrincipalAssignmentsCheckNameAvailabilitySamples {
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 
-/** Samples for DatabasePrincipalAssignments CreateOrUpdate. */
+/**
+ * Samples for DatabasePrincipalAssignments CreateOrUpdate.
+ */
 public final class DatabasePrincipalAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasePrincipalAssignmentsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabasePrincipalAssignmentsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoDatabasePrincipalAssignmentsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoDatabasePrincipalAssignmentsCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databasePrincipalAssignments()
+    public static void
+        kustoDatabasePrincipalAssignmentsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.databasePrincipalAssignments()
             .define("kustoprincipal1")
             .withExistingDatabase("kustorptest", "kustoCluster", "Kustodatabase8")
             .withPrincipalId("87654321-1234-1234-1234-123456789123")
@@ -1397,21 +1496,23 @@ public final class DatabasePrincipalAssignmentsCreateOrUpdateSamples {
 ### DatabasePrincipalAssignments_Delete
 
 ```java
-/** Samples for DatabasePrincipalAssignments Delete. */
+/**
+ * Samples for DatabasePrincipalAssignments Delete.
+ */
 public final class DatabasePrincipalAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasePrincipalAssignmentsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabasePrincipalAssignmentsDelete.json
      */
     /**
      * Sample code: KustoDatabasePrincipalAssignmentsDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasePrincipalAssignmentsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databasePrincipalAssignments()
-            .delete(
-                "kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", com.azure.core.util.Context.NONE);
+        manager.databasePrincipalAssignments()
+            .delete("kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1419,21 +1520,23 @@ public final class DatabasePrincipalAssignmentsDeleteSamples {
 ### DatabasePrincipalAssignments_Get
 
 ```java
-/** Samples for DatabasePrincipalAssignments Get. */
+/**
+ * Samples for DatabasePrincipalAssignments Get.
+ */
 public final class DatabasePrincipalAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasePrincipalAssignmentsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabasePrincipalAssignmentsGet.json
      */
     /**
      * Sample code: KustoDatabasePrincipalAssignmentsGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasePrincipalAssignmentsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databasePrincipalAssignments()
-            .getWithResponse(
-                "kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", com.azure.core.util.Context.NONE);
+        manager.databasePrincipalAssignments()
+            .getWithResponse("kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1441,19 +1544,21 @@ public final class DatabasePrincipalAssignmentsGetSamples {
 ### DatabasePrincipalAssignments_List
 
 ```java
-/** Samples for DatabasePrincipalAssignments List. */
+/**
+ * Samples for DatabasePrincipalAssignments List.
+ */
 public final class DatabasePrincipalAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasePrincipalAssignmentsList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabasePrincipalAssignmentsList.json
      */
     /**
      * Sample code: KustoPrincipalAssignmentsList.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoPrincipalAssignmentsList(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databasePrincipalAssignments()
+        manager.databasePrincipalAssignments()
             .list("kustorptest", "kustoCluster", "Kustodatabase8", com.azure.core.util.Context.NONE);
     }
 }
@@ -1468,48 +1573,42 @@ import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalType;
 import java.util.Arrays;
 
-/** Samples for Databases AddPrincipals. */
+/**
+ * Samples for Databases AddPrincipals.
+ */
 public final class DatabasesAddPrincipalsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabaseAddPrincipals.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabaseAddPrincipals.
+     * json
      */
     /**
      * Sample code: KustoDatabaseAddPrincipals.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabaseAddPrincipals(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
-            .addPrincipalsWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                new DatabasePrincipalListRequest()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new DatabasePrincipalInner()
-                                    .withRole(DatabasePrincipalRole.ADMIN)
-                                    .withName("Some User")
-                                    .withType(DatabasePrincipalType.USER)
-                                    .withFqn("aaduser=some_guid")
-                                    .withEmail("user@microsoft.com")
-                                    .withAppId(""),
-                                new DatabasePrincipalInner()
-                                    .withRole(DatabasePrincipalRole.VIEWER)
-                                    .withName("Kusto")
-                                    .withType(DatabasePrincipalType.GROUP)
-                                    .withFqn("aadgroup=some_guid")
-                                    .withEmail("kusto@microsoft.com")
-                                    .withAppId(""),
-                                new DatabasePrincipalInner()
-                                    .withRole(DatabasePrincipalRole.ADMIN)
-                                    .withName("SomeApp")
-                                    .withType(DatabasePrincipalType.APP)
-                                    .withFqn("aadapp=some_guid_app_id")
-                                    .withEmail("")
-                                    .withAppId("some_guid_app_id"))),
+        manager.databases()
+            .addPrincipalsWithResponse("kustorptest", "kustoCluster", "KustoDatabase8",
+                new DatabasePrincipalListRequest().withValue(Arrays.asList(
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.ADMIN)
+                        .withName("Some User")
+                        .withType(DatabasePrincipalType.USER)
+                        .withFqn("aaduser=some_guid")
+                        .withEmail("user@microsoft.com")
+                        .withAppId(""),
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.VIEWER)
+                        .withName("Kusto")
+                        .withType(DatabasePrincipalType.GROUP)
+                        .withFqn("aadgroup=some_guid")
+                        .withEmail("kusto@microsoft.com")
+                        .withAppId(""),
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.ADMIN)
+                        .withName("SomeApp")
+                        .withType(DatabasePrincipalType.APP)
+                        .withFqn("aadapp=some_guid_app_id")
+                        .withEmail("")
+                        .withAppId("some_guid_app_id"))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1521,22 +1620,22 @@ public final class DatabasesAddPrincipalsSamples {
 import com.azure.resourcemanager.kusto.models.CheckNameRequest;
 import com.azure.resourcemanager.kusto.models.Type;
 
-/** Samples for Databases CheckNameAvailability. */
+/**
+ * Samples for Databases CheckNameAvailability.
+ */
 public final class DatabasesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabasesCheckNameAvailability.json
      */
     /**
      * Sample code: KustoDatabasesCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasesCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
+        manager.databases()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster",
                 new CheckNameRequest().withName("database1").withType(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES),
                 com.azure.core.util.Context.NONE);
     }
@@ -1551,46 +1650,41 @@ import com.azure.resourcemanager.kusto.models.ReadOnlyFollowingDatabase;
 import com.azure.resourcemanager.kusto.models.ReadWriteDatabase;
 import java.time.Duration;
 
-/** Samples for Databases CreateOrUpdate. */
+/**
+ * Samples for Databases CreateOrUpdate.
+ */
 public final class DatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabaseReadonlyUpdate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabaseReadonlyUpdate
+     * .json
      */
     /**
      * Sample code: Kusto ReadOnly database update.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoReadOnlyDatabaseUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "kustoReadOnlyDatabase",
-                new ReadOnlyFollowingDatabase().withLocation("westus").withHotCachePeriod(Duration.parse("P1D")),
-                null,
+        manager.databases()
+            .createOrUpdate("kustorptest", "kustoCluster", "kustoReadOnlyDatabase",
+                new ReadOnlyFollowingDatabase().withLocation("westus").withHotCachePeriod(Duration.parse("P1D")), null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabasesCreateOrUpdate.json
      */
     /**
      * Sample code: Kusto ReadWrite database create or update.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoReadWriteDatabaseCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
+        manager.databases()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase8",
                 new ReadWriteDatabase().withLocation("westus").withSoftDeletePeriod(Duration.parse("P1D")),
-                CallerRole.ADMIN,
-                com.azure.core.util.Context.NONE);
+                CallerRole.ADMIN, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1598,14 +1692,17 @@ public final class DatabasesCreateOrUpdateSamples {
 ### Databases_Delete
 
 ```java
-/** Samples for Databases Delete. */
+/**
+ * Samples for Databases Delete.
+ */
 public final class DatabasesDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesDelete.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabasesDelete.json
      */
     /**
      * Sample code: KustoDatabasesDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasesDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -1617,33 +1714,36 @@ public final class DatabasesDeleteSamples {
 ### Databases_Get
 
 ```java
-/** Samples for Databases Get. */
+/**
+ * Samples for Databases Get.
+ */
 public final class DatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSuspendedDatabasesGet.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoSuspendedDatabasesGet.
+     * json
      */
     /**
      * Sample code: KustoSuspendedDatabasesGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoSuspendedDatabasesGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
+        manager.databases()
             .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase9", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesGet.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabasesGet.json
      */
     /**
      * Sample code: KustoDatabasesGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasesGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
+        manager.databases()
             .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", com.azure.core.util.Context.NONE);
     }
 }
@@ -1652,14 +1752,18 @@ public final class DatabasesGetSamples {
 ### Databases_ListByCluster
 
 ```java
-/** Samples for Databases ListByCluster. */
+/**
+ * Samples for Databases ListByCluster.
+ */
 public final class DatabasesListByClusterSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesListByCluster.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabasesListByCluster
+     * .json
      */
     /**
      * Sample code: KustoDatabasesListByCluster.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasesListByCluster(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -1671,19 +1775,22 @@ public final class DatabasesListByClusterSamples {
 ### Databases_ListPrincipals
 
 ```java
-/** Samples for Databases ListPrincipals. */
+/**
+ * Samples for Databases ListPrincipals.
+ */
 public final class DatabasesListPrincipalsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabaseListPrincipals.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabaseListPrincipals
+     * .json
      */
     /**
      * Sample code: KustoDatabaseListPrincipals.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabaseListPrincipals(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
+        manager.databases()
             .listPrincipals("kustorptest", "kustoCluster", "KustoDatabase8", com.azure.core.util.Context.NONE);
     }
 }
@@ -1698,48 +1805,41 @@ import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalType;
 import java.util.Arrays;
 
-/** Samples for Databases RemovePrincipals. */
+/**
+ * Samples for Databases RemovePrincipals.
+ */
 public final class DatabasesRemovePrincipalsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabaseRemovePrincipals.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabaseRemovePrincipals.json
      */
     /**
      * Sample code: KustoDatabaseRemovePrincipals.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabaseRemovePrincipals(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
-            .removePrincipalsWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                new DatabasePrincipalListRequest()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new DatabasePrincipalInner()
-                                    .withRole(DatabasePrincipalRole.ADMIN)
-                                    .withName("Some User")
-                                    .withType(DatabasePrincipalType.USER)
-                                    .withFqn("aaduser=some_guid")
-                                    .withEmail("user@microsoft.com")
-                                    .withAppId(""),
-                                new DatabasePrincipalInner()
-                                    .withRole(DatabasePrincipalRole.VIEWER)
-                                    .withName("Kusto")
-                                    .withType(DatabasePrincipalType.GROUP)
-                                    .withFqn("aadgroup=some_guid")
-                                    .withEmail("kusto@microsoft.com")
-                                    .withAppId(""),
-                                new DatabasePrincipalInner()
-                                    .withRole(DatabasePrincipalRole.ADMIN)
-                                    .withName("SomeApp")
-                                    .withType(DatabasePrincipalType.APP)
-                                    .withFqn("aadapp=some_guid_app_id")
-                                    .withEmail("")
-                                    .withAppId("some_guid_app_id"))),
+        manager.databases()
+            .removePrincipalsWithResponse("kustorptest", "kustoCluster", "KustoDatabase8",
+                new DatabasePrincipalListRequest().withValue(Arrays.asList(
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.ADMIN)
+                        .withName("Some User")
+                        .withType(DatabasePrincipalType.USER)
+                        .withFqn("aaduser=some_guid")
+                        .withEmail("user@microsoft.com")
+                        .withAppId(""),
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.VIEWER)
+                        .withName("Kusto")
+                        .withType(DatabasePrincipalType.GROUP)
+                        .withFqn("aadgroup=some_guid")
+                        .withEmail("kusto@microsoft.com")
+                        .withAppId(""),
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.ADMIN)
+                        .withName("SomeApp")
+                        .withType(DatabasePrincipalType.APP)
+                        .withFqn("aadapp=some_guid_app_id")
+                        .withEmail("")
+                        .withAppId("some_guid_app_id"))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1751,25 +1851,23 @@ public final class DatabasesRemovePrincipalsSamples {
 import com.azure.resourcemanager.kusto.models.ReadWriteDatabase;
 import java.time.Duration;
 
-/** Samples for Databases Update. */
+/**
+ * Samples for Databases Update.
+ */
 public final class DatabasesUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesUpdate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabasesUpdate.json
      */
     /**
      * Sample code: KustoDatabasesUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasesUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
-            .update(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                new ReadWriteDatabase().withHotCachePeriod(Duration.parse("P1D")),
-                null,
+        manager.databases()
+            .update("kustorptest", "kustoCluster", "KustoDatabase8",
+                new ReadWriteDatabase().withHotCachePeriod(Duration.parse("P1D")), null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1780,25 +1878,24 @@ public final class DatabasesUpdateSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpointsCheckNameRequest;
 
-/** Samples for ManagedPrivateEndpoints CheckNameAvailability. */
+/**
+ * Samples for ManagedPrivateEndpoints CheckNameAvailability.
+ */
 public final class ManagedPrivateEndpointsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoManagedPrivateEndpointsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoManagedPrivateEndpointsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoManagedPrivateEndpointsCheckNameAvailability(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .managedPrivateEndpoints()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                new ManagedPrivateEndpointsCheckNameRequest().withName("pme1"),
-                com.azure.core.util.Context.NONE);
+    public static void
+        kustoManagedPrivateEndpointsCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.managedPrivateEndpoints()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster",
+                new ManagedPrivateEndpointsCheckNameRequest().withName("pme1"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1806,20 +1903,22 @@ public final class ManagedPrivateEndpointsCheckNameAvailabilitySamples {
 ### ManagedPrivateEndpoints_CreateOrUpdate
 
 ```java
-/** Samples for ManagedPrivateEndpoints CreateOrUpdate. */
+/**
+ * Samples for ManagedPrivateEndpoints CreateOrUpdate.
+ */
 public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoManagedPrivateEndpointsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoManagedPrivateEndpointsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoManagedPrivateEndpointsCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .managedPrivateEndpoints()
+    public static void
+        kustoManagedPrivateEndpointsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.managedPrivateEndpoints()
             .define("managedPrivateEndpointTest")
             .withExistingCluster("kustorptest", "kustoCluster")
             .withPrivateLinkResourceId(
@@ -1834,19 +1933,21 @@ public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
 ### ManagedPrivateEndpoints_Delete
 
 ```java
-/** Samples for ManagedPrivateEndpoints Delete. */
+/**
+ * Samples for ManagedPrivateEndpoints Delete.
+ */
 public final class ManagedPrivateEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoManagedPrivateEndpointsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoManagedPrivateEndpointsDelete.json
      */
     /**
      * Sample code: ManagedPrivateEndpointsDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void managedPrivateEndpointsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .managedPrivateEndpoints()
+        manager.managedPrivateEndpoints()
             .delete("kustorptest", "kustoCluster", "managedPrivateEndpointTest", com.azure.core.util.Context.NONE);
     }
 }
@@ -1855,21 +1956,23 @@ public final class ManagedPrivateEndpointsDeleteSamples {
 ### ManagedPrivateEndpoints_Get
 
 ```java
-/** Samples for ManagedPrivateEndpoints Get. */
+/**
+ * Samples for ManagedPrivateEndpoints Get.
+ */
 public final class ManagedPrivateEndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoManagedPrivateEndpointsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoManagedPrivateEndpointsGet.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoManagedPrivateEndpointsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .managedPrivateEndpoints()
-            .getWithResponse(
-                "kustorptest", "kustoCluster", "managedPrivateEndpointTest", com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .getWithResponse("kustorptest", "kustoCluster", "managedPrivateEndpointTest",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1877,14 +1980,17 @@ public final class ManagedPrivateEndpointsGetSamples {
 ### ManagedPrivateEndpoints_List
 
 ```java
-/** Samples for ManagedPrivateEndpoints List. */
+/**
+ * Samples for ManagedPrivateEndpoints List.
+ */
 public final class ManagedPrivateEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoManagedPrivateEndpointsList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoManagedPrivateEndpointsList.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsList.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoManagedPrivateEndpointsList(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -1898,25 +2004,25 @@ public final class ManagedPrivateEndpointsListSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpoint;
 
-/** Samples for ManagedPrivateEndpoints Update. */
+/**
+ * Samples for ManagedPrivateEndpoints Update.
+ */
 public final class ManagedPrivateEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoManagedPrivateEndpointsUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoManagedPrivateEndpointsUpdate.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoManagedPrivateEndpointsUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        ManagedPrivateEndpoint resource =
-            manager
-                .managedPrivateEndpoints()
-                .getWithResponse(
-                    "kustorptest", "kustoCluster", "managedPrivateEndpointTest", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        ManagedPrivateEndpoint resource = manager.managedPrivateEndpoints()
+            .getWithResponse("kustorptest", "kustoCluster", "managedPrivateEndpointTest",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withPrivateLinkResourceId(
                 "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/storageAccountTest")
             .withGroupId("blob")
@@ -1929,14 +2035,17 @@ public final class ManagedPrivateEndpointsUpdateSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoOperationsList.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoOperationsList.json
      */
     /**
      * Sample code: KustoOperationsList.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoOperationsList(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -1948,19 +2057,22 @@ public final class OperationsListSamples {
 ### OperationsResults_Get
 
 ```java
-/** Samples for OperationsResults Get. */
+/**
+ * Samples for OperationsResults Get.
+ */
 public final class OperationsResultsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoOperationResultsGet.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoOperationResultsGet.
+     * json
      */
     /**
      * Sample code: KustoOperationResultsGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoOperationResultsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .operationsResults()
+        manager.operationsResults()
             .getWithResponse("westus", "30972f1b-b61d-4fd8-bd34-3dcfa24670f3", com.azure.core.util.Context.NONE);
     }
 }
@@ -1969,19 +2081,21 @@ public final class OperationsResultsGetSamples {
 ### OperationsResultsLocation_Get
 
 ```java
-/** Samples for OperationsResultsLocation Get. */
+/**
+ * Samples for OperationsResultsLocation Get.
+ */
 public final class OperationsResultsLocationGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoOperationResultsOperationResultResponseTypeGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoOperationResultsOperationResultResponseTypeGet.json
      */
     /**
      * Sample code: KustoOperationsResultsLocationGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoOperationsResultsLocationGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .operationsResultsLocations()
+        manager.operationsResultsLocations()
             .getWithResponse("westus", "30972f1b-b61d-4fd8-bd34-3dcfa24670f3", com.azure.core.util.Context.NONE);
     }
 }
@@ -1992,25 +2106,26 @@ public final class OperationsResultsLocationGetSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.PrivateLinkServiceConnectionStateProperty;
 
-/** Samples for PrivateEndpointConnections CreateOrUpdate. */
+/**
+ * Samples for PrivateEndpointConnections CreateOrUpdate.
+ */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoPrivateEndpointConnectionsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoPrivateEndpointConnectionsCreateOrUpdate.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void approveOrRejectAPrivateEndpointConnectionWithAGivenName(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .privateEndpointConnections()
+    public static void
+        approveOrRejectAPrivateEndpointConnectionWithAGivenName(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.privateEndpointConnections()
             .define("privateEndpointTest")
             .withExistingCluster("kustorptest", "kustoclusterrptest4")
             .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionStateProperty()
-                    .withStatus("Approved")
+                new PrivateLinkServiceConnectionStateProperty().withStatus("Approved")
                     .withDescription("Approved by johndoe@contoso.com"))
             .create();
     }
@@ -2020,20 +2135,22 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
 ### PrivateEndpointConnections_Delete
 
 ```java
-/** Samples for PrivateEndpointConnections Delete. */
+/**
+ * Samples for PrivateEndpointConnections Delete.
+ */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoPrivateEndpointConnectionsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoPrivateEndpointConnectionsDelete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void deletesAPrivateEndpointConnectionWithAGivenName(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .privateEndpointConnections()
+    public static void
+        deletesAPrivateEndpointConnectionWithAGivenName(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.privateEndpointConnections()
             .delete("kustorptest", "kustoCluster", "privateEndpointTest", com.azure.core.util.Context.NONE);
     }
 }
@@ -2042,19 +2159,21 @@ public final class PrivateEndpointConnectionsDeleteSamples {
 ### PrivateEndpointConnections_Get
 
 ```java
-/** Samples for PrivateEndpointConnections Get. */
+/**
+ * Samples for PrivateEndpointConnections Get.
+ */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoPrivateEndpointConnectionsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoPrivateEndpointConnectionsGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void getsPrivateEndpointConnection(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .privateEndpointConnections()
+        manager.privateEndpointConnections()
             .getWithResponse("kustorptest", "kustoCluster", "privateEndpointTest", com.azure.core.util.Context.NONE);
     }
 }
@@ -2063,14 +2182,17 @@ public final class PrivateEndpointConnectionsGetSamples {
 ### PrivateEndpointConnections_List
 
 ```java
-/** Samples for PrivateEndpointConnections List. */
+/**
+ * Samples for PrivateEndpointConnections List.
+ */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoPrivateEndpointConnectionsList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoPrivateEndpointConnectionsList.json
      */
     /**
      * Sample code: KustoPrivateEndpointConnectionsList.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoPrivateEndpointConnectionsList(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -2082,19 +2204,21 @@ public final class PrivateEndpointConnectionsListSamples {
 ### PrivateLinkResources_Get
 
 ```java
-/** Samples for PrivateLinkResources Get. */
+/**
+ * Samples for PrivateLinkResources Get.
+ */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoPrivateLinkResourcesGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoPrivateLinkResourcesGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void getsPrivateEndpointConnection(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .privateLinkResources()
+        manager.privateLinkResources()
             .getWithResponse("kustorptest", "kustoCluster", "cluster", com.azure.core.util.Context.NONE);
     }
 }
@@ -2103,14 +2227,17 @@ public final class PrivateLinkResourcesGetSamples {
 ### PrivateLinkResources_List
 
 ```java
-/** Samples for PrivateLinkResources List. */
+/**
+ * Samples for PrivateLinkResources List.
+ */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoPrivateLinkResourcesList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoPrivateLinkResourcesList.json
      */
     /**
      * Sample code: Gets private endpoint connections.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void getsPrivateEndpointConnections(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -2124,23 +2251,23 @@ public final class PrivateLinkResourcesListSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.SandboxCustomImagesCheckNameRequest;
 
-/** Samples for SandboxCustomImages CheckNameAvailability. */
+/**
+ * Samples for SandboxCustomImages CheckNameAvailability.
+ */
 public final class SandboxCustomImagesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSandboxCustomImagesCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoSandboxCustomImagesCheckNameAvailability.json
      */
     /**
      * Sample code: KustoSandboxCustomImagesCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoSandboxCustomImagesCheckNameAvailability(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .sandboxCustomImages()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
+    public static void
+        kustoSandboxCustomImagesCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.sandboxCustomImages()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster",
                 new SandboxCustomImagesCheckNameRequest().withName("sandboxCustomImage1"),
                 com.azure.core.util.Context.NONE);
     }
@@ -2152,23 +2279,65 @@ public final class SandboxCustomImagesCheckNameAvailabilitySamples {
 ```java
 import com.azure.resourcemanager.kusto.models.Language;
 
-/** Samples for SandboxCustomImages CreateOrUpdate. */
+/**
+ * Samples for SandboxCustomImages CreateOrUpdate.
+ */
 public final class SandboxCustomImagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSandboxCustomImagesCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoSandboxCustomImagesCreateOrUpdate.json
      */
     /**
      * Sample code: KustoSandboxCustomImagesCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoSandboxCustomImagesCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .sandboxCustomImages()
+        manager.sandboxCustomImages()
             .define("customImage8")
             .withExistingCluster("kustorptest", "kustoCluster")
             .withLanguage(Language.PYTHON)
             .withLanguageVersion("3.10.8")
+            .withRequirementsFileContent("Requests")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoSandboxCustomImagesCreateOrUpdateWithCustomBaseImage.json
+     */
+    /**
+     * Sample code: KustoSandboxCustomImagesCreateOrUpdateWithCustomBaseImage.
+     * 
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoSandboxCustomImagesCreateOrUpdateWithCustomBaseImage(
+        com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.sandboxCustomImages()
+            .define("customImage2")
+            .withExistingCluster("kustorptest", "kustoCluster")
+            .withLanguage(Language.PYTHON)
+            .withBaseImageName("customImage1")
+            .withRequirementsFileContent("Requests")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoSandboxCustomImagesCreateOrUpdateWithManagedBaseImage.json
+     */
+    /**
+     * Sample code: KustoSandboxCustomImagesCreateOrUpdateWithManagedBaseImage.
+     * 
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoSandboxCustomImagesCreateOrUpdateWithManagedBaseImage(
+        com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.sandboxCustomImages()
+            .define("customImage2")
+            .withExistingCluster("kustorptest", "kustoCluster")
+            .withLanguage(Language.PYTHON)
+            .withBaseImageName("Python3_10_8")
             .withRequirementsFileContent("Requests")
             .create();
     }
@@ -2178,19 +2347,21 @@ public final class SandboxCustomImagesCreateOrUpdateSamples {
 ### SandboxCustomImages_Delete
 
 ```java
-/** Samples for SandboxCustomImages Delete. */
+/**
+ * Samples for SandboxCustomImages Delete.
+ */
 public final class SandboxCustomImagesDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSandboxCustomImageDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoSandboxCustomImageDelete.json
      */
     /**
      * Sample code: SandboxCustomImagesDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void sandboxCustomImagesDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .sandboxCustomImages()
+        manager.sandboxCustomImages()
             .delete("kustorptest", "kustoCluster", "customImage8", com.azure.core.util.Context.NONE);
     }
 }
@@ -2199,19 +2370,22 @@ public final class SandboxCustomImagesDeleteSamples {
 ### SandboxCustomImages_Get
 
 ```java
-/** Samples for SandboxCustomImages Get. */
+/**
+ * Samples for SandboxCustomImages Get.
+ */
 public final class SandboxCustomImagesGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSandboxCustomImagesGet.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoSandboxCustomImagesGet
+     * .json
      */
     /**
      * Sample code: KustoSandboxCustomImagesGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoSandboxCustomImagesGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .sandboxCustomImages()
+        manager.sandboxCustomImages()
             .getWithResponse("kustorptest", "kustoCluster", "customImage8", com.azure.core.util.Context.NONE);
     }
 }
@@ -2220,14 +2394,17 @@ public final class SandboxCustomImagesGetSamples {
 ### SandboxCustomImages_ListByCluster
 
 ```java
-/** Samples for SandboxCustomImages ListByCluster. */
+/**
+ * Samples for SandboxCustomImages ListByCluster.
+ */
 public final class SandboxCustomImagesListByClusterSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSandboxCustomImagesList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoSandboxCustomImagesList.json
      */
     /**
      * Sample code: KustoSandboxCustomImagesListByCluster.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoSandboxCustomImagesListByCluster(com.azure.resourcemanager.kusto.KustoManager manager) {
@@ -2242,24 +2419,24 @@ public final class SandboxCustomImagesListByClusterSamples {
 import com.azure.resourcemanager.kusto.models.Language;
 import com.azure.resourcemanager.kusto.models.SandboxCustomImage;
 
-/** Samples for SandboxCustomImages Update. */
+/**
+ * Samples for SandboxCustomImages Update.
+ */
 public final class SandboxCustomImagesUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSandboxCustomImageUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoSandboxCustomImageUpdate.json
      */
     /**
      * Sample code: KustoSandboxCustomImagesUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoSandboxCustomImagesUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        SandboxCustomImage resource =
-            manager
-                .sandboxCustomImages()
-                .getWithResponse("kustorptest", "kustoCluster", "customImage8", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        SandboxCustomImage resource = manager.sandboxCustomImages()
+            .getWithResponse("kustorptest", "kustoCluster", "customImage8", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withLanguage(Language.PYTHON)
             .withLanguageVersion("3.10.8")
             .withRequirementsFileContent("Requests")
@@ -2273,25 +2450,23 @@ public final class SandboxCustomImagesUpdateSamples {
 ```java
 import com.azure.resourcemanager.kusto.models.ScriptCheckNameRequest;
 
-/** Samples for Scripts CheckNameAvailability. */
+/**
+ * Samples for Scripts CheckNameAvailability.
+ */
 public final class ScriptsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoScriptsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoScriptsCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .scripts()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "db",
-                new ScriptCheckNameRequest().withName("kustoScriptName1"),
-                com.azure.core.util.Context.NONE);
+        manager.scripts()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster", "db",
+                new ScriptCheckNameRequest().withName("kustoScriptName1"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2299,19 +2474,25 @@ public final class ScriptsCheckNameAvailabilitySamples {
 ### Scripts_CreateOrUpdate
 
 ```java
-/** Samples for Scripts CreateOrUpdate. */
+import com.azure.resourcemanager.kusto.models.PrincipalPermissionsAction;
+import com.azure.resourcemanager.kusto.models.ScriptLevel;
+
+/**
+ * Samples for Scripts CreateOrUpdate.
+ */
 public final class ScriptsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsCreateOrUpdate.
+     * json
      */
     /**
      * Sample code: KustoScriptsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .scripts()
+        manager.scripts()
             .define("kustoScript")
             .withExistingDatabase("kustorptest", "kustoCluster", "KustoDatabase8")
             .withScriptUrl("https://mysa.blob.core.windows.net/container/script.txt")
@@ -2319,6 +2500,8 @@ public final class ScriptsCreateOrUpdateSamples {
                 "?sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=********************************")
             .withForceUpdateTag("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe")
             .withContinueOnErrors(true)
+            .withScriptLevel(ScriptLevel.DATABASE)
+            .withPrincipalPermissionsAction(PrincipalPermissionsAction.REMOVE_PERMISSION_ON_SCRIPT_COMPLETION)
             .create();
     }
 }
@@ -2327,19 +2510,21 @@ public final class ScriptsCreateOrUpdateSamples {
 ### Scripts_Delete
 
 ```java
-/** Samples for Scripts Delete. */
+/**
+ * Samples for Scripts Delete.
+ */
 public final class ScriptsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsDelete.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsDelete.json
      */
     /**
      * Sample code: KustoScriptsDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .scripts()
+        manager.scripts()
             .delete("kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript", com.azure.core.util.Context.NONE);
     }
 }
@@ -2348,21 +2533,23 @@ public final class ScriptsDeleteSamples {
 ### Scripts_Get
 
 ```java
-/** Samples for Scripts Get. */
+/**
+ * Samples for Scripts Get.
+ */
 public final class ScriptsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsGet.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsGet.json
      */
     /**
      * Sample code: KustoScriptsGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .scripts()
-            .getWithResponse(
-                "kustorptest", "kustoCluster", "Kustodatabase8", "kustoScript", com.azure.core.util.Context.NONE);
+        manager.scripts()
+            .getWithResponse("kustorptest", "kustoCluster", "Kustodatabase8", "kustoScript",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2370,19 +2557,22 @@ public final class ScriptsGetSamples {
 ### Scripts_ListByDatabase
 
 ```java
-/** Samples for Scripts ListByDatabase. */
+/**
+ * Samples for Scripts ListByDatabase.
+ */
 public final class ScriptsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsListByDatabase.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsListByDatabase.
+     * json
      */
     /**
      * Sample code: KustoScriptsList.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsList(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .scripts()
+        manager.scripts()
             .listByDatabase("kustorptest", "kustoCluster", "Kustodatabase8", com.azure.core.util.Context.NONE);
     }
 }
@@ -2391,30 +2581,34 @@ public final class ScriptsListByDatabaseSamples {
 ### Scripts_Update
 
 ```java
+import com.azure.resourcemanager.kusto.models.PrincipalPermissionsAction;
 import com.azure.resourcemanager.kusto.models.Script;
+import com.azure.resourcemanager.kusto.models.ScriptLevel;
 
-/** Samples for Scripts Update. */
+/**
+ * Samples for Scripts Update.
+ */
 public final class ScriptsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsUpdate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsUpdate.json
      */
     /**
      * Sample code: KustoScriptsUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        Script resource =
-            manager
-                .scripts()
-                .getWithResponse(
-                    "kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Script resource = manager.scripts()
+            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withScriptUrl("https://mysa.blob.core.windows.net/container/script.txt")
             .withForceUpdateTag("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe")
             .withContinueOnErrors(true)
+            .withScriptLevel(ScriptLevel.DATABASE)
+            .withPrincipalPermissionsAction(PrincipalPermissionsAction.REMOVE_PERMISSION_ON_SCRIPT_COMPLETION)
             .apply();
     }
 }
@@ -2423,14 +2617,17 @@ public final class ScriptsUpdateSamples {
 ### Skus_List
 
 ```java
-/** Samples for Skus List. */
+/**
+ * Samples for Skus List.
+ */
 public final class SkusListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSkus.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoSkus.json
      */
     /**
      * Sample code: KustoListRegionSkus.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoListRegionSkus(com.azure.resourcemanager.kusto.KustoManager manager) {

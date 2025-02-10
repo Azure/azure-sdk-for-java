@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redis.models.CheckNameAvailabilityParameters;
 public final class RedisCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheCheckNameAvailability.
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCheckNameAvailability.
      * json
      */
     /**

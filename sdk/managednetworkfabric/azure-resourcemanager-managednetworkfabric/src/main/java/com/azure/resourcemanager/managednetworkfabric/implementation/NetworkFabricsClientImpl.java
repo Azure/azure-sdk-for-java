@@ -41,23 +41,29 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConf
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricsListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkFabricsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkFabricsClient.
+ */
 public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkFabricsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkFabricsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkFabricsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -159,8 +165,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         Mono<Response<Flux<ByteBuffer>>> upgrade(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricName") String networkFabricName, @BodyParam("application/json") UpdateVersion body,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("networkFabricName") String networkFabricName,
+            @BodyParam("application/json") UpgradeNetworkFabricProperties body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/refreshConfiguration")
@@ -244,17 +251,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkFabricName,
@@ -289,9 +296,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -299,8 +306,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkFabricName,
@@ -334,9 +341,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -355,9 +362,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -379,9 +386,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -398,9 +405,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -418,9 +425,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -438,9 +445,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -459,9 +466,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -477,9 +484,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -497,9 +504,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -536,9 +543,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -574,9 +581,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -592,9 +599,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -611,9 +618,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -628,17 +635,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkFabricName,
@@ -673,9 +680,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -683,8 +690,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkFabricName,
@@ -718,9 +725,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -739,9 +746,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -763,9 +770,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -782,9 +789,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -802,9 +809,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -822,9 +829,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -843,9 +850,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -861,9 +868,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -881,9 +888,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -919,9 +926,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -957,9 +964,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -976,9 +983,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -998,9 +1005,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1015,9 +1022,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1034,9 +1041,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1052,9 +1059,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1071,9 +1078,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1087,9 +1094,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1104,9 +1111,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1138,9 +1145,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1174,9 +1181,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1191,9 +1198,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1209,9 +1216,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1225,9 +1232,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1242,9 +1249,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabrics along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1270,9 +1277,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1300,9 +1307,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabrics as paginated response with {@link PagedFlux}.
@@ -1315,9 +1322,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1332,9 +1339,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
@@ -1346,9 +1353,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1362,9 +1369,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1400,9 +1407,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1438,9 +1445,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1461,9 +1468,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1487,9 +1494,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1506,9 +1513,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1526,9 +1533,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1545,9 +1552,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1565,9 +1572,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1582,9 +1589,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1601,9 +1608,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1639,9 +1646,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1677,9 +1684,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1700,9 +1707,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1726,9 +1733,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1745,9 +1752,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1765,9 +1772,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1784,9 +1791,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1804,9 +1811,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1822,9 +1829,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1841,21 +1848,21 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
-        String networkFabricName, UpdateVersion body) {
+        String networkFabricName, UpgradeNetworkFabricProperties body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1886,9 +1893,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -1896,12 +1903,12 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
-        String networkFabricName, UpdateVersion body, Context context) {
+        String networkFabricName, UpgradeNetworkFabricProperties body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1931,9 +1938,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -1945,7 +1952,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
         PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgradeAsync(String resourceGroupName, String networkFabricName, UpdateVersion body) {
+        beginUpgradeAsync(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body) {
         Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, networkFabricName, body);
         return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
@@ -1955,9 +1962,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -1970,7 +1977,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
         PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgradeAsync(String resourceGroupName, String networkFabricName, UpdateVersion body, Context context) {
+        beginUpgradeAsync(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = upgradeWithResponseAsync(resourceGroupName, networkFabricName, body, context);
@@ -1982,9 +1990,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -1996,15 +2004,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgrade(String resourceGroupName, String networkFabricName, UpdateVersion body) {
+        beginUpgrade(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body) {
         return this.beginUpgradeAsync(resourceGroupName, networkFabricName, body).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2017,15 +2025,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgrade(String resourceGroupName, String networkFabricName, UpdateVersion body, Context context) {
+        beginUpgrade(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body,
+            Context context) {
         return this.beginUpgradeAsync(resourceGroupName, networkFabricName, body, context).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2036,16 +2045,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommonPostActionResponseForStateUpdateInner> upgradeAsync(String resourceGroupName,
-        String networkFabricName, UpdateVersion body) {
+        String networkFabricName, UpgradeNetworkFabricProperties body) {
         return beginUpgradeAsync(resourceGroupName, networkFabricName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2057,16 +2066,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommonPostActionResponseForStateUpdateInner> upgradeAsync(String resourceGroupName,
-        String networkFabricName, UpdateVersion body, Context context) {
+        String networkFabricName, UpgradeNetworkFabricProperties body, Context context) {
         return beginUpgradeAsync(resourceGroupName, networkFabricName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2077,15 +2086,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkFabricName,
-        UpdateVersion body) {
+        UpgradeNetworkFabricProperties body) {
         return upgradeAsync(resourceGroupName, networkFabricName, body).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2097,22 +2106,22 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkFabricName,
-        UpdateVersion body, Context context) {
+        UpgradeNetworkFabricProperties body, Context context) {
         return upgradeAsync(resourceGroupName, networkFabricName, body, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(String resourceGroupName,
@@ -2143,17 +2152,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(String resourceGroupName,
@@ -2182,9 +2191,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2206,9 +2215,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2232,9 +2241,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2251,9 +2260,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2271,9 +2280,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2290,9 +2299,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2310,9 +2319,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2328,9 +2337,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2347,18 +2356,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWorkloadManagementBfdConfigurationWithResponseAsync(
@@ -2394,10 +2403,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2405,8 +2414,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWorkloadManagementBfdConfigurationWithResponseAsync(
@@ -2441,10 +2450,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2468,10 +2477,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2497,10 +2506,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2520,10 +2529,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2545,10 +2554,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2566,10 +2575,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2589,10 +2598,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2609,10 +2618,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2631,18 +2640,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateInfraManagementBfdConfigurationWithResponseAsync(
@@ -2678,10 +2686,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2689,8 +2696,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateInfraManagementBfdConfigurationWithResponseAsync(
@@ -2724,10 +2731,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2751,10 +2757,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2780,10 +2785,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2803,10 +2807,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2827,10 +2830,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2848,10 +2850,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2871,10 +2872,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2891,10 +2891,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2912,9 +2911,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -2922,7 +2921,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -2958,9 +2957,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -2969,7 +2968,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -3003,9 +3002,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3027,9 +3026,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3053,9 +3052,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3073,9 +3072,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3095,9 +3094,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3115,9 +3114,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3136,9 +3135,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3155,9 +3154,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3175,16 +3174,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return topology of the underlying resources in the given Network Fabric instance along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getTopologyWithResponseAsync(String resourceGroupName,
@@ -3214,9 +3213,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3224,7 +3223,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return topology of the underlying resources in the given Network Fabric instance along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getTopologyWithResponseAsync(String resourceGroupName,
@@ -3253,16 +3252,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
@@ -3275,9 +3274,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3285,7 +3284,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
@@ -3300,16 +3299,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
@@ -3319,9 +3318,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3329,7 +3328,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
@@ -3339,16 +3338,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return topology of the underlying resources in the given Network Fabric instance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ValidateConfigurationResponseInner> getTopologyAsync(String resourceGroupName,
@@ -3359,9 +3358,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3369,7 +3368,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return topology of the underlying resources in the given Network Fabric instance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ValidateConfigurationResponseInner> getTopologyAsync(String resourceGroupName,
@@ -3380,9 +3379,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3397,9 +3396,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3416,16 +3415,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
@@ -3456,17 +3455,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
@@ -3495,9 +3494,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3519,9 +3518,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3545,9 +3544,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3564,9 +3563,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3584,9 +3583,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3603,9 +3602,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3623,9 +3622,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3641,9 +3640,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3660,9 +3659,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3688,9 +3686,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3716,9 +3713,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3744,9 +3740,8 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

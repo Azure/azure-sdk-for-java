@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NotificationChannels. */
+/**
+ * Resource collection API of NotificationChannels.
+ */
 public interface NotificationChannels {
     /**
      * List notification channels in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface NotificationChannels {
 
     /**
      * List notification channels in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=webHookUrl)'.
@@ -42,7 +44,7 @@ public interface NotificationChannels {
 
     /**
      * Get notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -58,7 +60,7 @@ public interface NotificationChannels {
 
     /**
      * Get notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -71,7 +73,7 @@ public interface NotificationChannels {
 
     /**
      * Delete notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -85,7 +87,7 @@ public interface NotificationChannels {
 
     /**
      * Delete notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -97,7 +99,7 @@ public interface NotificationChannels {
 
     /**
      * Send notification to provided channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -113,7 +115,7 @@ public interface NotificationChannels {
 
     /**
      * Send notification to provided channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -126,7 +128,7 @@ public interface NotificationChannels {
 
     /**
      * Get notification channel.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +139,7 @@ public interface NotificationChannels {
 
     /**
      * Get notification channel.
-     *
+     * 
      * @param id the resource ID.
      * @param expand Specify the $expand query. Example: 'properties($select=webHookUrl)'.
      * @param context The context to associate with this operation.
@@ -150,7 +152,7 @@ public interface NotificationChannels {
 
     /**
      * Delete notification channel.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -160,7 +162,7 @@ public interface NotificationChannels {
 
     /**
      * Delete notification channel.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface NotificationChannels {
 
     /**
      * Begins definition for a new NotificationChannel resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NotificationChannel definition.
      */

@@ -7,10 +7,9 @@
 module io.clientcore.http.stress {
     requires transitive com.azure.core.test.perf;
     requires transitive io.clientcore.core;
-    requires transitive io.clientcore.core.json;
     requires transitive io.clientcore.http.okhttp3;
 
-    requires azure.monitor.opentelemetry.exporter;
+    requires com.azure.monitor.opentelemetry.autoconfigure;
     requires com.azure.core;
     requires jcommander;
     requires io.opentelemetry.api;

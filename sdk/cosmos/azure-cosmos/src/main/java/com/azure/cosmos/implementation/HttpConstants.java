@@ -282,6 +282,10 @@ public class HttpConstants {
 
         // Priority Level for throttling
         public static final String PRIORITY_LEVEL = "x-ms-cosmos-priority-level";
+
+        // Thinclient headers
+        public static final String THINCLIENT_PROXY_OPERATION_TYPE = "x-ms-thinclient-proxy-operation-type";
+        public static final String THINCLIENT_PROXY_RESOURCE_TYPE = "x-ms-thinclient-proxy-resource-type";
     }
 
     public static class A_IMHeaderValues {
@@ -406,8 +410,8 @@ public class HttpConstants {
 
         public static final int INCORRECT_CONTAINER_RID_SUB_STATUS = 1024;
 
-        // SDK Codes - Java specific clinet-side substatus codes
-        // IMPORTANT - whenever possible rather use consistency substaus codes that .Net SDK also uses
+        // SDK Codes - Java specific client-side substatus codes
+        // IMPORTANT - whenever possible rather use consistency substatus codes that .Net SDK also uses
         // 20000-20999 - consistent client side sdk status codes
         // 21000-21999 - consistent service sdk status codes
 

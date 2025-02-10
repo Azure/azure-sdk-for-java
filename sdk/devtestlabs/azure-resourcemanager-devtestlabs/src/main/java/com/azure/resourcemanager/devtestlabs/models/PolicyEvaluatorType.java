@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy). */
+/**
+ * The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
+ */
 public final class PolicyEvaluatorType extends ExpandableStringEnum<PolicyEvaluatorType> {
-    /** Static value AllowedValuesPolicy for PolicyEvaluatorType. */
+    /**
+     * Static value AllowedValuesPolicy for PolicyEvaluatorType.
+     */
     public static final PolicyEvaluatorType ALLOWED_VALUES_POLICY = fromString("AllowedValuesPolicy");
 
-    /** Static value MaxValuePolicy for PolicyEvaluatorType. */
+    /**
+     * Static value MaxValuePolicy for PolicyEvaluatorType.
+     */
     public static final PolicyEvaluatorType MAX_VALUE_POLICY = fromString("MaxValuePolicy");
 
     /**
      * Creates a new instance of PolicyEvaluatorType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PolicyEvaluatorType extends ExpandableStringEnum<PolicyEvalua
 
     /**
      * Creates or finds a PolicyEvaluatorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyEvaluatorType.
      */
-    @JsonCreator
     public static PolicyEvaluatorType fromString(String name) {
         return fromString(name, PolicyEvaluatorType.class);
     }
 
     /**
      * Gets known PolicyEvaluatorType values.
-     *
+     * 
      * @return known PolicyEvaluatorType values.
      */
     public static Collection<PolicyEvaluatorType> values() {

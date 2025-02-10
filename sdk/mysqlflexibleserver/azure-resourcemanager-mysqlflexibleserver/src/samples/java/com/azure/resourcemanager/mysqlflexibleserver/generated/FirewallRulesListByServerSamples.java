@@ -9,8 +9,7 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
  */
 public final class FirewallRulesListByServerSamples {
     /*
-     * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2023-06-01-preview/examples/
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
      * FirewallRulesListByServer.json
      */
     /**

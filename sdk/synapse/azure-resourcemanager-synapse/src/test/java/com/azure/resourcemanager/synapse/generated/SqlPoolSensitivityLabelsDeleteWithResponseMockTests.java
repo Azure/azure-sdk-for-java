@@ -28,7 +28,7 @@ public final class SqlPoolSensitivityLabelsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sqlPoolSensitivityLabels()
-            .deleteWithResponse("zbzuzudlev", "skejcgwfsgq", "styec", "pyuijp", "rdavsjcfmazpzdq", "uzvcmcok",
+            .deleteWithResponse("wrczfjjnnuxxrk", "mhmnulwemp", "cifrhjulrsulwzpf", "usnaw", "hhgzotf", "iyrgkoek",
                 com.azure.core.util.Context.NONE);
 
     }

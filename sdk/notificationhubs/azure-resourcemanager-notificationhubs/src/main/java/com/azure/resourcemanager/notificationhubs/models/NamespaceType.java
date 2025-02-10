@@ -4,48 +4,53 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
- * Defines values for NamespaceType.
+ * The namespace type.
  */
-public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
+public enum NamespaceType {
     /**
-     * Static value Messaging for NamespaceType.
+     * Enum value Messaging.
      */
-    public static final NamespaceType MESSAGING = fromString("Messaging");
+    MESSAGING("Messaging"),
 
     /**
-     * Static value NotificationHub for NamespaceType.
+     * Enum value NotificationHub.
      */
-    public static final NamespaceType NOTIFICATION_HUB = fromString("NotificationHub");
+    NOTIFICATION_HUB("NotificationHub");
 
     /**
-     * Creates a new instance of NamespaceType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a NamespaceType instance.
      */
-    @Deprecated
-    public NamespaceType() {
+    private final String value;
+
+    NamespaceType(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a NamespaceType from its string representation.
+     * Parses a serialized value to a NamespaceType instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding NamespaceType.
+     * @param value the serialized value to parse.
+     * @return the parsed NamespaceType object, or null if unable to parse.
      */
-    public static NamespaceType fromString(String name) {
-        return fromString(name, NamespaceType.class);
+    public static NamespaceType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        NamespaceType[] items = NamespaceType.values();
+        for (NamespaceType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known NamespaceType values.
-     * 
-     * @return known NamespaceType values.
+     * {@inheritDoc}
      */
-    public static Collection<NamespaceType> values() {
-        return values(NamespaceType.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

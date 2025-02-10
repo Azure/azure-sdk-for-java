@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class SqlPoolRestorePointsListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolRestorePoints.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolRestorePoints.json
      */
     /**
      * Sample code: Get a list of restore points of a SQL Analytics pool.

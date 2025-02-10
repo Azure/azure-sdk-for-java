@@ -5,41 +5,43 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information to be stored in Vault properties as an element of privateEndpointConnections List.
  */
 @Immutable
-public final class PrivateEndpointConnectionVaultProperties {
+public final class PrivateEndpointConnectionVaultProperties
+    implements JsonSerializable<PrivateEndpointConnectionVaultProperties> {
     /*
-     * Format of id subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.[Service]/{resource}/{resourceName}/privateEndpointConnections/{connectionName}.
+     * Format of id
+     * subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.[Service]/{resource}/{
+     * resourceName}/privateEndpointConnections/{connectionName}.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Private Endpoint Connection Response Properties.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointConnection properties;
 
     /*
      * The name of the private Endpoint Connection
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type, which will be of the format, Microsoft.RecoveryServices/vaults/privateEndpointConnections
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The location of the private Endpoint connection
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /**
@@ -104,5 +106,50 @@ public final class PrivateEndpointConnectionVaultProperties {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionVaultProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionVaultProperties.
+     */
+    public static PrivateEndpointConnectionVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionVaultProperties deserializedPrivateEndpointConnectionVaultProperties
+                = new PrivateEndpointConnectionVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionVaultProperties.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionVaultProperties.properties
+                        = PrivateEndpointConnection.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionVaultProperties.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionVaultProperties.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionVaultProperties.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionVaultProperties;
+        });
     }
 }

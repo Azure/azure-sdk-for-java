@@ -10,7 +10,9 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -28,6 +30,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -58,7 +61,8 @@ import java.util.Objects;
  * <!-- end com.azure.maps.geolocation.sync.builder.ad.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { GeolocationClient.class, GeolocationAsyncClient.class })
-public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<GeolocationClientBuilder>,
+public final class GeolocationClientBuilder
+    implements AzureKeyCredentialTrait<GeolocationClientBuilder>, AzureSasCredentialTrait<GeolocationClientBuilder>,
     TokenCredentialTrait<GeolocationClientBuilder>, HttpTrait<GeolocationClientBuilder>,
     ConfigurationTrait<GeolocationClientBuilder>, EndpointTrait<GeolocationClientBuilder> {
 
@@ -98,6 +102,7 @@ public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<G
     // credentials
     private AzureKeyCredential keyCredential;
     private TokenCredential tokenCredential;
+    private AzureSasCredential sasCredential;
 
     /**
      * Default constructor for the builder class.
@@ -263,6 +268,19 @@ public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<G
     }
 
     /**
+     * Sets the {@link AzureSasCredential} used to authenticate HTTP requests.
+     *
+     * @param sasCredential The {@link AzureSasCredential} used to authenticate HTTP requests.
+     * @return The updated {@link GeolocationClientBuilder} object.
+     * @throws NullPointerException If {@code sasCredential} is null.
+     */
+    @Override
+    public GeolocationClientBuilder credential(AzureSasCredential sasCredential) {
+        this.sasCredential = Objects.requireNonNull(sasCredential, "'sasCredential' cannot be null.");
+        return this;
+    }
+
+    /**
      * Sets retry options
      *
      * @param retryOptions the retry options for the client
@@ -339,6 +357,8 @@ public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<G
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         } else if (keyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy(GEOLOCATION_SUBSCRIPTION_KEY, keyCredential));
+        } else if (sasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(sasCredential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(

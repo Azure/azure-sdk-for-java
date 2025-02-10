@@ -19,19 +19,39 @@ import java.util.Set;
 @Fluent
 public interface ServicePrincipal extends ActiveDirectoryObject, HasInnerModel<MicrosoftGraphServicePrincipalInner>,
     Updatable<ServicePrincipal.Update> {
-    /** @return app id. */
+    /**
+     * Gets app id.
+     *
+     * @return app id.
+     */
     String applicationId();
 
-    /** @return the list of names. */
+    /**
+     * Gets the list of names.
+     *
+     * @return the list of names.
+     */
     List<String> servicePrincipalNames();
 
-    /** @return the mapping of password credentials from their names */
+    /**
+     * Gets the mapping of password credentials from their names.
+     *
+     * @return the mapping of password credentials from their names
+     */
     Map<String, PasswordCredential> passwordCredentials();
 
-    /** @return the mapping of certificate credentials from their names */
+    /**
+     * Gets the mapping of certificate credentials from their names.
+     *
+     * @return the mapping of certificate credentials from their names
+     */
     Map<String, CertificateCredential> certificateCredentials();
 
-    /** @return the mapping from scopes to role assignments */
+    /**
+     * Gets the mapping from scopes to role assignments.
+     *
+     * @return the mapping from scopes to role assignments
+     */
     Set<RoleAssignment> roleAssignments();
 
     /**************************************************************

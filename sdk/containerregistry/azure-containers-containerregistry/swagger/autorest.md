@@ -28,7 +28,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
 output-folder: ./..
@@ -37,15 +37,11 @@ namespace: com.azure.containers.containerregistry
 generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 sync-methods: none
-context-client-method-parameter: true
-service-interface-as-public: true
 models-subpackage: implementation.models
 custom-types: ArtifactArchitecture,ArtifactManifestOrder,ArtifactManifestPlatform,ArtifactOperatingSystem,ArtifactTagOrder,ContainerRepositoryProperties,OciAnnotations,OciDescriptor,OciImageManifest,RepositoryProperties
 custom-types-subpackage: models
 enable-sync-stack: true
-generic-response-type: true
 disable-client-builder: true
-stream-style-serialization: true
 ```
 
 ### Set modelAsString flag for the enum values of ArtifactTagOrderBy

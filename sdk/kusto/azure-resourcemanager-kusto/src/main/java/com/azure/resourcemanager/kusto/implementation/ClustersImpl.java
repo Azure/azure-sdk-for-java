@@ -11,14 +11,19 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.ClustersClient;
 import com.azure.resourcemanager.kusto.fluent.models.AzureResourceSkuInner;
+import com.azure.resourcemanager.kusto.fluent.models.CalloutPolicyInner;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
 import com.azure.resourcemanager.kusto.fluent.models.DiagnoseVirtualNetworkResultInner;
+import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionGetInner;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 import com.azure.resourcemanager.kusto.fluent.models.LanguageExtensionInner;
 import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependenciesEndpointInner;
 import com.azure.resourcemanager.kusto.fluent.models.SkuDescriptionInner;
 import com.azure.resourcemanager.kusto.models.AzureResourceSku;
+import com.azure.resourcemanager.kusto.models.CalloutPoliciesList;
+import com.azure.resourcemanager.kusto.models.CalloutPolicy;
+import com.azure.resourcemanager.kusto.models.CalloutPolicyToRemove;
 import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.Cluster;
 import com.azure.resourcemanager.kusto.models.ClusterCheckNameRequest;
@@ -26,6 +31,7 @@ import com.azure.resourcemanager.kusto.models.ClusterMigrateRequest;
 import com.azure.resourcemanager.kusto.models.Clusters;
 import com.azure.resourcemanager.kusto.models.DiagnoseVirtualNetworkResult;
 import com.azure.resourcemanager.kusto.models.FollowerDatabaseDefinition;
+import com.azure.resourcemanager.kusto.models.FollowerDatabaseDefinitionGet;
 import com.azure.resourcemanager.kusto.models.LanguageExtension;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import com.azure.resourcemanager.kusto.models.OutboundNetworkDependenciesEndpoint;
@@ -97,18 +103,36 @@ public final class ClustersImpl implements Clusters {
         this.serviceClient().migrate(resourceGroupName, clusterName, clusterMigrateRequest, context);
     }
 
+    public PagedIterable<FollowerDatabaseDefinitionGet> listFollowerDatabasesGet(String resourceGroupName,
+        String clusterName) {
+        PagedIterable<FollowerDatabaseDefinitionGetInner> inner
+            = this.serviceClient().listFollowerDatabasesGet(resourceGroupName, clusterName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new FollowerDatabaseDefinitionGetImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<FollowerDatabaseDefinitionGet> listFollowerDatabasesGet(String resourceGroupName,
+        String clusterName, Context context) {
+        PagedIterable<FollowerDatabaseDefinitionGetInner> inner
+            = this.serviceClient().listFollowerDatabasesGet(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new FollowerDatabaseDefinitionGetImpl(inner1, this.manager()));
+    }
+
     public PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(String resourceGroupName,
         String clusterName) {
         PagedIterable<FollowerDatabaseDefinitionInner> inner
             = this.serviceClient().listFollowerDatabases(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(String resourceGroupName, String clusterName,
         Context context) {
         PagedIterable<FollowerDatabaseDefinitionInner> inner
             = this.serviceClient().listFollowerDatabases(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
     }
 
     public void detachFollowerDatabases(String resourceGroupName, String clusterName,
@@ -144,32 +168,32 @@ public final class ClustersImpl implements Clusters {
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> list() {
         PagedIterable<ClusterInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> list(Context context) {
         PagedIterable<ClusterInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SkuDescription> listSkus() {
         PagedIterable<SkuDescriptionInner> inner = this.serviceClient().listSkus();
-        return Utils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SkuDescription> listSkus(Context context) {
         PagedIterable<SkuDescriptionInner> inner = this.serviceClient().listSkus(context);
-        return Utils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(String location,
@@ -196,41 +220,74 @@ public final class ClustersImpl implements Clusters {
     public PagedIterable<AzureResourceSku> listSkusByResource(String resourceGroupName, String clusterName) {
         PagedIterable<AzureResourceSkuInner> inner
             = this.serviceClient().listSkusByResource(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureResourceSku> listSkusByResource(String resourceGroupName, String clusterName,
         Context context) {
         PagedIterable<AzureResourceSkuInner> inner
             = this.serviceClient().listSkusByResource(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OutboundNetworkDependenciesEndpoint>
         listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String clusterName) {
         PagedIterable<OutboundNetworkDependenciesEndpointInner> inner
             = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new OutboundNetworkDependenciesEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundNetworkDependenciesEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OutboundNetworkDependenciesEndpoint>
         listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String clusterName, Context context) {
         PagedIterable<OutboundNetworkDependenciesEndpointInner> inner
             = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new OutboundNetworkDependenciesEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundNetworkDependenciesEndpointImpl(inner1, this.manager()));
+    }
+
+    public void addCalloutPolicies(String resourceGroupName, String clusterName, CalloutPoliciesList calloutPolicies) {
+        this.serviceClient().addCalloutPolicies(resourceGroupName, clusterName, calloutPolicies);
+    }
+
+    public void addCalloutPolicies(String resourceGroupName, String clusterName, CalloutPoliciesList calloutPolicies,
+        Context context) {
+        this.serviceClient().addCalloutPolicies(resourceGroupName, clusterName, calloutPolicies, context);
+    }
+
+    public void removeCalloutPolicy(String resourceGroupName, String clusterName, CalloutPolicyToRemove calloutPolicy) {
+        this.serviceClient().removeCalloutPolicy(resourceGroupName, clusterName, calloutPolicy);
+    }
+
+    public void removeCalloutPolicy(String resourceGroupName, String clusterName, CalloutPolicyToRemove calloutPolicy,
+        Context context) {
+        this.serviceClient().removeCalloutPolicy(resourceGroupName, clusterName, calloutPolicy, context);
+    }
+
+    public PagedIterable<CalloutPolicy> listCalloutPolicies(String resourceGroupName, String clusterName) {
+        PagedIterable<CalloutPolicyInner> inner
+            = this.serviceClient().listCalloutPolicies(resourceGroupName, clusterName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CalloutPolicyImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<CalloutPolicy> listCalloutPolicies(String resourceGroupName, String clusterName,
+        Context context) {
+        PagedIterable<CalloutPolicyInner> inner
+            = this.serviceClient().listCalloutPolicies(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CalloutPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LanguageExtension> listLanguageExtensions(String resourceGroupName, String clusterName) {
         PagedIterable<LanguageExtensionInner> inner
             = this.serviceClient().listLanguageExtensions(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LanguageExtension> listLanguageExtensions(String resourceGroupName, String clusterName,
         Context context) {
         PagedIterable<LanguageExtensionInner> inner
             = this.serviceClient().listLanguageExtensions(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
     }
 
     public void addLanguageExtensions(String resourceGroupName, String clusterName,
@@ -255,12 +312,12 @@ public final class ClustersImpl implements Clusters {
     }
 
     public Cluster getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
@@ -269,12 +326,12 @@ public final class ClustersImpl implements Clusters {
     }
 
     public Response<Cluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
@@ -283,12 +340,12 @@ public final class ClustersImpl implements Clusters {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
@@ -297,12 +354,12 @@ public final class ClustersImpl implements Clusters {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));

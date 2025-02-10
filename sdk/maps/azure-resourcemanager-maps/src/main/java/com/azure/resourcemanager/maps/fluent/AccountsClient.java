@@ -16,11 +16,13 @@ import com.azure.resourcemanager.maps.models.AccountSasParameters;
 import com.azure.resourcemanager.maps.models.MapsAccountUpdateParameters;
 import com.azure.resourcemanager.maps.models.MapsKeySpecification;
 
-/** An instance of this class provides access to all the operations defined in AccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountsClient.
+ */
 public interface AccountsClient {
     /**
      * Create or update a Maps Account. A Maps Account holds the keys which allow access to the Maps REST APIs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param mapsAccount The new or updated parameters for the Maps Account.
@@ -36,7 +38,7 @@ public interface AccountsClient {
 
     /**
      * Create or update a Maps Account. A Maps Account holds the keys which allow access to the Maps REST APIs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param mapsAccount The new or updated parameters for the Maps Account.
@@ -51,7 +53,7 @@ public interface AccountsClient {
     /**
      * Updates a Maps Account. Only a subset of the parameters may be updated after creation, such as Sku, Tags,
      * Properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param mapsAccountUpdateParameters The updated parameters for the Maps Account.
@@ -68,7 +70,7 @@ public interface AccountsClient {
     /**
      * Updates a Maps Account. Only a subset of the parameters may be updated after creation, such as Sku, Tags,
      * Properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param mapsAccountUpdateParameters The updated parameters for the Maps Account.
@@ -83,7 +85,7 @@ public interface AccountsClient {
 
     /**
      * Delete a Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param context The context to associate with this operation.
@@ -97,7 +99,7 @@ public interface AccountsClient {
 
     /**
      * Delete a Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +111,7 @@ public interface AccountsClient {
 
     /**
      * Get a Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param context The context to associate with this operation.
@@ -124,7 +126,7 @@ public interface AccountsClient {
 
     /**
      * Get a Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface AccountsClient {
 
     /**
      * Get all Maps Accounts in a Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -149,7 +151,7 @@ public interface AccountsClient {
 
     /**
      * Get all Maps Accounts in a Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +164,7 @@ public interface AccountsClient {
 
     /**
      * Get all Maps Accounts in a Subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Maps Accounts in a Subscription as paginated response with {@link PagedIterable}.
@@ -172,7 +174,7 @@ public interface AccountsClient {
 
     /**
      * Get all Maps Accounts in a Subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,11 +187,12 @@ public interface AccountsClient {
     /**
      * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
      * REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
-     *
-     * <p>Prerequisites: 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the
-     * account. 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed
-     * Identity is placed.
-     *
+     * 
+     * Prerequisites:
+     * 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the account.
+     * 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed Identity is
+     * placed.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param mapsAccountSasParameters The updated parameters for the Maps Account.
@@ -198,7 +201,7 @@ public interface AccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
-     *     identity permissions on Azure (IAM) Role Based Access Control along with {@link Response}.
+     * identity permissions on Azure (IAM) Role Based Access Control along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MapsAccountSasTokenInner> listSasWithResponse(String resourceGroupName, String accountName,
@@ -207,11 +210,12 @@ public interface AccountsClient {
     /**
      * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
      * REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
-     *
-     * <p>Prerequisites: 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the
-     * account. 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed
-     * Identity is placed.
-     *
+     * 
+     * Prerequisites:
+     * 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the account.
+     * 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed Identity is
+     * placed.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param mapsAccountSasParameters The updated parameters for the Maps Account.
@@ -219,7 +223,7 @@ public interface AccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
-     *     identity permissions on Azure (IAM) Role Based Access Control.
+     * identity permissions on Azure (IAM) Role Based Access Control.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MapsAccountSasTokenInner listSas(String resourceGroupName, String accountName,
@@ -228,7 +232,7 @@ public interface AccountsClient {
     /**
      * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
      * Only one key is needed at a time; two are given to provide seamless key regeneration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param context The context to associate with this operation.
@@ -243,7 +247,7 @@ public interface AccountsClient {
     /**
      * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
      * Only one key is needed at a time; two are given to provide seamless key regeneration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +261,7 @@ public interface AccountsClient {
     /**
      * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
      * immediately.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param keySpecification Which key to regenerate: primary or secondary.
@@ -274,7 +278,7 @@ public interface AccountsClient {
     /**
      * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
      * immediately.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param keySpecification Which key to regenerate: primary or secondary.

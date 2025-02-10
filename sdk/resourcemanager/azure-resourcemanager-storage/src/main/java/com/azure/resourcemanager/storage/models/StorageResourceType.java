@@ -12,6 +12,15 @@ public class StorageResourceType extends ExpandableStringEnum<StorageResourceTyp
     public static final StorageResourceType STORAGE_ACCOUNTS = fromString("storageAccounts");
 
     /**
+     * Creates a new instance of StorageResourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageResourceType() {
+    }
+
+    /**
      * Finds or creates storage resource type based on the specified string.
      *
      * @param str the storage resource type in string format
@@ -21,7 +30,11 @@ public class StorageResourceType extends ExpandableStringEnum<StorageResourceTyp
         return fromString(str, StorageResourceType.class);
     }
 
-    /** @return known storage resource types */
+    /**
+     * Gets known storage resource types.
+     *
+     * @return known storage resource types
+     */
     public static Collection<StorageResourceType> values() {
         return values(StorageResourceType.class);
     }

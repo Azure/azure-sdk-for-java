@@ -8,28 +8,26 @@ import com.azure.resourcemanager.kusto.models.DatabaseInviteFollowerRequest;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
 import java.util.Arrays;
 
-/** Samples for DatabaseOperation InviteFollower. */
+/**
+ * Samples for DatabaseOperation InviteFollower.
+ */
 public final class DatabaseOperationInviteFollowerSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabaseInviteFollower.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabaseInviteFollower
+     * .json
      */
     /**
      * Sample code: KustoDatabaseInviteFollower.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabaseInviteFollower(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databaseOperations()
-            .inviteFollowerWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "database",
-                new DatabaseInviteFollowerRequest()
-                    .withInviteeEmail("invitee@contoso.com")
+        manager.databaseOperations()
+            .inviteFollowerWithResponse("kustorptest", "kustoCluster", "database",
+                new DatabaseInviteFollowerRequest().withInviteeEmail("invitee@contoso.com")
                     .withTableLevelSharingProperties(
-                        new TableLevelSharingProperties()
-                            .withTablesToInclude(Arrays.asList("Table1"))
+                        new TableLevelSharingProperties().withTablesToInclude(Arrays.asList("Table1"))
                             .withTablesToExclude(Arrays.asList("Table2"))
                             .withExternalTablesToInclude(Arrays.asList("ExternalTable*"))
                             .withExternalTablesToExclude(Arrays.asList())

@@ -15,18 +15,18 @@ public final class IntegrationRuntimeResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"jurbuhhlkyqltqsr\",\"\":{\"vclglxnfuij\":\"datauwkffdjktsysid\",\"sfikayiansharuj\":\"datakbusqo\"}},\"etag\":\"iqxf\",\"id\":\"yjqtt\",\"name\":\"wkpqhjpenuygbq\",\"type\":\"qqekewvnqvcdlgu\"}")
+            "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"qsl\",\"\":{\"cczsq\":\"datavxyqjpkcattpngjc\",\"mdajv\":\"datajh\"}},\"etag\":\"sounqecanoaeu\",\"id\":\"fhyhltrpmopjmcma\",\"name\":\"u\",\"type\":\"kthfui\"}")
             .toObject(IntegrationRuntimeResourceInner.class);
-        Assertions.assertEquals("jurbuhhlkyqltqsr", model.properties().description());
+        Assertions.assertEquals("qsl", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeResourceInner model = new IntegrationRuntimeResourceInner()
-            .withProperties(new IntegrationRuntime().withDescription("jurbuhhlkyqltqsr")
+        IntegrationRuntimeResourceInner model
+            = new IntegrationRuntimeResourceInner().withProperties(new IntegrationRuntime().withDescription("qsl")
                 .withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeResourceInner.class);
-        Assertions.assertEquals("jurbuhhlkyqltqsr", model.properties().description());
+        Assertions.assertEquals("qsl", model.properties().description());
     }
 
     // Use "Map.of" if available

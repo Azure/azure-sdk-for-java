@@ -21,7 +21,7 @@ public final class DataNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Unknown\",\"description\":\"buhhlkyqlt\"},\"location\":\"rogtuwkf\",\"tags\":{\"uijtkbu\":\"ktsysidfvclglxn\"},\"id\":\"qogsfikayian\",\"name\":\"haru\",\"type\":\"t\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"ujr\"},\"location\":\"fojuidjpuuyj\",\"tags\":{\"tjklntikyjuzk\":\"jikzoeovvtzej\",\"vhqjwtrhtgvg\":\"bqzolxr\",\"lawjmjsmwrok\":\"pcrrk\",\"tlhguynuchl\":\"dxfzzzwyjaf\"},\"id\":\"mltx\",\"name\":\"whmozusgzvlnsnnj\",\"type\":\"fpafolpymwamxq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class DataNetworksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataNetwork response = manager.dataNetworks()
-            .getWithResponse("vcjkgd", "razftxejwabmdujt", "vcopex", com.azure.core.util.Context.NONE)
+            .getWithResponse("ukoveofi", "rvjfnmjmvlw", "z", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rogtuwkf", response.location());
-        Assertions.assertEquals("ktsysidfvclglxn", response.tags().get("uijtkbu"));
-        Assertions.assertEquals("buhhlkyqlt", response.description());
+        Assertions.assertEquals("fojuidjpuuyj", response.location());
+        Assertions.assertEquals("jikzoeovvtzej", response.tags().get("tjklntikyjuzk"));
+        Assertions.assertEquals("ujr", response.description());
     }
 }

@@ -27,27 +27,6 @@ public final class BackupsImpl implements Backups {
         this.serviceManager = serviceManager;
     }
 
-    public Response<ServerBackup> putWithResponse(String resourceGroupName, String serverName, String backupName,
-        Context context) {
-        Response<ServerBackupInner> inner
-            = this.serviceClient().putWithResponse(resourceGroupName, serverName, backupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ServerBackupImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ServerBackup put(String resourceGroupName, String serverName, String backupName) {
-        ServerBackupInner inner = this.serviceClient().put(resourceGroupName, serverName, backupName);
-        if (inner != null) {
-            return new ServerBackupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ServerBackup> getWithResponse(String resourceGroupName, String serverName, String backupName,
         Context context) {
         Response<ServerBackupInner> inner

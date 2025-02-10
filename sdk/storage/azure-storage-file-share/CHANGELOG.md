@@ -3,15 +3,26 @@
 ## 12.26.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for NFS over REST. 
 
 ### Breaking Changes
+- The following APIs no longer send the x-ms-file-permission, x-ms-file-attributes, x-ms-file-creation-time, and x-ms-file-last-write-time request headers by default. These headers have been optional in the REST API since x-ms-version 2021-06-08:
+  - ShareDirectoryClient/ShareDirectoryAsyncClient.createWithResponse()
+  - ShareDirectoryClient/ShareDirectoryAsyncClient.setPropertiesWithResponse()
+  - ShareFileClient/ShareFileAsyncClient.createWithResponse()
+  - ShareFileClient/ShareFileAsyncClient.beginCopy()
+  - ShareFileClient/ShareFileAsyncClient.setPropertiesWithResponse()
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.25.1 (2024-12-04)
 
 ### Bugs Fixed
 - `ShareFileClient.downloadToFile()` now retries for a maximum of 5 times when the download fails due to a network error.
-Previously, the maximum number of retries was unintentionally higher (maximum of 15), which could lead to writing in 
-incorrect positions in the file when retried more than 5 times.
-
-### Other Changes
+  Previously, the maximum number of retries was unintentionally higher (maximum of 15), which could lead to writing in
+  incorrect positions in the file when retried more than 5 times.
 
 ## 12.25.0 (2024-11-13)
 

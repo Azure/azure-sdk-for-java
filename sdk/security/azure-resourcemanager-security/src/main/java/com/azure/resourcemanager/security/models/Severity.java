@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The sub-assessment severity level.
+ * The severity level of the assessment.
  */
 public final class Severity extends ExpandableStringEnum<Severity> {
     /**
@@ -42,7 +41,6 @@ public final class Severity extends ExpandableStringEnum<Severity> {
      * @param name a name to look for.
      * @return the corresponding Severity.
      */
-    @JsonCreator
     public static Severity fromString(String name) {
         return fromString(name, Severity.class);
     }

@@ -165,7 +165,6 @@ public final class ODataSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

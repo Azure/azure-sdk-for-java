@@ -34,17 +34,23 @@ import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateEndpointConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final IotHubClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointConnectionsClientImpl(IotHubClientImpl client) {
@@ -103,16 +109,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * List private endpoint connections
-     *
-     * <p>List private endpoint connection properties.
-     *
+     * 
+     * List private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of private endpoint connections for an IotHub along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<PrivateEndpointConnectionInner>>> listWithResponseAsync(String resourceGroupName,
@@ -141,9 +147,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * List private endpoint connections
-     *
-     * <p>List private endpoint connection properties.
-     *
+     * 
+     * List private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -151,7 +157,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of private endpoint connections for an IotHub along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<PrivateEndpointConnectionInner>>> listWithResponseAsync(String resourceGroupName,
@@ -179,9 +185,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * List private endpoint connections
-     *
-     * <p>List private endpoint connection properties.
-     *
+     * 
+     * List private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,9 +202,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * List private endpoint connections
-     *
-     * <p>List private endpoint connection properties.
-     *
+     * 
+     * List private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -215,9 +221,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * List private endpoint connections
-     *
-     * <p>List private endpoint connection properties.
-     *
+     * 
+     * List private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,17 +238,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get private endpoint connection
-     *
-     * <p>Get private endpoint connection properties.
-     *
+     * 
+     * Get private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection properties along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private endpoint connection properties along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
@@ -276,9 +282,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get private endpoint connection
-     *
-     * <p>Get private endpoint connection properties.
-     *
+     * 
+     * Get private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -286,8 +292,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection properties along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private endpoint connection properties along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
@@ -319,9 +325,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get private endpoint connection
-     *
-     * <p>Get private endpoint connection properties.
-     *
+     * 
+     * Get private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -339,9 +345,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get private endpoint connection
-     *
-     * <p>Get private endpoint connection properties.
-     *
+     * 
+     * Get private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -359,9 +365,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get private endpoint connection
-     *
-     * <p>Get private endpoint connection properties.
-     *
+     * 
+     * Get private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -378,9 +384,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -389,7 +395,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
@@ -429,9 +435,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -441,7 +447,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
@@ -480,9 +486,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -505,9 +511,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -532,9 +538,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -555,9 +561,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -580,9 +586,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -601,9 +607,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -624,9 +630,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -645,9 +651,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -668,9 +674,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -678,7 +684,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
@@ -712,9 +718,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -723,7 +729,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
@@ -755,9 +761,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -778,9 +784,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -803,9 +809,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -822,9 +828,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -843,9 +849,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -863,9 +869,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -884,9 +890,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -903,9 +909,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.

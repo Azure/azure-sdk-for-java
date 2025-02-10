@@ -5,6 +5,9 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: ExcludePaths
+    type: object
+    default: []
   - name: TestPipeline
     type: boolean
     default: false
@@ -104,6 +107,8 @@ jobs:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           CheckoutRecordings: true
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+          ExcludePaths: ${{parameters.ExcludePaths}}
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
@@ -160,12 +165,12 @@ jobs:
         displayName: Dump Test-Proxy Logs
         condition: succeededOrFailed()
 
-#      - pwsh: |
-#          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy-error.log
-#          foreach($file in $files){
-#              Write-Host "##[group]$file"
-#              cat $file
-#              Write-Host "##[endgroup]"
-#          }
-#        displayName: Dump Test-Proxy Error Logs
-#        condition: succeededOrFailed()
+      - pwsh: |
+          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy-error.log
+          foreach($file in $files){
+              Write-Host "##[group]$file"
+              cat $file
+              Write-Host "##[endgroup]"
+          }
+        displayName: Dump Test-Proxy Error Logs
+        condition: succeededOrFailed()

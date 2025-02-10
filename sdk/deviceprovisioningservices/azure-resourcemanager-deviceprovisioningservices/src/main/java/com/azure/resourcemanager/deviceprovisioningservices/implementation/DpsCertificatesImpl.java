@@ -33,16 +33,6 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         this.serviceManager = serviceManager;
     }
 
-    public CertificateResponse get(String certificateName, String resourceGroupName, String provisioningServiceName) {
-        CertificateResponseInner inner
-            = this.serviceClient().get(certificateName, resourceGroupName, provisioningServiceName);
-        if (inner != null) {
-            return new CertificateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CertificateResponse> getWithResponse(String certificateName, String resourceGroupName,
         String provisioningServiceName, String ifMatch, Context context) {
         Response<CertificateResponseInner> inner = this.serviceClient()
@@ -55,9 +45,14 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
     }
 
-    public void delete(String resourceGroupName, String ifMatch, String provisioningServiceName,
-        String certificateName) {
-        this.serviceClient().delete(resourceGroupName, ifMatch, provisioningServiceName, certificateName);
+    public CertificateResponse get(String certificateName, String resourceGroupName, String provisioningServiceName) {
+        CertificateResponseInner inner
+            = this.serviceClient().get(certificateName, resourceGroupName, provisioningServiceName);
+        if (inner != null) {
+            return new CertificateResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String ifMatch, String provisioningServiceName,
@@ -70,13 +65,9 @@ public final class DpsCertificatesImpl implements DpsCertificates {
                 certificateLastUpdated, certificateHasPrivateKey, certificateNonce, context);
     }
 
-    public CertificateListDescription list(String resourceGroupName, String provisioningServiceName) {
-        CertificateListDescriptionInner inner = this.serviceClient().list(resourceGroupName, provisioningServiceName);
-        if (inner != null) {
-            return new CertificateListDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String ifMatch, String provisioningServiceName,
+        String certificateName) {
+        this.serviceClient().delete(resourceGroupName, ifMatch, provisioningServiceName, certificateName);
     }
 
     public Response<CertificateListDescription> listWithResponse(String resourceGroupName,
@@ -91,12 +82,10 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
     }
 
-    public VerificationCodeResponse generateVerificationCode(String certificateName, String ifMatch,
-        String resourceGroupName, String provisioningServiceName) {
-        VerificationCodeResponseInner inner = this.serviceClient()
-            .generateVerificationCode(certificateName, ifMatch, resourceGroupName, provisioningServiceName);
+    public CertificateListDescription list(String resourceGroupName, String provisioningServiceName) {
+        CertificateListDescriptionInner inner = this.serviceClient().list(resourceGroupName, provisioningServiceName);
         if (inner != null) {
-            return new VerificationCodeResponseImpl(inner, this.manager());
+            return new CertificateListDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -119,12 +108,12 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
     }
 
-    public CertificateResponse verifyCertificate(String certificateName, String ifMatch, String resourceGroupName,
-        String provisioningServiceName, VerificationCodeRequest request) {
-        CertificateResponseInner inner = this.serviceClient()
-            .verifyCertificate(certificateName, ifMatch, resourceGroupName, provisioningServiceName, request);
+    public VerificationCodeResponse generateVerificationCode(String certificateName, String ifMatch,
+        String resourceGroupName, String provisioningServiceName) {
+        VerificationCodeResponseInner inner = this.serviceClient()
+            .generateVerificationCode(certificateName, ifMatch, resourceGroupName, provisioningServiceName);
         if (inner != null) {
-            return new CertificateResponseImpl(inner, this.manager());
+            return new VerificationCodeResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -147,18 +136,29 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
     }
 
+    public CertificateResponse verifyCertificate(String certificateName, String ifMatch, String resourceGroupName,
+        String provisioningServiceName, VerificationCodeRequest request) {
+        CertificateResponseInner inner = this.serviceClient()
+            .verifyCertificate(certificateName, ifMatch, resourceGroupName, provisioningServiceName, request);
+        if (inner != null) {
+            return new CertificateResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public CertificateResponse getById(String id) {
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
+        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
@@ -170,17 +170,17 @@ public final class DpsCertificatesImpl implements DpsCertificates {
     }
 
     public Response<CertificateResponse> getByIdWithResponse(String id, String ifMatch, Context context) {
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
+        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
@@ -189,17 +189,17 @@ public final class DpsCertificatesImpl implements DpsCertificates {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
+        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -223,17 +223,17 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         byte[] certificateRawBytes, Boolean certificateIsVerified, CertificatePurpose certificatePurpose,
         OffsetDateTime certificateCreated, OffsetDateTime certificateLastUpdated, Boolean certificateHasPrivateKey,
         String certificateNonce, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
+        String provisioningServiceName = ResourceManagerUtils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'provisioningServices'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));

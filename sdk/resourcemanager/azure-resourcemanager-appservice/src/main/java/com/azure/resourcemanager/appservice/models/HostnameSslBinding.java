@@ -12,13 +12,24 @@ import java.io.File;
 /** An immutable representation of an host name SSL binding. */
 @Fluent
 public interface HostnameSslBinding extends HasInnerModel<HostnameSslState>, ChildResource<WebAppBase> {
-    /** @return the SSL type */
+    /**
+     * Gets the SSL type.
+     *
+     * @return the SSL type
+     */
     SslState sslState();
 
-    /** @return the virtual IP address assigned to the host name if IP based SSL is enabled */
+    /**
+     * Gets the virtual IP address assigned to the host name.
+     *
+     * @return the virtual IP address assigned to the host name if IP based SSL is enabled */
     String virtualIp();
 
-    /** @return the SSL cert thumbprint. */
+    /**
+     * Gets the SSL cert thumbprint.
+     *
+     * @return the SSL cert thumbprint.
+     */
     String thumbprint();
 
     /**

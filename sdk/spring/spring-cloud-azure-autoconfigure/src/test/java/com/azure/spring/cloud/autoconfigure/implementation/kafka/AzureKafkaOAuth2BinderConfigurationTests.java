@@ -7,7 +7,6 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
@@ -41,12 +40,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests<KafkaBinderConfigurationProperties, KafkaBinderConfigurationPropertiesBeanPostProcessor> {
 
     AzureKafkaOAuth2BinderConfigurationTests() {
-        super(new KafkaBinderConfigurationPropertiesBeanPostProcessor(new AzureGlobalProperties()));
+        super(new KafkaBinderConfigurationPropertiesBeanPostProcessor());
     }
 
     private final ApplicationContextRunner contextRunnerWithoutEventHubsURL = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
-            TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
             AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class,
             KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
 

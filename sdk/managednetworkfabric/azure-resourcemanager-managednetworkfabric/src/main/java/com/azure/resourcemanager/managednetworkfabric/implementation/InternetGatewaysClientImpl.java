@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in InternetGatewaysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InternetGatewaysClient.
+ */
 public final class InternetGatewaysClientImpl implements InternetGatewaysClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final InternetGatewaysService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of InternetGatewaysClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     InternetGatewaysClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -144,17 +150,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -189,9 +195,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -199,8 +205,8 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -234,9 +240,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -255,9 +261,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -279,9 +285,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -298,9 +304,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -318,9 +324,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -338,9 +344,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -359,9 +365,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -378,9 +384,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -398,16 +404,16 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InternetGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -438,17 +444,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InternetGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -477,9 +483,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -495,9 +501,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -514,9 +520,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -531,17 +537,17 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -576,9 +582,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -586,8 +592,8 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Internet Gateway resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -621,9 +627,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -642,9 +648,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -666,9 +672,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -685,9 +691,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -705,9 +711,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -725,9 +731,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -746,9 +752,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -765,9 +771,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -785,9 +791,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -823,9 +829,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -861,9 +867,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -880,9 +886,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -903,9 +909,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -920,9 +926,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -939,9 +945,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -957,9 +963,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -976,9 +982,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -992,9 +998,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -1009,9 +1015,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1043,9 +1049,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1079,9 +1085,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1096,9 +1102,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1114,9 +1120,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1130,9 +1136,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1147,9 +1153,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of InternetGateways along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1175,9 +1181,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1205,9 +1211,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of InternetGateways as paginated response with {@link PagedFlux}.
@@ -1220,9 +1226,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1237,9 +1243,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of InternetGateways as paginated response with {@link PagedIterable}.
@@ -1251,9 +1257,9 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1267,9 +1273,8 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1295,9 +1300,8 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1323,9 +1327,8 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1351,9 +1354,8 @@ public final class InternetGatewaysClientImpl implements InternetGatewaysClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

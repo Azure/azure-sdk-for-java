@@ -17,7 +17,9 @@ import java.util.Arrays;
  */
 public final class AssessmentsMetadataCreateInSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/CreateAssessmentsMetadata_subscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
+     * CreateAssessmentsMetadata_subscription_example.json
      */
     /**
      * Sample code: Create security assessment metadata for subscription.

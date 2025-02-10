@@ -19,7 +19,7 @@ public final class DomainsDeleteSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void deleteDomainsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().delete("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            com.azure.core.util.Context.NONE);
+        manager.domains()
+            .delete("MyResourceGroup", "MyEmailServiceResource", "mydomain.com", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Connected Subnet Route Policy properties. */
+/**
+ * Connected Subnet Route Policy properties.
+ */
 @Fluent
-public final class ConnectedSubnetRoutePolicy {
+public final class ConnectedSubnetRoutePolicy implements JsonSerializable<ConnectedSubnetRoutePolicy> {
     /*
      * ARM Resource ID of the Route Policy. This is used for the backward compatibility.
      */
-    @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
 
     /*
      * Array of ARM Resource ID of the RoutePolicies.
      */
-    @JsonProperty(value = "exportRoutePolicy")
     private L3ExportRoutePolicy exportRoutePolicy;
 
-    /** Creates an instance of ConnectedSubnetRoutePolicy class. */
+    /**
+     * Creates an instance of ConnectedSubnetRoutePolicy class.
+     */
     public ConnectedSubnetRoutePolicy() {
     }
 
     /**
      * Get the exportRoutePolicyId property: ARM Resource ID of the Route Policy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @return the exportRoutePolicyId value.
      */
     public String exportRoutePolicyId() {
@@ -39,7 +45,7 @@ public final class ConnectedSubnetRoutePolicy {
     /**
      * Set the exportRoutePolicyId property: ARM Resource ID of the Route Policy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the ConnectedSubnetRoutePolicy object itself.
      */
@@ -50,7 +56,7 @@ public final class ConnectedSubnetRoutePolicy {
 
     /**
      * Get the exportRoutePolicy property: Array of ARM Resource ID of the RoutePolicies.
-     *
+     * 
      * @return the exportRoutePolicy value.
      */
     public L3ExportRoutePolicy exportRoutePolicy() {
@@ -59,7 +65,7 @@ public final class ConnectedSubnetRoutePolicy {
 
     /**
      * Set the exportRoutePolicy property: Array of ARM Resource ID of the RoutePolicies.
-     *
+     * 
      * @param exportRoutePolicy the exportRoutePolicy value to set.
      * @return the ConnectedSubnetRoutePolicy object itself.
      */
@@ -70,12 +76,51 @@ public final class ConnectedSubnetRoutePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (exportRoutePolicy() != null) {
             exportRoutePolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("exportRoutePolicyId", this.exportRoutePolicyId);
+        jsonWriter.writeJsonField("exportRoutePolicy", this.exportRoutePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectedSubnetRoutePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectedSubnetRoutePolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectedSubnetRoutePolicy.
+     */
+    public static ConnectedSubnetRoutePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectedSubnetRoutePolicy deserializedConnectedSubnetRoutePolicy = new ConnectedSubnetRoutePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exportRoutePolicyId".equals(fieldName)) {
+                    deserializedConnectedSubnetRoutePolicy.exportRoutePolicyId = reader.getString();
+                } else if ("exportRoutePolicy".equals(fieldName)) {
+                    deserializedConnectedSubnetRoutePolicy.exportRoutePolicy = L3ExportRoutePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectedSubnetRoutePolicy;
+        });
     }
 }

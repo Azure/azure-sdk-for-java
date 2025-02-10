@@ -24,6 +24,7 @@ import com.azure.resourcemanager.machinelearning.models.Sku;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import com.azure.resourcemanager.machinelearning.models.Workspace;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
@@ -49,26 +50,30 @@ public class MachineLearningManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        machineLearningManager = MachineLearningManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        storageManager = StorageManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        keyVaultManager = KeyVaultManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        applicationInsightsManager = ApplicationInsightsManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        machineLearningManager = MachineLearningManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
+
+        storageManager = StorageManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
+
+        keyVaultManager = KeyVaultManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
+
+        applicationInsightsManager = ApplicationInsightsManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");

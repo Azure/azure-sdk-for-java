@@ -49,12 +49,14 @@ public final class VmInstanceHybridIdentityMetadatasImpl implements VmInstanceHy
 
     public PagedIterable<VmInstanceHybridIdentityMetadata> list(String resourceUri) {
         PagedIterable<VmInstanceHybridIdentityMetadataInner> inner = this.serviceClient().list(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new VmInstanceHybridIdentityMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new VmInstanceHybridIdentityMetadataImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VmInstanceHybridIdentityMetadata> list(String resourceUri, Context context) {
         PagedIterable<VmInstanceHybridIdentityMetadataInner> inner = this.serviceClient().list(resourceUri, context);
-        return Utils.mapPage(inner, inner1 -> new VmInstanceHybridIdentityMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new VmInstanceHybridIdentityMetadataImpl(inner1, this.manager()));
     }
 
     private VmInstanceHybridIdentityMetadatasClient serviceClient() {

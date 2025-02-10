@@ -22,7 +22,7 @@ public final class DnsResolversListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"lrwdmhdlxyj\",\"properties\":{\"virtualNetwork\":{\"id\":\"sag\"},\"dnsResolverState\":\"Disconnected\",\"provisioningState\":\"Canceled\",\"resourceGuid\":\"gwq\"},\"location\":\"nedgfbc\",\"tags\":{\"pkeqdcvdrhvoo\":\"vq\",\"dopcjwvnh\":\"sotbob\",\"mgxcxrslpm\":\"ld\"},\"id\":\"twuoegrpkhjwni\",\"name\":\"qsluicp\",\"type\":\"ggkzzlvmbmpa\"}]}";
+            = "{\"value\":[{\"etag\":\"shsfwxosowzxcu\",\"properties\":{\"virtualNetwork\":{\"id\":\"cjooxdjebwpucwwf\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Canceled\",\"resourceGuid\":\"euecivyhzceuoj\"},\"location\":\"rw\",\"tags\":{\"nrjawgqwg\":\"iotwmcdytdxwit\",\"klwndnhjdauwhv\":\"hniskxfbkpyc\",\"zbtd\":\"l\"},\"id\":\"xujznbmpowu\",\"name\":\"przqlveu\",\"type\":\"lupj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class DnsResolversListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DnsResolver> response = manager.dnsResolvers().list(1360002238, com.azure.core.util.Context.NONE);
+        PagedIterable<DnsResolver> response = manager.dnsResolvers().list(1039189909, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nedgfbc", response.iterator().next().location());
-        Assertions.assertEquals("vq", response.iterator().next().tags().get("pkeqdcvdrhvoo"));
-        Assertions.assertEquals("sag", response.iterator().next().virtualNetwork().id());
+        Assertions.assertEquals("rw", response.iterator().next().location());
+        Assertions.assertEquals("iotwmcdytdxwit", response.iterator().next().tags().get("nrjawgqwg"));
+        Assertions.assertEquals("cjooxdjebwpucwwf", response.iterator().next().virtualNetwork().id());
     }
 }

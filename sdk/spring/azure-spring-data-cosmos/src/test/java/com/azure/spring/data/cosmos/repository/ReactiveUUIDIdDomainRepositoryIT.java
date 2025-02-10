@@ -6,7 +6,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.UUIDIdDomain;
-import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosNotFoundException;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveUUIDIdDomainRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.Before;
@@ -107,7 +107,7 @@ public class ReactiveUUIDIdDomainRepositoryIT {
 
         final Mono<Void> deleteIdMono = repository.deleteById(DOMAIN_1.getNumber(),
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
-        StepVerifier.create(deleteIdMono).expectError(CosmosAccessException.class).verify();
+        StepVerifier.create(deleteIdMono).expectError(CosmosNotFoundException.class).verify();
     }
 
     @Test
@@ -128,7 +128,7 @@ public class ReactiveUUIDIdDomainRepositoryIT {
         StepVerifier.create(deletedMono).thenAwait().verifyComplete();
 
         Mono<Void> deleteIdMono = this.repository.delete(DOMAIN_1);
-        StepVerifier.create(deleteIdMono).expectError(CosmosAccessException.class).verify();
+        StepVerifier.create(deleteIdMono).expectError(CosmosNotFoundException.class).verify();
     }
 
     @Test

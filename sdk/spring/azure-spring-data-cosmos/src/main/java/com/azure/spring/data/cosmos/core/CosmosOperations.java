@@ -368,6 +368,15 @@ public interface CosmosOperations {
     <T> long count(SqlQuerySpec querySpec, String containerName);
 
     /**
+     * Sum
+     *
+     * @param querySpec the document query spec
+     * @param containerName the container name
+     * @return sum result
+     */
+    long sum(SqlQuerySpec querySpec, String containerName);
+
+    /**
      * To get converter
      *
      * @return MappingCosmosConverter

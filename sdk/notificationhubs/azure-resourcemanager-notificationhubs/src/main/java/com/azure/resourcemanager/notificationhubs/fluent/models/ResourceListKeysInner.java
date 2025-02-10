@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,33 +12,32 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
+ * Namespace/NotificationHub Connection String.
  */
-@Immutable
+@Fluent
 public final class ResourceListKeysInner implements JsonSerializable<ResourceListKeysInner> {
     /*
-     * Gets or sets primaryConnectionString of the AuthorizationRule.
+     * PrimaryConnectionString of the AuthorizationRule.
      */
     private String primaryConnectionString;
 
     /*
-     * Gets or sets secondaryConnectionString of the created
-     * AuthorizationRule
+     * SecondaryConnectionString of the created AuthorizationRule
      */
     private String secondaryConnectionString;
 
     /*
-     * Gets or sets primaryKey of the created AuthorizationRule.
+     * PrimaryKey of the created AuthorizationRule.
      */
     private String primaryKey;
 
     /*
-     * Gets or sets secondaryKey of the created AuthorizationRule
+     * SecondaryKey of the created AuthorizationRule
      */
     private String secondaryKey;
 
     /*
-     * Gets or sets keyName of the created AuthorizationRule
+     * KeyName of the created AuthorizationRule
      */
     private String keyName;
 
@@ -49,7 +48,7 @@ public final class ResourceListKeysInner implements JsonSerializable<ResourceLis
     }
 
     /**
-     * Get the primaryConnectionString property: Gets or sets primaryConnectionString of the AuthorizationRule.
+     * Get the primaryConnectionString property: PrimaryConnectionString of the AuthorizationRule.
      * 
      * @return the primaryConnectionString value.
      */
@@ -58,8 +57,18 @@ public final class ResourceListKeysInner implements JsonSerializable<ResourceLis
     }
 
     /**
-     * Get the secondaryConnectionString property: Gets or sets secondaryConnectionString of the created
-     * AuthorizationRule.
+     * Set the primaryConnectionString property: PrimaryConnectionString of the AuthorizationRule.
+     * 
+     * @param primaryConnectionString the primaryConnectionString value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withPrimaryConnectionString(String primaryConnectionString) {
+        this.primaryConnectionString = primaryConnectionString;
+        return this;
+    }
+
+    /**
+     * Get the secondaryConnectionString property: SecondaryConnectionString of the created AuthorizationRule.
      * 
      * @return the secondaryConnectionString value.
      */
@@ -68,7 +77,18 @@ public final class ResourceListKeysInner implements JsonSerializable<ResourceLis
     }
 
     /**
-     * Get the primaryKey property: Gets or sets primaryKey of the created AuthorizationRule.
+     * Set the secondaryConnectionString property: SecondaryConnectionString of the created AuthorizationRule.
+     * 
+     * @param secondaryConnectionString the secondaryConnectionString value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withSecondaryConnectionString(String secondaryConnectionString) {
+        this.secondaryConnectionString = secondaryConnectionString;
+        return this;
+    }
+
+    /**
+     * Get the primaryKey property: PrimaryKey of the created AuthorizationRule.
      * 
      * @return the primaryKey value.
      */
@@ -77,7 +97,18 @@ public final class ResourceListKeysInner implements JsonSerializable<ResourceLis
     }
 
     /**
-     * Get the secondaryKey property: Gets or sets secondaryKey of the created AuthorizationRule.
+     * Set the primaryKey property: PrimaryKey of the created AuthorizationRule.
+     * 
+     * @param primaryKey the primaryKey value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
+        return this;
+    }
+
+    /**
+     * Get the secondaryKey property: SecondaryKey of the created AuthorizationRule.
      * 
      * @return the secondaryKey value.
      */
@@ -86,12 +117,34 @@ public final class ResourceListKeysInner implements JsonSerializable<ResourceLis
     }
 
     /**
-     * Get the keyName property: Gets or sets keyName of the created AuthorizationRule.
+     * Set the secondaryKey property: SecondaryKey of the created AuthorizationRule.
+     * 
+     * @param secondaryKey the secondaryKey value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withSecondaryKey(String secondaryKey) {
+        this.secondaryKey = secondaryKey;
+        return this;
+    }
+
+    /**
+     * Get the keyName property: KeyName of the created AuthorizationRule.
      * 
      * @return the keyName value.
      */
     public String keyName() {
         return this.keyName;
+    }
+
+    /**
+     * Set the keyName property: KeyName of the created AuthorizationRule.
+     * 
+     * @param keyName the keyName value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withKeyName(String keyName) {
+        this.keyName = keyName;
+        return this;
     }
 
     /**
@@ -108,6 +161,11 @@ public final class ResourceListKeysInner implements JsonSerializable<ResourceLis
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryConnectionString", this.primaryConnectionString);
+        jsonWriter.writeStringField("secondaryConnectionString", this.secondaryConnectionString);
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        jsonWriter.writeStringField("keyName", this.keyName);
         return jsonWriter.writeEndObject();
     }
 

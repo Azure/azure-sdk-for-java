@@ -1,6 +1,6 @@
 # Release History
 
-## 2.46.0-beta.1 (Unreleased)
+## 2.48.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.47.0 (2025-01-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of CloudserviceRP to `2024-11-04`.
+
+## 2.46.0 (2024-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of GalleryRP to `2024-03-03`.
 
 ## 2.45.0 (2024-11-28)
 

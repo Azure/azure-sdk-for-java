@@ -10,12 +10,10 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicelinker.fluent.models.LinkerResourceInner;
 import com.azure.resourcemanager.servicelinker.models.AuthInfoBase;
 import com.azure.resourcemanager.servicelinker.models.ClientType;
-import com.azure.resourcemanager.servicelinker.models.ConfigurationInfo;
-import com.azure.resourcemanager.servicelinker.models.ConfigurationResult;
 import com.azure.resourcemanager.servicelinker.models.LinkerPatch;
 import com.azure.resourcemanager.servicelinker.models.LinkerResource;
-import com.azure.resourcemanager.servicelinker.models.PublicNetworkSolution;
 import com.azure.resourcemanager.servicelinker.models.SecretStore;
+import com.azure.resourcemanager.servicelinker.models.SourceConfigurationResult;
 import com.azure.resourcemanager.servicelinker.models.TargetServiceBase;
 import com.azure.resourcemanager.servicelinker.models.VNetSolution;
 import com.azure.resourcemanager.servicelinker.models.ValidateOperationResult;
@@ -67,14 +65,6 @@ public final class LinkerResourceImpl implements LinkerResource, LinkerResource.
 
     public String scope() {
         return this.innerModel().scope();
-    }
-
-    public PublicNetworkSolution publicNetworkSolution() {
-        return this.innerModel().publicNetworkSolution();
-    }
-
-    public ConfigurationInfo configurationInfo() {
-        return this.innerModel().configurationInfo();
     }
 
     public LinkerResourceInner innerModel() {
@@ -166,11 +156,11 @@ public final class LinkerResourceImpl implements LinkerResource, LinkerResource.
         return serviceManager.linkers().validate(resourceUri, linkerName, context);
     }
 
-    public Response<ConfigurationResult> listConfigurationsWithResponse(Context context) {
+    public Response<SourceConfigurationResult> listConfigurationsWithResponse(Context context) {
         return serviceManager.linkers().listConfigurationsWithResponse(resourceUri, linkerName, context);
     }
 
-    public ConfigurationResult listConfigurations() {
+    public SourceConfigurationResult listConfigurations() {
         return serviceManager.linkers().listConfigurations(resourceUri, linkerName);
     }
 
@@ -230,26 +220,6 @@ public final class LinkerResourceImpl implements LinkerResource, LinkerResource.
             return this;
         } else {
             this.updateParameters.withScope(scope);
-            return this;
-        }
-    }
-
-    public LinkerResourceImpl withPublicNetworkSolution(PublicNetworkSolution publicNetworkSolution) {
-        if (isInCreateMode()) {
-            this.innerModel().withPublicNetworkSolution(publicNetworkSolution);
-            return this;
-        } else {
-            this.updateParameters.withPublicNetworkSolution(publicNetworkSolution);
-            return this;
-        }
-    }
-
-    public LinkerResourceImpl withConfigurationInfo(ConfigurationInfo configurationInfo) {
-        if (isInCreateMode()) {
-            this.innerModel().withConfigurationInfo(configurationInfo);
-            return this;
-        } else {
-            this.updateParameters.withConfigurationInfo(configurationInfo);
             return this;
         }
     }

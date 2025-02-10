@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for Workspaces ListByResourceGroup. */
+/**
+ * Samples for Workspaces ListByResourceGroup.
+ */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/WorkspacesListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesListByResourceGroup.json
      */
     /**
      * Sample code: WorkspacesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {

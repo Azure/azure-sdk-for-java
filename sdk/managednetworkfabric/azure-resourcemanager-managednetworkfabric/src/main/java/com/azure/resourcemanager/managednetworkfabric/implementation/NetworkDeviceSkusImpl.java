@@ -48,12 +48,12 @@ public final class NetworkDeviceSkusImpl implements NetworkDeviceSkus {
 
     public PagedIterable<NetworkDeviceSku> list() {
         PagedIterable<NetworkDeviceSkuInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NetworkDeviceSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkDeviceSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkDeviceSku> list(Context context) {
         PagedIterable<NetworkDeviceSkuInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new NetworkDeviceSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkDeviceSkuImpl(inner1, this.manager()));
     }
 
     private NetworkDeviceSkusClient serviceClient() {

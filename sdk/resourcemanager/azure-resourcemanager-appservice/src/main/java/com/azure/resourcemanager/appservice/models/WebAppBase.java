@@ -25,133 +25,294 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface WebAppBase extends HasName, GroupableResource<AppServiceManager, SiteInner>, WebSiteBase {
 
-    /** @return the default documents */
+    /**
+     * Gets the default documents.
+     *
+     * @return the default documents
+     */
     List<String> defaultDocuments();
 
-    /** @return the .NET Framework version */
+    /**
+     * Gets the .NET Framework version.
+     *
+     * @return the .NET Framework version
+     */
     NetFrameworkVersion netFrameworkVersion();
 
-    /** @return the version of PHP */
+    /**
+     * Gets the version of PHP.
+     *
+     * @return the version of PHP
+     */
     PhpVersion phpVersion();
 
-    /** @return the version of Python */
+    /**
+     * Gets the version of Python.
+     *
+     * @return the version of Python
+     */
     PythonVersion pythonVersion();
 
-    /** @return the version of Node.JS */
+    /**
+     * Gets the version of Node.JS.
+     *
+     * @return the version of Node.JS
+     */
     String nodeVersion();
 
-    /** @return if the remote eebugging is enabled */
+    /**
+     * Check whether the remote eebugging is enabled.
+     *
+     * @return if the remote eebugging is enabled
+     */
     boolean remoteDebuggingEnabled();
 
-    /** @return the remote debugging version */
+    /**
+     * Gets the remote debugging version.
+     *
+     * @return the remote debugging version
+     */
     RemoteVisualStudioVersion remoteDebuggingVersion();
 
-    /** @return if web socket is enabled */
+    /**
+     * Check whether web socket is enabled.
+     *
+     * @return if web socket is enabled
+     */
     boolean webSocketsEnabled();
 
-    /** @return if the web app is always on */
+    /**
+     * Check whether the web app is always on.
+     *
+     * @return if the web app is always on
+     */
     boolean alwaysOn();
 
-    /** @return Java version */
+    /**
+     * Gets Java version.
+     *
+     * @return Java version
+     */
     JavaVersion javaVersion();
 
-    /** @return Java container */
+    /**
+     * Gets Java container.
+     *
+     * @return Java container
+     */
     String javaContainer();
 
-    /** @return Java container version */
+    /**
+     * Gets Java container version.
+     *
+     * @return Java container version
+     */
     String javaContainerVersion();
 
-    /** @return managed pipeline mode */
+    /**
+     * Gets managed pipeline mode.
+     *
+     * @return managed pipeline mode
+     */
     ManagedPipelineMode managedPipelineMode();
 
-    /** @return the auto swap slot name */
+    /**
+     * Gets the auto swap slot name.
+     *
+     * @return the auto swap slot name
+     */
     String autoSwapSlotName();
 
-    /** @return the state of FTP / FTPS service */
+    /**
+     * Gets the state of FTP / FTPS service.
+     *
+     * @return the state of FTP / FTPS service
+     */
     FtpsState ftpsState();
 
-    /** @return the virtual applications and their virtual directories in this web app */
+    /**
+     * Gets the virtual applications and their virtual directories in this web app.
+     *
+     * @return the virtual applications and their virtual directories in this web app
+     */
     List<VirtualApplication> virtualApplications();
 
-    /** @return whether to allow clients to connect over http2.0 */
+    /**
+     * Check whether to allow clients to connect over HTTP/2.
+     *
+     * @return whether to allow clients to connect over HTTP/2
+     */
     boolean http20Enabled();
 
-    /** @return the minimum version of TLS required for SSL requests. */
+    /**
+     * Gets the minimum version of TLS required for SSL requests.
+     *
+     * @return the minimum version of TLS required for SSL requests.
+     */
     SupportedTlsVersions minTlsVersion();
 
-    /** @return whether local MySQL is enabled */
+    /**
+     * Check whether local MySQL is enabled.
+     *
+     * @return whether local MySQL is enabled */
     boolean localMySqlEnabled();
 
-    /** @return the SCM configuration for the web app */
+    /**
+     * Gets the SCM configuration for the web app.
+     *
+     * @return the SCM configuration for the web app
+     */
     ScmType scmType();
 
-    /** @return the root directory for the web app */
+    /**
+     * Gets the root directory for the web app.
+     *
+     * @return the root directory for the web app
+     */
     String documentRoot();
 
     /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
+     *     web app.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
      *     web app.
      */
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
+     *     assigned to the web app.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
      *     assigned to the web app.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return The ids of the user assigned identities */
+    /**
+     * Gets the ids of the user assigned identities .
+     *
+     * @return The ids of the user assigned identities
+     */
     Set<String> userAssignedManagedServiceIdentityIds();
 
-    /** @return the app settings defined on the web app */
+    /**
+     * Gets the app settings defined on the web app
+     *
+     * @return the app settings defined on the web app
+     */
     Map<String, AppSetting> getAppSettings();
 
-    /** @return the app settings defined on the web app */
+    /**
+     * Gets the app settings defined on the web app.
+     *
+     * @return the app settings defined on the web app
+     */
     Mono<Map<String, AppSetting>> getAppSettingsAsync();
 
-    /** @return the connection strings defined on the web app */
+    /**
+     * Gets the connection strings defined on the web app.
+     *
+     * @return the connection strings defined on the web app
+     */
     Map<String, ConnectionString> getConnectionStrings();
 
-    /** @return the connection strings defined on the web app */
+    /**
+     * Gets the connection strings defined on the web app.
+     *
+     * @return the connection strings defined on the web app
+     */
     Mono<Map<String, ConnectionString>> getConnectionStringsAsync();
 
-    /** @return the authentication configuration defined on the web app */
+    /**
+     * Gets the authentication configuration defined on the web app.
+     *
+     * @return the authentication configuration defined on the web app
+     */
     WebAppAuthentication getAuthenticationConfig();
 
-    /** @return the authentication configuration defined on the web app */
+    /**
+     * Gets the authentication configuration defined on the web app.
+     *
+     * @return the authentication configuration defined on the web app
+     */
     Mono<WebAppAuthentication> getAuthenticationConfigAsync();
 
-    /** @return the architecture of the platform, either 32 bit (x86) or 64 bit (x64). */
+    /**
+     * Gets the architecture of the platform.
+     *
+     * @return the architecture of the platform, either 32 bit (x86) or 64 bit (x64).
+     */
     PlatformArchitecture platformArchitecture();
 
-    /** @return the Linux app framework and version if this is a Linux web app. */
+    /**
+     * Gets the Linux app framework and version if this is a Linux web app.
+     *
+     * @return the Linux app framework and version if this is a Linux web app.
+     */
     String linuxFxVersion();
 
-    /** @return the Windows app framework and version if this is a Windows web app. */
+    /**
+     * Gets the Windows app framework and version if this is a Windows web app.
+     *
+     * @return the Windows app framework and version if this is a Windows web app.
+     */
     String windowsFxVersion();
 
-    /** @return the list of ip security rules. */
+    /**
+     * Gets the list of ip security rules.
+     *
+     * @return the list of ip security rules.
+     */
     List<IpSecurityRestriction> ipSecurityRules();
 
-    /** @return the diagnostic logs configuration */
+    /**
+     * Gets the diagnostic logs configuration.
+     *
+     * @return the diagnostic logs configuration
+     */
     WebAppDiagnosticLogs diagnosticLogsConfig();
 
-    /** @return the mapping from host names and the host name bindings */
+    /**
+     * Gets the mapping from host names and the host name bindings.
+     *
+     * @return the mapping from host names and the host name bindings
+     */
     Map<String, HostnameBinding> getHostnameBindings();
 
-    /** @return the mapping from host names and the host name bindings */
+    /**
+     * Gets the mapping from host names and the host name bindings.
+     *
+     * @return the mapping from host names and the host name bindings
+     */
     Mono<Map<String, HostnameBinding>> getHostnameBindingsAsync();
 
-    /** @return the URL and credentials for publishing through FTP or Git */
+    /**
+     * Gets the URL and credentials for publishing through FTP or Git.
+     *
+     * @return the URL and credentials for publishing through FTP or Git
+     */
     PublishingProfile getPublishingProfile();
 
-    /** @return the URL and credentials for publishing through FTP or Git */
+    /**
+     * Gets the URL and credentials for publishing through FTP or Git.
+     *
+     * @return the URL and credentials for publishing through FTP or Git
+     */
     Mono<PublishingProfile> getPublishingProfileAsync();
 
-    /** @return the source control information for the web app */
+    /**
+     * Gets the source control information for the web app.
+     *
+     * @return the source control information for the web app
+     */
     WebAppSourceControl getSourceControl();
 
-    /** @return the source control information for the web app */
+    /**
+     * Gets the source control information for the web app.
+     *
+     * @return the source control information for the web app
+     */
     Mono<WebAppSourceControl> getSourceControlAsync();
 
     /**
@@ -161,46 +322,102 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
      */
     WebDeployment.DefinitionStages.WithPackageUri deploy();
 
-    /** @return the last lines of docker logs for a Linux web app */
+    /**
+     * Gets the last lines of docker logs for a Linux web app.
+     *
+     * @return the last lines of docker logs for a Linux web app
+     */
     byte[] getContainerLogs();
 
-    /** @return the last lines of docker logs for a Linux web app */
+    /**
+     * Gets the last lines of docker logs for a Linux web app.
+     *
+     * @return the last lines of docker logs for a Linux web app
+     */
     Mono<byte[]> getContainerLogsAsync();
 
-    /** @return the zipped archive of docker logs for a Linux web app */
+    /**
+     * Gets the zipped archive of docker logs for a Linux web app.
+     *
+     * @return the zipped archive of docker logs for a Linux web app
+     */
     byte[] getContainerLogsZip();
 
-    /** @return the zipped archive of docker logs for a Linux web app */
+    /**
+     * Gets the zipped archive of docker logs for a Linux web app.
+     *
+     * @return the zipped archive of docker logs for a Linux web app
+     */
     Mono<byte[]> getContainerLogsZipAsync();
 
-    /** @return a open stream to the application logs */
+    /**
+     * Gets a open stream to the application logs.
+     *
+     * @return a open stream to the application logs
+     */
     InputStream streamApplicationLogs();
 
-    /** @return a open stream to the HTTP logs */
+    /**
+     * Gets a open stream to the HTTP logs.
+     *
+     * @return a open stream to the HTTP logs
+     */
     InputStream streamHttpLogs();
 
-    /** @return a open stream to the trace logs */
+    /**
+     * Gets a open stream to the trace logs.
+     *
+     * @return a open stream to the trace logs
+     */
     InputStream streamTraceLogs();
 
-    /** @return a open stream to the deployment logs */
+    /**
+     * Gets a open stream to the deployment logs.
+     *
+     * @return a open stream to the deployment logs
+     */
     InputStream streamDeploymentLogs();
 
-    /** @return a open stream to all logs */
+    /**
+     * Gets an open stream to all logs.
+     *
+     * @return an open stream to all logs
+     */
     InputStream streamAllLogs();
 
-    /** @return an Observable streaming application logs */
+    /**
+     * Gets an Observable streaming application logs.
+     *
+     * @return an Observable streaming application logs
+     */
     Flux<String> streamApplicationLogsAsync();
 
-    /** @return an Observable streaming HTTP logs */
+    /**
+     * Gets an Observable streaming HTTP logs
+     *
+     * @return an Observable streaming HTTP logs
+     */
     Flux<String> streamHttpLogsAsync();
 
-    /** @return an Observable streaming trace logs */
+    /**
+     * Gets an Observable streaming trace logs.
+     *
+     * @return an Observable streaming trace logs
+     */
     Flux<String> streamTraceLogsAsync();
 
-    /** @return an Observable streaming deployment logs */
+    /**
+     * Gets an Observable streaming deployment logs.
+     *
+     * @return an Observable streaming deployment logs
+     */
     Flux<String> streamDeploymentLogsAsync();
 
-    /** @return an Observable streaming all logs */
+    /**
+     * Gets an Observable streaming all logs.
+     *
+     * @return an Observable streaming all logs
+     */
     Flux<String> streamAllLogsAsync();
 
     /**
@@ -874,7 +1091,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
                 withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
-        /** The stage of the web app definition allowing to add User Assigned (External) Managed Service Identities. */
+        /**
+         * The stage of the web app definition allowing to add User Assigned (External) Managed Service Identities.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithUserAssignedManagedServiceIdentityBasedAccessOrCreate<FluentT> extends WithCreate<FluentT> {
             /**
              * Specifies the definition of a not-yet-created user assigned identity to be associated with the web app.
@@ -903,7 +1124,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> withoutUserAssignedManagedServiceIdentity(String identityId);
         }
 
-        /** The stage of web app definition allowing to configure network access settings. */
+        /**
+         * The stage of web app definition allowing to configure network access settings.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithNetworkAccess<FluentT> {
             /**
              * Specifies that access to the web app from the specific virtual network subnet should be allowed.
@@ -954,7 +1179,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             WithCreate<FluentT> disablePublicNetworkAccess();
         }
 
-        /** The stage of web app definition allowing to configure container size. */
+        /**
+         * The stage of web app definition allowing to configure container size.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithContainerSize<FluentT> {
             /**
              * Specifies the the amount of memory allocated to each instance of the function app, measured in mebibytes.
@@ -1565,7 +1794,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
-        /** The stage of the web app update allowing to add User Assigned (External) Managed Service Identities. */
+        /**
+         * The stage of the web app update allowing to add User Assigned (External) Managed Service Identities.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithUserAssignedManagedServiceIdentityBasedAccess<FluentT> {
             /**
              * Specifies the definition of a not-yet-created user assigned identity to be associated with the web app.
@@ -1584,7 +1817,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> withExistingUserAssignedManagedServiceIdentity(Identity identity);
         }
 
-        /** The stage of web app update allowing to configure network access. */
+        /**
+         * The stage of web app update allowing to configure network access.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithNetworkAccess<FluentT> {
             /**
              * Specifies that access to web app should be allowed from all networks.
@@ -1683,7 +1920,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> disablePublicNetworkAccess();
         }
 
-        /** The stage of web app update allowing to configure container size. */
+        /**
+         * The stage of web app update allowing to configure container size.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithContainerSize<FluentT> {
             /**
              * Specifies the the amount of memory allocated to each instance of the function app, measured in mebibytes.

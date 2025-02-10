@@ -294,6 +294,8 @@ public abstract class IndexableTaskItem implements Indexable, TaskItem, TaskGrou
     protected abstract Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context);
 
     /**
+     * Get an instance of VoidIndexable.
+     *
      * @return an instance of {@link VoidIndexable} with key same as the key of this TaskItem.
      */
     protected Indexable voidIndexable() {
@@ -301,6 +303,8 @@ public abstract class IndexableTaskItem implements Indexable, TaskItem, TaskGrou
     }
 
     /**
+     * Get an Observable upon subscription emits VoidIndexable.
+     *
      * @return an Observable upon subscription emits {@link VoidIndexable} with key same as the key of
      * this TaskItem
      */

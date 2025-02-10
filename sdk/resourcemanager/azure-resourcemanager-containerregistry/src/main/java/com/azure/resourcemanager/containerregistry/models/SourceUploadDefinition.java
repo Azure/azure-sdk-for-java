@@ -9,9 +9,17 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 /** The source repository properties for a build task. */
 @Fluent
 public interface SourceUploadDefinition extends HasInnerModel<SourceUploadDefinitionInner> {
-    /** @return the URL where the client can upload the source */
+    /**
+     * Gets the URL where the client can upload the source.
+     *
+     * @return the URL where the client can upload the source
+     */
     String uploadUrl();
 
-    /** @return the the relative path to the source; this is used to submit the subsequent queue build request */
+    /**
+     * Gets the relative path to the source.
+     *
+     * @return the relative path to the source; this is used to submit the subsequent queue build request
+     */
     String relativePath();
 }

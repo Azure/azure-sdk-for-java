@@ -21,7 +21,7 @@ public final class IntegrationRuntimesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"zofmexvtemaspm\",\"\":{\"hntofe\":\"datadscdkxwdpwjcbha\",\"fixoskk\":\"datafh\",\"zzmrgtxdhmfpp\":\"datadfivsujybsr\"}},\"etag\":\"mgikesmkwt\",\"id\":\"gfragjhxerxlobkd\",\"name\":\"tqhvmmniiqyholhj\",\"type\":\"skbggi\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"fzndscxmxeatkd\",\"\":{\"yibqbnao\":\"datanrd\",\"alfihcjmobcancd\":\"datahjrmkuhmaxl\",\"vaknokzwjj\":\"dataxxqcwgaxf\",\"tixldzyyfytpqs\":\"datar\"}},\"etag\":\"ymmpujivy\",\"id\":\"lkjuvsmbmslzoyov\",\"name\":\"zdbpqv\",\"type\":\"befgvmxn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class IntegrationRuntimesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeResource response = manager.integrationRuntimes()
-            .getWithResponse("qtlfoz", "umrtgjqg", "cant", "syxzxjmkanbc", com.azure.core.util.Context.NONE)
+            .getWithResponse("bqsdtcjbctvi", "uzqymtuowog", "gitsqh", "vbrzcdb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zofmexvtemaspm", response.properties().description());
+        Assertions.assertEquals("fzndscxmxeatkd", response.properties().description());
     }
 }

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of L3IsolationDomains. */
+/**
+ * Resource collection API of L3IsolationDomains.
+ */
 public interface L3IsolationDomains {
     /**
      * Gets a L3 Isolation Domain.
-     *
-     * <p>Retrieves details of this L3 Isolation Domain.
-     *
+     * 
+     * Retrieves details of this L3 Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -28,9 +30,9 @@ public interface L3IsolationDomains {
 
     /**
      * Gets a L3 Isolation Domain.
-     *
-     * <p>Retrieves details of this L3 Isolation Domain.
-     *
+     * 
+     * Retrieves details of this L3 Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface L3IsolationDomains {
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface L3IsolationDomains {
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface L3IsolationDomains {
 
     /**
      * List L3IsolationDomains by resource group.
-     *
-     * <p>Displays L3IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface L3IsolationDomains {
 
     /**
      * List L3IsolationDomains by resource group.
-     *
-     * <p>Displays L3IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface L3IsolationDomains {
 
     /**
      * List L3IsolationDomains by subscription.
-     *
-     * <p>Displays L3IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface L3IsolationDomains {
 
     /**
      * List L3IsolationDomains by subscription.
-     *
-     * <p>Displays L3IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface L3IsolationDomains {
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -136,9 +138,9 @@ public interface L3IsolationDomains {
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -153,7 +155,7 @@ public interface L3IsolationDomains {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,7 +167,7 @@ public interface L3IsolationDomains {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -179,9 +181,9 @@ public interface L3IsolationDomains {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,9 +195,9 @@ public interface L3IsolationDomains {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -209,9 +211,9 @@ public interface L3IsolationDomains {
 
     /**
      * Gets a L3 Isolation Domain.
-     *
-     * <p>Retrieves details of this L3 Isolation Domain.
-     *
+     * 
+     * Retrieves details of this L3 Isolation Domain.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,9 +224,9 @@ public interface L3IsolationDomains {
 
     /**
      * Gets a L3 Isolation Domain.
-     *
-     * <p>Retrieves details of this L3 Isolation Domain.
-     *
+     * 
+     * Retrieves details of this L3 Isolation Domain.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,9 +238,9 @@ public interface L3IsolationDomains {
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -248,9 +250,9 @@ public interface L3IsolationDomains {
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +263,7 @@ public interface L3IsolationDomains {
 
     /**
      * Begins definition for a new L3IsolationDomain resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new L3IsolationDomain definition.
      */

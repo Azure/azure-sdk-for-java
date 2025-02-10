@@ -9,12 +9,11 @@ batch:
 ``` yaml $(package-metadata)
 input-file:
   - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/purview/data-plane/Azure.Analytics.Purview.MetadataPolicies/preview/2021-07-01-preview/purviewMetadataPolicy.json
-
+use: '@autorest/java@4.1.42'
 java: true
 output-folder: ../
 namespace: com.azure.analytics.purview.administration
 license-header: MICROSOFT_MIT_SMALL
-service-interface-as-public: true
 data-plane: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
@@ -30,12 +29,11 @@ service-versions:
 ``` yaml $(package-account)
 input-file:
   - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/purview/data-plane/Azure.Analytics.Purview.Account/preview/2019-11-01-preview/account.json
-
+use: '@autorest/java@4.1.42'
 java: true
 output-folder: ../
 namespace: com.azure.analytics.purview.administration
 license-header: MICROSOFT_MIT_SMALL
-service-interface-as-public: true
 data-plane: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default

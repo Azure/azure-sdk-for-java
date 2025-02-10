@@ -5,45 +5,30 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource specific properties for the Storage Mover resource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = EndpointBaseProperties.class,
-    visible = true)
-@JsonTypeName("EndpointBaseProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureStorageBlobContainer", value = AzureStorageBlobContainerEndpointProperties.class),
-    @JsonSubTypes.Type(name = "NfsMount", value = NfsMountEndpointProperties.class),
-    @JsonSubTypes.Type(name = "AzureStorageSmbFileShare", value = AzureStorageSmbFileShareEndpointProperties.class),
-    @JsonSubTypes.Type(name = "SmbMount", value = SmbMountEndpointProperties.class) })
 @Fluent
-public class EndpointBaseProperties {
+public class EndpointBaseProperties implements JsonSerializable<EndpointBaseProperties> {
     /*
      * The Endpoint resource type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
     private EndpointType endpointType = EndpointType.fromString("EndpointBaseProperties");
 
     /*
      * A description for the Endpoint.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The provisioning state of this resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -91,10 +76,94 @@ public class EndpointBaseProperties {
     }
 
     /**
+     * Set the provisioningState property: The provisioning state of this resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the EndpointBaseProperties object itself.
+     */
+    EndpointBaseProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointBaseProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EndpointBaseProperties.
+     */
+    public static EndpointBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("endpointType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureStorageBlobContainer".equals(discriminatorValue)) {
+                    return AzureStorageBlobContainerEndpointProperties.fromJson(readerToUse.reset());
+                } else if ("NfsMount".equals(discriminatorValue)) {
+                    return NfsMountEndpointProperties.fromJson(readerToUse.reset());
+                } else if ("AzureStorageSmbFileShare".equals(discriminatorValue)) {
+                    return AzureStorageSmbFileShareEndpointProperties.fromJson(readerToUse.reset());
+                } else if ("SmbMount".equals(discriminatorValue)) {
+                    return SmbMountEndpointProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EndpointBaseProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointBaseProperties deserializedEndpointBaseProperties = new EndpointBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedEndpointBaseProperties.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedEndpointBaseProperties.description = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEndpointBaseProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointBaseProperties;
+        });
     }
 }

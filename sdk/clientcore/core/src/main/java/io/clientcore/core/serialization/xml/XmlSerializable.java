@@ -9,7 +9,7 @@ import javax.xml.stream.XMLStreamException;
  * Indicates that the implementing class can be serialized to and deserialized from XML.
  * <p>
  * Since deserialization needs to work without an instance of the class, implementing this interface it's assumed the
- * class has static methods {@link #fromXml(XmlReader)} and {@link #fromXml(XmlReader, String)} that deserializes an
+ * class has static methods {@code #fromXml(XmlReader)} and {@code #fromXml(XmlReader, String)} that deserializes an
  * instance of that class. The contract for reading XML from {@link XmlReader} is that the initial state of the reader
  * on call will either be a null {@link XmlToken} or be {@link XmlToken#START_ELEMENT} for the object. So, for objects
  * calling out to other {@link XmlSerializable} objects for deserialization, they'll pass the reader pointing to the

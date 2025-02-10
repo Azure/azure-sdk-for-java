@@ -14,7 +14,6 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationForBatc
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListForBatchUpdate;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListResult;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ResetAllToDefault;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -26,7 +25,7 @@ public final class ConfigurationsBatchUpdateMockTests {
     @Test
     public void testBatchUpdate() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"jbdhqxvc\",\"currentValue\":\"frpdsofbshrns\",\"description\":\"uswdv\",\"documentationLink\":\"ybycnunvj\",\"defaultValue\":\"tkfa\",\"dataType\":\"opqgikyzirtxdyux\",\"allowedValues\":\"jntpsewgioilqu\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"ox\",\"name\":\"rgguf\",\"type\":\"yaomtb\"}],\"nextLink\":\"havgrvk\"}";
+            = "{\"value\":[{\"properties\":{\"value\":\"xyawj\",\"description\":\"aq\",\"defaultValue\":\"lyjpk\",\"dataType\":\"dzyexznelixh\",\"allowedValues\":\"ztfolhbnxk\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"dtpnapnyiropuhp\",\"name\":\"gvpgy\",\"type\":\"gqgitxmedjvcsl\"},{\"properties\":{\"value\":\"wwncwzzhxgk\",\"description\":\"mgucna\",\"defaultValue\":\"t\",\"dataType\":\"ellwptfdy\",\"allowedValues\":\"fqbuaceopzf\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"cq\",\"name\":\"qxolzdahzx\",\"type\":\"t\"},{\"properties\":{\"value\":\"bkdmo\",\"description\":\"postmgrcfbunrm\",\"defaultValue\":\"jhhkxbp\",\"dataType\":\"ymjhxxjyngudivkr\",\"allowedValues\":\"wbxqzvszjfau\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"vtcqaqtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"},{\"properties\":{\"value\":\"k\",\"description\":\"mpew\",\"defaultValue\":\"fbkrvrnsvs\",\"dataType\":\"johxcrsb\",\"allowedValues\":\"vasrruvwb\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"birx\",\"name\":\"pybsrfbjfdtw\",\"type\":\"sotftpvj\"}],\"nextLink\":\"exilzznfqqnvwpmq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,18 +35,15 @@ public final class ConfigurationsBatchUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ConfigurationListResult response = manager.configurations()
-            .batchUpdate("fdlwg", "ytsbwtovv", new ConfigurationListForBatchUpdate()
-                .withValue(Arrays.asList(
-                    new ConfigurationForBatchUpdate().withName("inqfiufxqknpirgn")
-                        .withValue("twqmsniffcdmqnr")
-                        .withSource("lpijnkrxfrd"),
-                    new ConfigurationForBatchUpdate().withName("c").withValue("izzronasxiftozqy").withSource("f"),
-                    new ConfigurationForBatchUpdate().withName("esgogc").withValue("nnxk").withSource("gnyhmossxkkg")))
-                .withResetAllToDefault(ResetAllToDefault.FALSE), com.azure.core.util.Context.NONE);
+            .batchUpdate("wozuhkf", "bsjyofdx",
+                new ConfigurationListForBatchUpdate()
+                    .withValue(Arrays.asList(new ConfigurationForBatchUpdate().withName("dttouwaboekqvkel")
+                        .withValue("vbxwyjsflhh")
+                        .withSource("aln"))),
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jbdhqxvc", response.value().get(0).value());
-        Assertions.assertEquals("frpdsofbshrns", response.value().get(0).currentValue());
+        Assertions.assertEquals("xyawj", response.value().get(0).value());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, response.value().get(0).source());
-        Assertions.assertEquals("havgrvk", response.nextLink());
+        Assertions.assertEquals("exilzznfqqnvwpmq", response.nextLink());
     }
 }

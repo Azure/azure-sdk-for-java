@@ -12,19 +12,22 @@ import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesReq
 import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesValidationRules;
 import java.util.Arrays;
 
-/** Samples for WebTests CreateOrUpdate. */
+/**
+ * Samples for WebTests CreateOrUpdate.
+ */
 public final class WebTestsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestCreate.json
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestCreate.
+     * json
      */
     /**
      * Sample code: webTestCreate.
-     *
+     * 
      * @param manager Entry point to ApplicationInsightsManager.
      */
     public static void webTestCreate(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager
-            .webTests()
+        manager.webTests()
             .define("my-webtest-my-component")
             .withRegion("South Central US")
             .withExistingResourceGroup("my-resource-group")
@@ -38,35 +41,24 @@ public final class WebTestsCreateOrUpdateSamples {
             .withWebTestKind(WebTestKind.PING)
             .withRetryEnabled(true)
             .withLocations(Arrays.asList(new WebTestGeolocation().withLocation("us-fl-mia-edge")))
-            .withConfiguration(
-                new WebTestPropertiesConfiguration()
-                    .withWebTest(
-                        "<WebTest Name=\"my-webtest\" Id=\"678ddf96-1ab8-44c8-9274-123456789abc\" Enabled=\"True\""
-                            + " CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"120\" WorkItemIds=\"\""
-                            + " xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\""
-                            + " CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\""
-                            + " Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"\" ResultsLocale=\"\""
-                            + " ><Items><Request Method=\"GET\" Guid=\"a4162485-9114-fcfc-e086-123456789abc\""
-                            + " Version=\"1.1\" Url=\"http://my-component.azurewebsites.net\" ThinkTime=\"0\""
-                            + " Timeout=\"120\" ParseDependentRequests=\"True\" FollowRedirects=\"True\""
-                            + " RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\""
-                            + " ExpectedHttpStatusCode=\"200\" ExpectedResponseUrl=\"\" ReportingName=\"\""
-                            + " IgnoreHttpStatusCode=\"False\" /></Items></WebTest>"))
+            .withConfiguration(new WebTestPropertiesConfiguration().withWebTest(
+                "<WebTest Name=\"my-webtest\" Id=\"678ddf96-1ab8-44c8-9274-123456789abc\" Enabled=\"True\" CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"120\" WorkItemIds=\"\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\" CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\" Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"\" ResultsLocale=\"\" ><Items><Request Method=\"GET\" Guid=\"a4162485-9114-fcfc-e086-123456789abc\" Version=\"1.1\" Url=\"http://my-component.azurewebsites.net\" ThinkTime=\"0\" Timeout=\"120\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"200\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\" /></Items></WebTest>"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestCreateStandard.json
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
+     * WebTestCreateStandard.json
      */
     /**
      * Sample code: webTestCreateStandard.
-     *
+     * 
      * @param manager Entry point to ApplicationInsightsManager.
      */
-    public static void webTestCreateStandard(
-        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager
-            .webTests()
+    public static void
+        webTestCreateStandard(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager.webTests()
             .define("my-webtest-my-component")
             .withRegion("South Central US")
             .withExistingResourceGroup("my-resource-group")
@@ -79,36 +71,29 @@ public final class WebTestsCreateOrUpdateSamples {
             .withWebTestKind(WebTestKind.STANDARD)
             .withRetryEnabled(true)
             .withLocations(Arrays.asList(new WebTestGeolocation().withLocation("us-fl-mia-edge")))
-            .withRequest(
-                new WebTestPropertiesRequest()
-                    .withRequestUrl("https://bing.com")
-                    .withHeaders(
-                        Arrays
-                            .asList(
-                                new HeaderField()
-                                    .withHeaderFieldName("fakeTokenPlaceholder")
-                                    .withHeaderFieldValue("de-DE"),
-                                new HeaderField()
-                                    .withHeaderFieldName("fakeTokenPlaceholder")
-                                    .withHeaderFieldValue("de-DE")))
-                    .withHttpVerb("POST")
-                    .withRequestBody("SGVsbG8gd29ybGQ="))
+            .withRequest(new WebTestPropertiesRequest().withRequestUrl("https://bing.com")
+                .withHeaders(Arrays.asList(
+                    new HeaderField().withHeaderFieldName("fakeTokenPlaceholder").withHeaderFieldValue("de-DE"),
+                    new HeaderField().withHeaderFieldName("fakeTokenPlaceholder").withHeaderFieldValue("de-DE")))
+                .withHttpVerb("POST")
+                .withRequestBody("SGVsbG8gd29ybGQ="))
             .withValidationRules(
                 new WebTestPropertiesValidationRules().withSslCheck(true).withSslCertRemainingLifetimeCheck(100))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestUpdate.json
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestUpdate.
+     * json
      */
     /**
      * Sample code: webTestUpdate.
-     *
+     * 
      * @param manager Entry point to ApplicationInsightsManager.
      */
     public static void webTestUpdate(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager
-            .webTests()
+        manager.webTests()
             .define("my-webtest-my-component")
             .withRegion("South Central US")
             .withExistingResourceGroup("my-resource-group")
@@ -118,25 +103,10 @@ public final class WebTestsCreateOrUpdateSamples {
             .withFrequency(600)
             .withTimeout(30)
             .withWebTestKind(WebTestKind.PING)
-            .withLocations(
-                Arrays
-                    .asList(
-                        new WebTestGeolocation().withLocation("us-fl-mia-edge"),
-                        new WebTestGeolocation().withLocation("apac-hk-hkn-azr")))
-            .withConfiguration(
-                new WebTestPropertiesConfiguration()
-                    .withWebTest(
-                        "<WebTest Name=\"my-webtest\" Id=\"678ddf96-1ab8-44c8-9274-123456789abc\" Enabled=\"True\""
-                            + " CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"30\" WorkItemIds=\"\""
-                            + " xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\""
-                            + " CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\""
-                            + " Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"\" ResultsLocale=\"\""
-                            + " ><Items><Request Method=\"GET\" Guid=\"a4162485-9114-fcfc-e086-123456789abc\""
-                            + " Version=\"1.1\" Url=\"http://my-component.azurewebsites.net\" ThinkTime=\"0\""
-                            + " Timeout=\"30\" ParseDependentRequests=\"True\" FollowRedirects=\"True\""
-                            + " RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\""
-                            + " ExpectedHttpStatusCode=\"200\" ExpectedResponseUrl=\"\" ReportingName=\"\""
-                            + " IgnoreHttpStatusCode=\"False\" /></Items></WebTest>"))
+            .withLocations(Arrays.asList(new WebTestGeolocation().withLocation("us-fl-mia-edge"),
+                new WebTestGeolocation().withLocation("apac-hk-hkn-azr")))
+            .withConfiguration(new WebTestPropertiesConfiguration().withWebTest(
+                "<WebTest Name=\"my-webtest\" Id=\"678ddf96-1ab8-44c8-9274-123456789abc\" Enabled=\"True\" CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"30\" WorkItemIds=\"\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\" CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\" Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"\" ResultsLocale=\"\" ><Items><Request Method=\"GET\" Guid=\"a4162485-9114-fcfc-e086-123456789abc\" Version=\"1.1\" Url=\"http://my-component.azurewebsites.net\" ThinkTime=\"0\" Timeout=\"30\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"200\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\" /></Items></WebTest>"))
             .create();
     }
 }

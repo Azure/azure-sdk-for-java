@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for ManagedPrivateEndpoints CreateOrUpdate. */
+/**
+ * Samples for ManagedPrivateEndpoints CreateOrUpdate.
+ */
 public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoManagedPrivateEndpointsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoManagedPrivateEndpointsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoManagedPrivateEndpointsCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .managedPrivateEndpoints()
+    public static void
+        kustoManagedPrivateEndpointsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.managedPrivateEndpoints()
             .define("managedPrivateEndpointTest")
             .withExistingCluster("kustorptest", "kustoCluster")
             .withPrivateLinkResourceId(

@@ -48,17 +48,6 @@ private[cosmos] object SparkBridgeInternal {
     s"${database.getClient.getServiceEndpoint}|${database.getId}|${container.getId}"
   }
 
-  private[cosmos] def getNormalizedEffectiveRange
-  (
-    container: CosmosAsyncContainer,
-    feedRange: FeedRange
-  ) : NormalizedRange = {
-
-    SparkBridgeImplementationInternal
-      .rangeToNormalizedRange(
-        container.getNormalizedEffectiveRange(feedRange).block)
-  }
-
   private[cosmos] def getPartitionKeyRanges
   (
     container: CosmosAsyncContainer

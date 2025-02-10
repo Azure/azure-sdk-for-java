@@ -13,11 +13,13 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInfoInner;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArtifactInner;
 import com.azure.resourcemanager.devtestlabs.models.GenerateArmTemplateRequest;
 
-/** An instance of this class provides access to all the operations defined in ArtifactsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ArtifactsClient.
+ */
 public interface ArtifactsClient {
     /**
      * List artifacts in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -31,7 +33,7 @@ public interface ArtifactsClient {
 
     /**
      * List artifacts in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -51,7 +53,7 @@ public interface ArtifactsClient {
 
     /**
      * Get artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -69,7 +71,7 @@ public interface ArtifactsClient {
 
     /**
      * Get artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -85,7 +87,7 @@ public interface ArtifactsClient {
     /**
      * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
      * the generated artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -104,7 +106,7 @@ public interface ArtifactsClient {
     /**
      * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
      * the generated artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.

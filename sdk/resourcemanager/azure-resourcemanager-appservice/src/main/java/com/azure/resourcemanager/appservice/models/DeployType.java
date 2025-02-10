@@ -77,6 +77,8 @@ public class DeployType extends ExpandableStringEnum<DeployType> {
     }
 
     /**
+     * Gets known DeployType type values.
+     *
      * @return known DeployType type values
      */
     public static Collection<DeployType> values() {

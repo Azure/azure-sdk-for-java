@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,86 +29,6 @@ public final class ModernSingleScopeReservationRecommendationProperties
      * Subscription ID associated with single scoped recommendation.
      */
     private UUID subscriptionId;
-
-    /*
-     * This is the ARM Sku name.
-     */
-    private String skuName;
-
-    /*
-     * List of sku properties
-     */
-    private List<SkuProperty> skuProperties;
-
-    /*
-     * The usage date for looking back.
-     */
-    private OffsetDateTime firstUsageDate;
-
-    /*
-     * Total estimated savings with reserved instances.
-     */
-    private Amount netSavings;
-
-    /*
-     * The total amount of cost with reserved instances.
-     */
-    private Amount totalCostWithReservedInstances;
-
-    /*
-     * Resource type.
-     */
-    private String resourceType;
-
-    /*
-     * Recommended quality for reserved instances.
-     */
-    private BigDecimal recommendedQuantity;
-
-    /*
-     * The total amount of cost without reserved instances.
-     */
-    private Amount costWithNoReservedInstances;
-
-    /*
-     * RI recommendations in one or three year terms.
-     */
-    private String term;
-
-    /*
-     * The meter id (GUID)
-     */
-    private UUID meterId;
-
-    /*
-     * The recommended Quantity Normalized.
-     */
-    private Float recommendedQuantityNormalized;
-
-    /*
-     * The normalized Size.
-     */
-    private String normalizedSize;
-
-    /*
-     * The instance Flexibility Group.
-     */
-    private String instanceFlexibilityGroup;
-
-    /*
-     * The instance Flexibility Ratio.
-     */
-    private Float instanceFlexibilityRatio;
-
-    /*
-     * The number of days of usage to look back for recommendation.
-     */
-    private Integer lookBackPeriod;
-
-    /*
-     * Resource Location.
-     */
-    private String location;
 
     /**
      * Creates an instance of ModernSingleScopeReservationRecommendationProperties class.
@@ -134,166 +53,6 @@ public final class ModernSingleScopeReservationRecommendationProperties
      */
     public UUID subscriptionId() {
         return this.subscriptionId;
-    }
-
-    /**
-     * Get the skuName property: This is the ARM Sku name.
-     * 
-     * @return the skuName value.
-     */
-    @Override
-    public String skuName() {
-        return this.skuName;
-    }
-
-    /**
-     * Get the skuProperties property: List of sku properties.
-     * 
-     * @return the skuProperties value.
-     */
-    @Override
-    public List<SkuProperty> skuProperties() {
-        return this.skuProperties;
-    }
-
-    /**
-     * Get the firstUsageDate property: The usage date for looking back.
-     * 
-     * @return the firstUsageDate value.
-     */
-    @Override
-    public OffsetDateTime firstUsageDate() {
-        return this.firstUsageDate;
-    }
-
-    /**
-     * Get the netSavings property: Total estimated savings with reserved instances.
-     * 
-     * @return the netSavings value.
-     */
-    @Override
-    public Amount netSavings() {
-        return this.netSavings;
-    }
-
-    /**
-     * Get the totalCostWithReservedInstances property: The total amount of cost with reserved instances.
-     * 
-     * @return the totalCostWithReservedInstances value.
-     */
-    @Override
-    public Amount totalCostWithReservedInstances() {
-        return this.totalCostWithReservedInstances;
-    }
-
-    /**
-     * Get the resourceType property: Resource type.
-     * 
-     * @return the resourceType value.
-     */
-    @Override
-    public String resourceType() {
-        return this.resourceType;
-    }
-
-    /**
-     * Get the recommendedQuantity property: Recommended quality for reserved instances.
-     * 
-     * @return the recommendedQuantity value.
-     */
-    @Override
-    public BigDecimal recommendedQuantity() {
-        return this.recommendedQuantity;
-    }
-
-    /**
-     * Get the costWithNoReservedInstances property: The total amount of cost without reserved instances.
-     * 
-     * @return the costWithNoReservedInstances value.
-     */
-    @Override
-    public Amount costWithNoReservedInstances() {
-        return this.costWithNoReservedInstances;
-    }
-
-    /**
-     * Get the term property: RI recommendations in one or three year terms.
-     * 
-     * @return the term value.
-     */
-    @Override
-    public String term() {
-        return this.term;
-    }
-
-    /**
-     * Get the meterId property: The meter id (GUID).
-     * 
-     * @return the meterId value.
-     */
-    @Override
-    public UUID meterId() {
-        return this.meterId;
-    }
-
-    /**
-     * Get the recommendedQuantityNormalized property: The recommended Quantity Normalized.
-     * 
-     * @return the recommendedQuantityNormalized value.
-     */
-    @Override
-    public Float recommendedQuantityNormalized() {
-        return this.recommendedQuantityNormalized;
-    }
-
-    /**
-     * Get the normalizedSize property: The normalized Size.
-     * 
-     * @return the normalizedSize value.
-     */
-    @Override
-    public String normalizedSize() {
-        return this.normalizedSize;
-    }
-
-    /**
-     * Get the instanceFlexibilityGroup property: The instance Flexibility Group.
-     * 
-     * @return the instanceFlexibilityGroup value.
-     */
-    @Override
-    public String instanceFlexibilityGroup() {
-        return this.instanceFlexibilityGroup;
-    }
-
-    /**
-     * Get the instanceFlexibilityRatio property: The instance Flexibility Ratio.
-     * 
-     * @return the instanceFlexibilityRatio value.
-     */
-    @Override
-    public Float instanceFlexibilityRatio() {
-        return this.instanceFlexibilityRatio;
-    }
-
-    /**
-     * Get the lookBackPeriod property: The number of days of usage to look back for recommendation.
-     * 
-     * @return the lookBackPeriod value.
-     */
-    @Override
-    public Integer lookBackPeriod() {
-        return this.lookBackPeriod;
-    }
-
-    /**
-     * Get the location property: Resource Location.
-     * 
-     * @return the location value.
-     */
-    @Override
-    public String location() {
-        return this.location;
     }
 
     /**
@@ -345,49 +104,50 @@ public final class ModernSingleScopeReservationRecommendationProperties
                 reader.nextToken();
 
                 if ("location".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.location = reader.getString();
+                    deserializedModernSingleScopeReservationRecommendationProperties.withLocation(reader.getString());
                 } else if ("lookBackPeriod".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.lookBackPeriod
-                        = reader.getNullable(JsonReader::getInt);
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withLookBackPeriod(reader.getNullable(JsonReader::getInt));
                 } else if ("instanceFlexibilityRatio".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.instanceFlexibilityRatio
-                        = reader.getNullable(JsonReader::getFloat);
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withInstanceFlexibilityRatio(reader.getNullable(JsonReader::getFloat));
                 } else if ("instanceFlexibilityGroup".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.instanceFlexibilityGroup
-                        = reader.getString();
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withInstanceFlexibilityGroup(reader.getString());
                 } else if ("normalizedSize".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.normalizedSize
-                        = reader.getString();
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withNormalizedSize(reader.getString());
                 } else if ("recommendedQuantityNormalized".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.recommendedQuantityNormalized
-                        = reader.getNullable(JsonReader::getFloat);
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withRecommendedQuantityNormalized(reader.getNullable(JsonReader::getFloat));
                 } else if ("meterId".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.meterId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withMeterId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("term".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.term = reader.getString();
+                    deserializedModernSingleScopeReservationRecommendationProperties.withTerm(reader.getString());
                 } else if ("costWithNoReservedInstances".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.costWithNoReservedInstances
-                        = Amount.fromJson(reader);
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withCostWithNoReservedInstances(Amount.fromJson(reader));
                 } else if ("recommendedQuantity".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.recommendedQuantity
-                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                    deserializedModernSingleScopeReservationRecommendationProperties.withRecommendedQuantity(
+                        reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
                 } else if ("resourceType".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.resourceType = reader.getString();
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withResourceType(reader.getString());
                 } else if ("totalCostWithReservedInstances".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.totalCostWithReservedInstances
-                        = Amount.fromJson(reader);
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withTotalCostWithReservedInstances(Amount.fromJson(reader));
                 } else if ("netSavings".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.netSavings
-                        = Amount.fromJson(reader);
+                    deserializedModernSingleScopeReservationRecommendationProperties
+                        .withNetSavings(Amount.fromJson(reader));
                 } else if ("firstUsageDate".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.firstUsageDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedModernSingleScopeReservationRecommendationProperties.withFirstUsageDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("skuProperties".equals(fieldName)) {
                     List<SkuProperty> skuProperties = reader.readArray(reader1 -> SkuProperty.fromJson(reader1));
-                    deserializedModernSingleScopeReservationRecommendationProperties.skuProperties = skuProperties;
+                    deserializedModernSingleScopeReservationRecommendationProperties.withSkuProperties(skuProperties);
                 } else if ("skuName".equals(fieldName)) {
-                    deserializedModernSingleScopeReservationRecommendationProperties.skuName = reader.getString();
+                    deserializedModernSingleScopeReservationRecommendationProperties.withSkuName(reader.getString());
                 } else if ("scope".equals(fieldName)) {
                     deserializedModernSingleScopeReservationRecommendationProperties.scope = reader.getString();
                 } else if ("subscriptionId".equals(fieldName)) {

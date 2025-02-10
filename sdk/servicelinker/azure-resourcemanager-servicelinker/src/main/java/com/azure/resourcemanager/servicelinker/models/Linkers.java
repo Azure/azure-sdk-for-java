@@ -13,8 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface Linkers {
     /**
-     * Returns list of Linkers which connects to the resource. which supports to config both application and target
-     * service during the resource provision.
+     * Returns list of Linkers which connects to the resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,8 +24,7 @@ public interface Linkers {
     PagedIterable<LinkerResource> list(String resourceUri);
 
     /**
-     * Returns list of Linkers which connects to the resource. which supports to config both application and target
-     * service during the resource provision.
+     * Returns list of Linkers which connects to the resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
@@ -63,7 +61,7 @@ public interface Linkers {
     LinkerResource get(String resourceUri, String linkerName);
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -74,7 +72,7 @@ public interface Linkers {
     void deleteByResourceGroup(String resourceUri, String linkerName);
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -86,19 +84,19 @@ public interface Linkers {
     void delete(String resourceUri, String linkerName, Context context);
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation operation result for a Linker.
+     * @return the validation operation result for a linker.
      */
     ValidateOperationResult validate(String resourceUri, String linkerName);
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -106,12 +104,12 @@ public interface Linkers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation operation result for a Linker.
+     * @return the validation operation result for a linker.
      */
     ValidateOperationResult validate(String resourceUri, String linkerName, Context context);
 
     /**
-     * list source configurations for a Linker.
+     * list source configurations for a linker.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -122,11 +120,11 @@ public interface Linkers {
      * @return configurations for source resource, include appSettings, connectionString and serviceBindings along with
      * {@link Response}.
      */
-    Response<ConfigurationResult> listConfigurationsWithResponse(String resourceUri, String linkerName,
+    Response<SourceConfigurationResult> listConfigurationsWithResponse(String resourceUri, String linkerName,
         Context context);
 
     /**
-     * list source configurations for a Linker.
+     * list source configurations for a linker.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -135,7 +133,7 @@ public interface Linkers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configurations for source resource, include appSettings, connectionString and serviceBindings.
      */
-    ConfigurationResult listConfigurations(String resourceUri, String linkerName);
+    SourceConfigurationResult listConfigurations(String resourceUri, String linkerName);
 
     /**
      * Returns Linker resource for a given name.
@@ -161,7 +159,7 @@ public interface Linkers {
     Response<LinkerResource> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,7 +169,7 @@ public interface Linkers {
     void deleteById(String id);
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * API deployment entity properties.
  */
 @Fluent
-public final class DeploymentProperties {
+public final class DeploymentProperties implements JsonSerializable<DeploymentProperties> {
     /*
      * API deployment title
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Description of the deployment.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * API center-scoped environment resource ID.
      */
-    @JsonProperty(value = "environmentId")
     private String environmentId;
 
     /*
      * API center-scoped definition resource ID.
      */
-    @JsonProperty(value = "definitionId")
     private String definitionId;
 
     /*
      * State of API deployment.
      */
-    @JsonProperty(value = "state")
     private DeploymentState state;
 
     /*
      * The deployment server
      */
-    @JsonProperty(value = "server")
     private DeploymentServer server;
 
     /*
      * The custom metadata defined for API catalog entities.
      */
-    @JsonProperty(value = "customProperties")
     private Object customProperties;
 
     /**
@@ -209,5 +206,59 @@ public final class DeploymentProperties {
         if (server() != null) {
             server().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("environmentId", this.environmentId);
+        jsonWriter.writeStringField("definitionId", this.definitionId);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("server", this.server);
+        jsonWriter.writeUntypedField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentProperties.
+     */
+    public static DeploymentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentProperties deserializedDeploymentProperties = new DeploymentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedDeploymentProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDeploymentProperties.description = reader.getString();
+                } else if ("environmentId".equals(fieldName)) {
+                    deserializedDeploymentProperties.environmentId = reader.getString();
+                } else if ("definitionId".equals(fieldName)) {
+                    deserializedDeploymentProperties.definitionId = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedDeploymentProperties.state = DeploymentState.fromString(reader.getString());
+                } else if ("server".equals(fieldName)) {
+                    deserializedDeploymentProperties.server = DeploymentServer.fromJson(reader);
+                } else if ("customProperties".equals(fieldName)) {
+                    deserializedDeploymentProperties.customProperties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentProperties;
+        });
     }
 }

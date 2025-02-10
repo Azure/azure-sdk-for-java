@@ -78,11 +78,6 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
      */
     private List<ReportableException> exceptionsAndWarnings;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel class.
      */
@@ -201,16 +196,6 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -258,7 +243,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.id = reader.getString();
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.resultType = reader.getString();
                 } else if ("sourceDatabaseName".equals(fieldName)) {

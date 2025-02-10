@@ -16,44 +16,41 @@ import com.azure.communication.callautomation.implementation.converters.PhoneNum
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.AudioFormatInternal;
 import com.azure.communication.callautomation.implementation.models.CallIntelligenceOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
+import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
 import com.azure.communication.callautomation.implementation.models.CallRejectReasonInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.ConnectRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CustomCallingContext;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
-import com.azure.communication.callautomation.implementation.models.ConnectRequestInternal;
-import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
-import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.AudioFormat;
 import com.azure.communication.callautomation.models.CallInvite;
+import com.azure.communication.callautomation.models.CallLocator;
+import com.azure.communication.callautomation.models.CallLocatorKind;
+import com.azure.communication.callautomation.models.ConnectCallOptions;
+import com.azure.communication.callautomation.models.ConnectCallResult;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
+import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
-import com.azure.communication.callautomation.models.ConnectCallOptions;
-import com.azure.communication.callautomation.models.CallLocator;
-import com.azure.communication.callautomation.models.CallLocatorKind;
-import com.azure.communication.callautomation.models.GroupCallLocator;
-import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.RoomCallLocator;
-import com.azure.communication.callautomation.models.ConnectCallResult;
+import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -96,12 +93,10 @@ public final class CallAutomationAsyncClient {
     private final HttpPipeline httpPipelineInternal;
     private final String resourceUrl;
     private final CommunicationUserIdentifierModel sourceIdentity;
-    private final MicrosoftTeamsAppIdentifierModel opsSourceIdentity;
     private final CallAutomationEventProcessor eventProcessor;
 
     CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient,
-        CommunicationUserIdentifier sourceIdentity, MicrosoftTeamsAppIdentifier opsSourceIdentity,
-        CallAutomationEventProcessor eventProcessor) {
+        CommunicationUserIdentifier sourceIdentity, CallAutomationEventProcessor eventProcessor) {
         this.callConnectionsInternal = callServiceClient.getCallConnections();
         this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
@@ -115,8 +110,6 @@ public final class CallAutomationAsyncClient {
         this.resourceUrl = callServiceClient.getEndpoint();
         this.sourceIdentity
             = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
-        this.opsSourceIdentity
-            = opsSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(opsSourceIdentity);
     }
 
     /**
@@ -133,14 +126,6 @@ public final class CallAutomationAsyncClient {
      */
     public CommunicationUserIdentifier getSourceIdentity() {
         return sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
-    }
-
-    /**
-     * Get OPS Source Identity that is used for create OPS call
-     * @return {@link CommunicationUserIdentifier} represent source
-     */
-    public MicrosoftTeamsAppIdentifier getOPSSourceIdentity() {
-        return opsSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(opsSourceIdentity);
     }
 
     //region Pre-call Actions
@@ -252,7 +237,7 @@ public final class CallAutomationAsyncClient {
                 PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
             .setSource(sourceIdentity)
-            .setOpsSource(opsSourceIdentity)
+            .setTeamsAppSource(MicrosoftTeamsAppIdentifierConverter.convert(createCallOptions.getTeamsAppSource()))
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
@@ -300,7 +285,7 @@ public final class CallAutomationAsyncClient {
                 PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
             .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
             .setSource(sourceIdentity)
-            .setOpsSource(opsSourceIdentity)
+            .setTeamsAppSource(MicrosoftTeamsAppIdentifierConverter.convert(createCallGroupOptions.getTeamsAppSource()))
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
@@ -339,9 +324,9 @@ public final class CallAutomationAsyncClient {
                 MediaStreamingTransportTypeInternal.fromString(mediaStreamingOptions.getTransportType().toString()))
             .setStartMediaStreaming(mediaStreamingOptions.isStartMediaStreamingEnabled())
             .setEnableBidirectional(mediaStreamingOptions.isEnableBidirectional())
-            .setAudioFormat(mediaStreamingOptions.getAudioFormat() != null
-                ? AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat().toString())
-                : AudioFormatInternal.fromString(AudioFormat.PCM_24K_MONO.toString()));
+            .setAudioFormat(AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat() != null
+                ? mediaStreamingOptions.getAudioFormat().toString()
+                : null));
     }
 
     private TranscriptionOptionsInternal getTranscriptionOptionsInternal(TranscriptionOptions transcriptionOptions) {
@@ -411,6 +396,13 @@ public final class CallAutomationAsyncClient {
                 TranscriptionOptionsInternal transcriptionOptionsInternal
                     = getTranscriptionOptionsInternal(answerCallOptions.getTranscriptionOptions());
                 request.setTranscriptionOptions(transcriptionOptionsInternal);
+            }
+            if (answerCallOptions.getCustomCallingContext().getSipHeaders() != null
+                || answerCallOptions.getCustomCallingContext().getVoipHeaders() != null) {
+                CustomCallingContext customContext = new CustomCallingContext();
+                customContext.setSipHeaders(answerCallOptions.getCustomCallingContext().getSipHeaders());
+                customContext.setVoipHeaders(answerCallOptions.getCustomCallingContext().getVoipHeaders());
+                request.setCustomCallingContext(customContext);
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
